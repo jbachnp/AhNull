@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <!--
 https://jbachnp.github.io/AhNull/
@@ -7,8 +7,21 @@ https://jbachnp.github.io/AhNull/
 <html>
 <head>
     <title>AhNull</title>
+    
+    <!--includes-->
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/JQuery/jquery-2.1.0.min.js"></script>
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/LinqJS/linq.min.js"></script>
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/Underscore/underscore-min.js"></script>
+
+    <link rel="stylesheet" href="SharedTechnology/ExternalDependency/JsLibrary/W3.CSS/w3.css" />
+    <link rel="stylesheet" href="SharedTechnology/ExternalDependency/JsLibrary/FontAwesome/css/font-awesome.min.css">
+
+    <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
 </head>
+
 <body>
     <h1>This is AhNull (docs ver)</h1>
+
+    <input onclick='responsiveVoice.speak("Hello World");' type='button' value='🔊 Play' />
 </body>
 </html>
