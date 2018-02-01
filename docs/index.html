@@ -7,6 +7,14 @@ https://jbachnp.github.io/AhNull/
 <html>
 <head>
     <title>AhNull</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="application-name" content="myScanner" />
+
+    <link rel="icon" href="favicon.ico">
+    <!--<link rel="manifest" href="manifest.json">-->
+
     
     <!--includes-->
     <script src="SharedTechnology/ExternalDependency/JsLibrary/JQuery/jquery-2.1.0.min.js"></script>
@@ -20,8 +28,250 @@ https://jbachnp.github.io/AhNull/
 </head>
 
 <body>
-    <h1>This is AhNull (docs ver)</h1>
+    <!--style-->
+    <style type="text/css">
+        .w3-sidebar a {
+            font-family: "Roboto", sans-serif;
+        }
 
-    <input onclick='responsiveVoice.speak("Hello World");' type='button' value='🔊 Play' />
+        body, h1, h2, h3, h4, h5, h6, .w3-wide {
+            font-family: "Montserrat", sans-serif;
+        }
+
+        .w3-top {
+            background-color: green;
+        }
+
+        .w3-bar .w3-bar-item {
+            padding: 2px 2px 2px 2px;
+        }
+
+        #ms > .w3-bar {
+            margin: 2px;
+        }
+
+        #ms label, #ms .w3-input {
+            font-size: 20px;
+        }
+
+        #ms th, #ms td {
+            padding: 2px 2px 2px 2px;
+            font-size: 20px;
+        }
+
+        #ms th {
+            background-color: LightSteelBlue;
+        }
+
+        #ms .w3-input {
+            background-color: BlanchedAlmond;
+        }
+    </style>
+
+    <!--UI-->
+    <div id="AppBody" class="w3-content" style="max-width:1200px">
+        <!-- menu -->
+        <nav class="w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style="z-index:3;width:250px" id="mySidebar">
+            <!--Menu Header-->
+            <div class="w3-container w3-display-container w3-padding-16">
+                <i class="fa fa-remove w3-hide-large w3-button w3-display-topright my-tmp-close"></i>
+                <h3 class="w3-wide"><b>Menu</b></h3>
+            </div>
+
+            <!--Main Functions-->
+            <div class="w3-large" style="font-weight:bold">
+                <a href="javascript:void(0)" class="w3-bar-item w3-button" data-w3css-dlg="#dlgExample">Hi</a>
+            </div>
+
+            <!--Minor Functions-->
+            <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding" id="testM">M</a>
+        </nav>
+        <header class="w3-bar w3-top w3-hide-large w3-xlarge">
+            <div class="w3-bar-item">Speak</div>
+            <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right my-tmp-open" style="padding-right:20px; padding-top:10px"><i class=" fa fa-bars"></i></a>
+        </header>
+
+        <div class="w3-overlay w3-hide-large  my-tmp-close" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+        <!-- main content -->
+        <div class="w3-main" style="margin-left:250px">
+            <div class="w3-hide-large" style="margin-top:50px"></div><!-- Push down content on small screens -->
+            <div class="SWA_Convention01_AjaxLoadingIndicator" style="background-color:yellow; font-size:20px">Please wait...</div>
+
+            <!-- body -->
+            <div id="ms">
+                <input onclick='responsiveVoice.speak("Hello World");' type='button' value='🔊 Play' />
+
+            </div>
+
+            <!-- Footer -->
+            <footer class="w3-light-grey w3-small w3-center" id="footer">
+                -.-
+                <div id="divLoggingHost"></div>
+            </footer>
+        </div>
+
+        <!-- dlgs -->
+        <div>
+            <div id="dlgExample" class="w3-modal">
+                <div class="w3-modal-content w3-animate-zoom">
+                    <div class="w3-container w3-white w3-center">
+                        <i data-w3css-dlg-cls="#dlgExample" class="fa fa-remove w3-right w3-button w3-transparent w3-xxlarge"></i>
+                        <h2 class="w3-wide">SAMPLE DIALOG</h2>
+                        <p>Join our mailing list to receive updates on new arrivals and special offers.</p>
+                        <p><input class="w3-input w3-border" type="text" placeholder="Enter e-mail"></p>
+                        <button type="button" class="w3-button w3-padding-large w3-red w3-margin-bottom" data-w3css-dlg-cls="#dlgExample">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="dlgMsg" class="w3-modal">
+                <div class="w3-modal-content w3-animate-zoom">
+                    <div class="w3-container w3-white w3-center">
+                        <i data-w3css-dlg-cls="#dlgMsg" class="fa fa-remove w3-right w3-button w3-transparent w3-xxlarge"></i>
+                        <h2 id="dlgMsg-header" class="w3-wide" style="background-color:lightgreen"></h2>
+
+                        <div id="dlgMsg-body"></div>
+                        <br /><br />
+
+                        <button type="button" id="dlgMsg-Ok" class="w3-button w3-padding-large w3-red w3-margin-bottom" data-w3css-dlg-cls="#dlgMsg">Ok</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="popupHost"></div>
+    </div>
+
+    <!--templates -->
+    <div id="tpls">
+        <script type="text/template" name="tripSelection">
+            {{o.forEach(function (trip, index, array) { }}
+            <option value="{{-trip.keyTrip}}">{{-trip.sc.replace("00", "")}} {{-trip.vn}} ({{-trip.orders.length}} 單)</option>
+            {{})}}
+        </script>
+    </div>
+
+    <!--config-->
+    <script type="text/javascript">
+    var MyApp = MyApp || {}; //Root object of the app
+
+    (function (app, undefined) {
+        _.templateSettings = {
+            evaluate: /\{\{([\s\S]+?)\}\}/g,            // {{ console.log("blah") }}
+            interpolate: /\{\{\=([\s\S]+?)\}\}/g,  // {{= title }}
+            escape: /\{\{\-([\s\S]+?)\}\}/g,         // {{- title }}
+            variable: "o"
+        }
+
+    })(MyApp);
+    </script>
+
+    <!--app logic-->
+    <script>
+        var MyApp = MyApp || {};
+
+        (function (app, undefined) {
+            var _AppLog = function (s) { console.log(s); };
+
+            var tplFuncs = (function () {
+                var ret = {};
+                $('#tpls > script[type="text/template"]').each(function (i, o) {
+                    ret[$(o).attr("name")] = _.template(o.innerText);
+                });
+                return ret;
+            })();
+
+            _AppLog("init completed");
+            _AppLog("welcome");
+
+
+            /*** app *******************************************************************************************/
+
+            /** globals *********************************/
+
+
+            /** w3css main menu & dlg open/close *********************************/
+            $(".my-tmp-open").click(function () {
+                document.getElementById("mySidebar").style.display = "block";
+                document.getElementById("myOverlay").style.display = "block";
+            });
+
+            $(".my-tmp-close").click(function () {
+                document.getElementById("mySidebar").style.display = "none";
+                document.getElementById("myOverlay").style.display = "none";
+            });
+
+            $("[data-w3css-dlg]").click(function (e) {
+                $($(e.target).data("w3css-dlg")).css("display", "block");
+            });
+
+            $("[data-w3css-dlg-cls]").click(function (e) {
+                $($(e.target).data("w3css-dlg-cls")).css("display", "none");
+                document.getElementById("mySidebar").style.display = "none";
+                document.getElementById("myOverlay").style.display = "none";
+            });
+
+
+            /** main page *********************************/
+
+
+            /**  *********************************/
+            $("#testM").click(function () {
+
+            });
+
+
+            /*** misc (non business logic)*******************************************************************************************/
+            function msgBox(msgTitle, msgBody, fDismissed) {
+                $("#dlgMsg").css("display", "block");
+                $("#dlgMsg-header").html(msgTitle);
+                $("#dlgMsg-body").html(msgBody);
+
+                $('#dlgMsg-Ok').off('click').click(function () {
+                    $("#dlgMsg").css("display", "none");
+                    document.getElementById("mySidebar").style.display = "none";
+                    document.getElementById("myOverlay").style.display = "none";
+
+                    if (fDismissed) fDismissed();
+                });
+            }
+
+            /*** misc (cpy fr other works)*******************************************************************************************/
+            function _erh(e) { _AppLog(e);  }
+
+            function log1(s) {
+                $("#divMsg").text((new Date()).toISOString() + ": " + s);
+            }
+
+            function arrayRemoveIf(ary, fRmCondition) {
+                var i = ary.length;
+                while (i--) {
+                    if (fRmCondition(ary[i], i)) {
+                        ary.splice(i, 1);
+                    }
+                }
+            };
+
+            function sNow() {
+                var dNow = new Date();
+                function pad(num) {
+                    var norm = Math.floor(Math.abs(num));
+                    return (norm < 10 ? '0' : '') + norm;
+                };
+                return dNow.getFullYear() +
+                    '-' + pad(dNow.getMonth() + 1) +
+                    '-' + pad(dNow.getDate()) +
+                    ' ' + pad(dNow.getHours()) +
+                    ':' + pad(dNow.getMinutes()) +
+                    ':' + pad(dNow.getSeconds()) +
+                    '.' + dNow.getMilliseconds();
+            }
+
+
+        })(MyApp);
+    </script>
+
 </body>
 </html>
