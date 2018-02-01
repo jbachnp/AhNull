@@ -234,19 +234,34 @@ https://jbachnp.github.io/AhNull/
             $("<input type='button' value=''/>").appendTo("#ms").click(function () { });
 
 
-            $("<input type='button' value='Speak'/>").appendTo("#ms").click(function () {
+            $("<input type='button' value='Speak S'/>").appendTo("#ms").click(function () {
                 //$("#txtMsg").val()
                 var textComponent = document.getElementById('txtMsg');
                 var selectedText = "123 321";
 
-                if(textComponent.selectionStart !== undefined) {
+                if (textComponent.selectionStart !== undefined) {
                     var startPos = textComponent.selectionStart;
                     var endPos = textComponent.selectionEnd;
                     selectedText = textComponent.value.substring(startPos, endPos);
                 }
 
-                //https://www.shunhinglogistics.com.hk/_SHLogWebPlatform/_pendingForStudy/mycode/MyRNDTemplate/Speech/index.html
-                responsiveVoice.speak(selectedText, { rate: 0 });
+                //Used to add optional pitch (range 0 to 2), rate (range 0 to 1.5), volume (range 0 to 1) 
+                responsiveVoice.speak(selectedText, $("#ddlLang").val(), { rate: 0.5 });
+            });
+
+            $("<input type='button' value='Speak F'/>").appendTo("#ms").click(function () {
+                //$("#txtMsg").val()
+                var textComponent = document.getElementById('txtMsg');
+                var selectedText = "123 321";
+
+                if (textComponent.selectionStart !== undefined) {
+                    var startPos = textComponent.selectionStart;
+                    var endPos = textComponent.selectionEnd;
+                    selectedText = textComponent.value.substring(startPos, endPos);
+                }
+
+                //Used to add optional pitch (range 0 to 2), rate (range 0 to 1.5), volume (range 0 to 1) 
+                responsiveVoice.speak(selectedText, $("#ddlLang").val(), { rate: 1 });
             });
 
 
