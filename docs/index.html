@@ -107,7 +107,7 @@ https://jbachnp.github.io/AhNull/
                     <option value="Chinese (Hong Kong) Female">Chinese (Hong Kong) Female</option>
                     <option value="Chinese Taiwan Female">Chinese Taiwan Female</option>
                 </select>
-                <textarea id="txtMsg" cols="85" rows="5">Hello</textarea>
+                <textarea id="txtMsg" cols="85" rows="5">Hello</textarea><br/>
             </div>
 
             <!-- Footer -->
@@ -192,7 +192,13 @@ https://jbachnp.github.io/AhNull/
             _AppLog("init completed");
             _AppLog("welcome");
 
-
+            $.fn.selectRange = function (start, end) {
+                var e = document.getElementById($(this).attr('id')); // I don't know why... but $(this) don't want to work today :-/
+                if (!e) return;
+                else if (e.setSelectionRange) { e.focus(); e.setSelectionRange(start, end); } /* WebKit */
+                else if (e.createTextRange) { var range = e.createTextRange(); range.collapse(true); range.moveEnd('character', end); range.moveStart('character', start); range.select(); } /* IE */
+                else if (e.selectionStart) { e.selectionStart = start; e.selectionEnd = end; }
+            };
             /*** app *******************************************************************************************/
 
             /** globals *********************************/
@@ -225,9 +231,24 @@ https://jbachnp.github.io/AhNull/
                 responsiveVoice.setDefaultVoice($("#ddlLang").val());
             });
 
-            $("<input type='button' value='Speak'>").appendTo("#ms").click(function () {
-                responsiveVoice.speak($("#txtMsg").text());
+            $("<input type='button' value=''/>").appendTo("#ms").click(function () { });
+
+
+            $("<input type='button' value='Speak'/>").appendTo("#ms").click(function () {
+                //$("#txtMsg").val()
+                var textComponent = document.getElementById('txtMsg');
+                var selectedText = "123 321";
+
+                if(textComponent.selectionStart !== undefined) {
+                    var startPos = textComponent.selectionStart;
+                    var endPos = textComponent.selectionEnd;
+                    selectedText = textComponent.value.substring(startPos, endPos);
+                }
+
+                //https://www.shunhinglogistics.com.hk/_SHLogWebPlatform/_pendingForStudy/mycode/MyRNDTemplate/Speech/index.html
+                responsiveVoice.speak(selectedText, { rate: 0 });
             });
+
 
             //$("<input type='button' value=''>").appendTo("#ms").click(function () { });
 
