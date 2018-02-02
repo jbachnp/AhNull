@@ -67,6 +67,10 @@ http://localhost:8081/AhNull/index.html
         #ms .w3-input {
             background-color: BlanchedAlmond;
         }
+
+        input[type=button] {
+            margin: 2px;
+        }
     </style>
 
     <!--UI-->
@@ -247,15 +251,15 @@ http://localhost:8081/AhNull/index.html
                 responsiveVoice.setDefaultVoice($("#ddlLang").val());
             });
 
-            $("<input type='button' value='Speak S'/>").appendTo("#ms1").click(function () {
+            $("<input type='button' value='Speak S' class='w3-button w3-green'/>").appendTo("#ms1").click(function () {
                 say({ volume: 1, rate: 0.5 });
             });
 
-            $("<input type='button' value='Speak F'/>").appendTo("#ms1").click(function () {
+            $("<input type='button' value='Speak F' class='w3-button w3-green'/>").appendTo("#ms1").click(function () {
                 say({ volume: 1, rate: 0.8 });
             });
 
-            $("<input type='button' value='↷'/>").appendTo("#ms1").click(function () {
+            $("<input type='button' value='↷' class='w3-button w3-green'/>").appendTo("#ms1").click(function () {
                 var textComponent = document.getElementById('txtMsg');
                 var startPos = textComponent.selectionStart;
                 var endPos = textComponent.selectionEnd;
@@ -270,7 +274,7 @@ http://localhost:8081/AhNull/index.html
             });
 
             for (var k in syms) {
-                $("<input type='button' value='" + k + "' style='font-size:x-large'/>").appendTo("#ms2").click(function () {
+                $("<input type='button' value='" + k + "' style='font-size:x-large' class='w3-button w3-green'/>").appendTo("#ms2").click(function () {
                     $("#txtMsg").focus();
                     responsiveVoice.speak(syms[this.value], $("#ddlLang").val(), { volume: 1, rate: 0.6 });
                 });
