@@ -2,6 +2,7 @@
 
 <!--
 https://jbachnp.github.io/AhNull/
+http://localhost:8081/AhNull/index.html
 -->
 
 <html>
@@ -107,7 +108,9 @@ https://jbachnp.github.io/AhNull/
                     <option value="Chinese (Hong Kong) Female">Chinese (Hong Kong) Female</option>
                     <option value="Chinese Taiwan Female">Chinese Taiwan Female</option>
                 </select>
-                <textarea id="txtMsg" cols="85" rows="5" style="font-size:x-large">Hello</textarea><br/>
+                <textarea id="txtMsg" style="font-size:x-large; padding:8px">Put some words here and select.</textarea><br/>
+                <div id="ms1" style="padding:5px"></div>
+                <div id="ms2" style="padding:5px"></div>
             </div>
 
             <!-- Footer -->
@@ -199,10 +202,23 @@ https://jbachnp.github.io/AhNull/
                 else if (e.createTextRange) { var range = e.createTextRange(); range.collapse(true); range.moveEnd('character', end); range.moveStart('character', start); range.select(); } /* IE */
                 else if (e.selectionStart) { e.selectionStart = start; e.selectionEnd = end; }
             };
+
             /*** app *******************************************************************************************/
 
             /** globals *********************************/
-
+            var syms = (function () {
+                return {
+                    ',': 'comma',
+                    '.': 'full stop',
+                    '!': 'exclamation mark',
+                    '?': 'question mark',
+                    '"': 'quotation mark',
+                    ':': 'colon',
+                    ';': 'semicolon',
+                    '‐': 'hyphen',
+                    '…': 'ellipsis'
+                }
+            })();
 
             /** w3css main menu & dlg open/close *********************************/
             $(".my-tmp-open").click(function () {
@@ -231,13 +247,39 @@ https://jbachnp.github.io/AhNull/
                 responsiveVoice.setDefaultVoice($("#ddlLang").val());
             });
 
-            $("<input type='button' value=''/>").appendTo("#ms").click(function () { });
+            $("<input type='button' value='Speak S'/>").appendTo("#ms1").click(function () {
+                say({ rate: 0.5 });
+            });
 
+            $("<input type='button' value='Speak F'/>").appendTo("#ms1").click(function () {
+                say({ rate: 0.8 });
+            });
 
-            $("<input type='button' value='Speak S'/>").appendTo("#ms").click(function () {
-                //$("#txtMsg").val()
+            $("<input type='button' value='↷'/>").appendTo("#ms1").click(function () {
                 var textComponent = document.getElementById('txtMsg');
-                var selectedText = "123 321";
+                var startPos = textComponent.selectionStart;
+                var endPos = textComponent.selectionEnd;
+                if (textComponent.value[endPos] == ".") { ++endPos; }
+                if (textComponent.value[endPos] == ".") { ++endPos; }
+
+                var nextend = textComponent.value.indexOf(".", endPos);
+                if (nextend < textComponent.value.length - 1) { nextend++; }
+                textComponent.selectionStart = endPos;
+                textComponent.selectionEnd = nextend;
+                $("#txtMsg").focus();
+            });
+
+            for (var k in syms) {
+                $("<input type='button' value='" + k + "' style='font-size:x-large'/>").appendTo("#ms2").click(function () {
+                    $("#txtMsg").focus();
+                    responsiveVoice.speak(syms[this.value], $("#ddlLang").val(), { rate: 0.6 });
+                });
+            }
+
+            function say(voiceOpt) {
+                $("#txtMsg").focus();
+                var textComponent = document.getElementById('txtMsg');
+                var selectedText;
 
                 if (textComponent.selectionStart !== undefined) {
                     var startPos = textComponent.selectionStart;
@@ -246,24 +288,8 @@ https://jbachnp.github.io/AhNull/
                 }
 
                 //Used to add optional pitch (range 0 to 2), rate (range 0 to 1.5), volume (range 0 to 1) 
-                responsiveVoice.speak(selectedText, $("#ddlLang").val(), { rate: 0.5 });
-            });
-
-            $("<input type='button' value='Speak F'/>").appendTo("#ms").click(function () {
-                //$("#txtMsg").val()
-                var textComponent = document.getElementById('txtMsg');
-                var selectedText = "123 321";
-
-                if (textComponent.selectionStart !== undefined) {
-                    var startPos = textComponent.selectionStart;
-                    var endPos = textComponent.selectionEnd;
-                    selectedText = textComponent.value.substring(startPos, endPos);
-                }
-
-                //Used to add optional pitch (range 0 to 2), rate (range 0 to 1.5), volume (range 0 to 1) 
-                responsiveVoice.speak(selectedText, $("#ddlLang").val(), { rate: 0.8 });
-            });
-
+                responsiveVoice.speak(selectedText ? selectedText : "please select some words", $("#ddlLang").val(), voiceOpt);
+            }
 
             //$("<input type='button' value=''>").appendTo("#ms").click(function () { });
 
