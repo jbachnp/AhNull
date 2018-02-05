@@ -11,7 +11,7 @@ http://localhost:8081/AhNull/av.html
 
 
     <!--includes-->
-    <!--<script src="SharedTechnology/ExternalDependency/JsLibrary/JQuery/jquery-2.1.0.min.js"></script>-->
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/JQuery/jquery-2.1.0.min.js"></script>
 
 </head>
 
@@ -54,6 +54,7 @@ http://localhost:8081/AhNull/av.html
     <div id="video-container">
         <video id="camera-stream" width="500" autoplay></video>
     </div>
+    <div id="msg"></div>
 
     <!--app logic-->
     <script>
@@ -68,6 +69,17 @@ http://localhost:8081/AhNull/av.html
             // Check that the browser supports getUserMedia.
             // If it doesn't show an alert, otherwise continue.
             if (navigator.getUserMedia) {
+                navigator.mediaDevices.enumerateDevices()
+                .then(function (devices) {
+                    devices.forEach(function (device) {
+                        _log(device.kind + ": " + device.label + " id = " + device.deviceId);
+                    });
+                })
+                .catch(function (err) {
+                    _log(err.name + ": " + error.message);
+                });
+
+
                 // Request the camera.
                 navigator.getUserMedia(
                   // Constraints
@@ -88,7 +100,7 @@ http://localhost:8081/AhNull/av.html
                   // Error Callback
                   function (err) {
                       // Log the error to the console.
-                      console.log('The following error occurred when trying to use getUserMedia: ' + err);
+                      _log('The following error occurred when trying to use getUserMedia: ' + err);
                   }
                 );
 
@@ -96,7 +108,9 @@ http://localhost:8081/AhNull/av.html
                 alert('Sorry, your browser does not support getUserMedia');
             }
 
-
+            function _log(s) {
+                $("#msg").append(s + "<hr/>");
+            }
         }
     </script>
 
