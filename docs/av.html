@@ -84,7 +84,11 @@ http://localhost:8081/AhNull/av.html
                 navigator.getUserMedia(
                   // Constraints
                   {
-                      video: true
+                      video: {
+                          advanced: [{
+                              facingMode: "environment"
+                          }]
+                      }
                   },
 
                   // Success Callback
