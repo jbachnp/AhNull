@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+
+<!--
+https://jbachnp.github.io/AhNull/bs.html
+http://localhost:8081/AhNull/bs.html
+-->
+
+<html>
+<head>
+    <title>BS etude</title>
+    <link rel="icon" href="SharedTechnology/MultimediaResource/Graphics/favicon3.ico?v=0">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--<link rel="manifest" href="manifest.json">-->
+
+    
+    <!--includes-->
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/JQuery/jquery-3.0.0.min.js"></script>
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/LinqJS/linq.min.js"></script>
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/Underscore/underscore-min.js"></script>
+
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/popper/popper.min.js"></script>
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="SharedTechnology/ExternalDependency/JsLibrary/bootstrap/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="SharedTechnology/ExternalDependency/JsLibrary/bootstrap/css/bootstrap-reboot.min.css">-->
+
+    <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+
+</head>
+
+<body>
+    <!--style-->
+    <style type="text/css">
+    body {
+        padding-top: 4rem;
+    }
+
+    </style>
+
+    <!--UI-->
+
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+        <a class="navbar-brand" href="javascript:void(0);">{An App}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul id="mnuMain" class="navbar-nav mr-auto">
+                <li class="nav-item active"><a class="nav-link" data-page="#home" href="javascript:void(0);">Home</a></li>
+                <li class="nav-item active"><a class="nav-link" data-page="#settings" href="javascript:void(0);">Settings</a></li>
+                <li role="separator" class="dropdown-divider"></li>
+                <li class="nav-item active"><a class="nav-link" data-page="#about" href="javascript:void(0);">About</a></li>
+
+                <!--examples of menu bar items-->
+                <!--
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+                    
+                -->
+
+            </ul>
+
+            <!--examples of "search" form-->
+            <!--
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Ask something la" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            -->
+        </div>
+    </nav>
+
+    <main role="main" class="container">
+        <div role="tabpanel" id="home" class="d-none">
+            <h3>Dictation</h3>
+
+            <div id="ms">
+                <textarea id="txtMsg" class="form-control" rows="5">Put some words here and select.</textarea>
+                <div id="ms1" class="btn-group" role="group"></div>
+                <div id="ms2" class="btn-group" role="group"></div>
+            </div>
+
+        </div>
+        <div role="tabpanel" id="settings" class="d-none">
+            <h3>Settings</h3>
+
+            <select id="ddlLang" class="form-control">
+                <option value="UK English Female">UK English Female</option>
+                <option value="UK English Male">UK English Male</option>
+                <option value="US English Female">US English Female</option>
+                <option value="Chinese Female">Chinese Female</option>
+                <option value="Chinese (Hong Kong) Female">Chinese (Hong Kong) Female</option>
+                <option value="Chinese Taiwan Female">Chinese Taiwan Female</option>
+            </select>
+        </div>
+
+        <div role="tabpanel" id="about" class="d-none">
+            <h3>About</h3>
+            <p>
+                The fundamental theorem of algebra states that every non-constant single-variable polynomial with complex coefficients has at least one complex root. This includes polynomials with real coefficients, since every real number is a complex number with an imaginary part equal to zero.<br /><br />
+
+                Equivalently (by definition), the theorem states that the field of complex numbers is algebraically closed.<br /><br />
+
+                The theorem is also stated as follows: every non-zero, single-variable, degree n polynomial with complex coefficients has, counted with multiplicity, exactly n complex roots. The equivalence of the two statements can be proven through the use of successive polynomial division.<br /><br />
+
+                <span style="font-weight:bold">In spite of its name</span>, there is no purely algebraic proof of the theorem, since any proof must use the completeness of the reals (or some other equivalent formulation of completeness), which is not an algebraic concept. Additionally, it is not fundamental for modern algebra; its name was given at a time when the study of algebra was mainly concerned with the solutions of polynomial equations with real or complex coefficients.<br /><br />
+            </p>
+        </div>
+    </main><!-- /.container -->
+
+    <!--templates -->
+    <div id="tpls">
+        <script type="text/template" name="tripSelection">
+        </script>
+    </div>
+
+    <!--config-->
+    <script type="text/javascript">
+    var MyApp = MyApp || {}; //Root object of the app
+
+    (function (app, undefined) {
+        _.templateSettings = {
+            evaluate: /\{\{([\s\S]+?)\}\}/g,            // {{ console.log("blah") }}
+            interpolate: /\{\{\=([\s\S]+?)\}\}/g,  // {{= title }}
+            escape: /\{\{\-([\s\S]+?)\}\}/g,         // {{- title }}
+            variable: "o"
+        }
+
+    })(MyApp);
+    </script>
+
+    <!--app logic-->
+    <script>
+        var MyApp = MyApp || {};
+
+        (function (app, undefined) {
+            var _AppLog = function (s) { console.log(s); };
+            var tplFuncs = (function () {
+                var ret = {};
+                $('#tpls > script[type="text/template"]').each(function (i, o) {
+                    ret[$(o).attr("name")] = _.template(o.innerText);
+                });
+                return ret;
+            })();
+
+            //----------------------------------------------------------------------------
+            _AppLog("init completed");
+            _AppLog("welcome");
+
+            //----------------------------------------------------------------------------
+            openPage("#home");
+
+            var syms = (function () {
+                return {
+                    ',': 'comma',
+                    '.': 'full stop',
+                    '!': 'exclamation mark',
+                    '?': 'question mark',
+                    '"': 'quotation mark',
+                    ':': 'colon',
+                    ';': 'semicolon',
+                    '‐': 'hyphen',
+                    '…': 'ellipsis'
+                }
+            })();
+
+            $("<input type='button' value='Speak S' class='form-control'/>").appendTo("#ms1").click(function () {
+                say({ volume: 1, rate: 0.5 });
+            });
+
+            $("<input type='button' value='Speak F' class='form-control'/>").appendTo("#ms1").click(function () {
+                say({ volume: 1, rate: 0.8 });
+            });
+
+            $("<input type='button' value='↷' class='form-control'/>").appendTo("#ms1").click(function () {
+                var textComponent = document.getElementById('txtMsg');
+                var startPos = textComponent.selectionStart;
+                var endPos = textComponent.selectionEnd;
+                if (textComponent.value[endPos] == ".") { ++endPos; }
+                if (textComponent.value[endPos] == ".") { ++endPos; }
+
+                var nextend = textComponent.value.indexOf(".", endPos);
+                if (nextend < textComponent.value.length - 1) { nextend++; }
+                textComponent.selectionStart = endPos;
+                textComponent.selectionEnd = nextend;
+                $("#txtMsg").focus();
+            });
+
+            for (var k in syms) {
+                $("<input type='button' value='" + k + "' style='font-size:x-large' class='form-control'/>").appendTo("#ms2").click(function () {
+                    $("#txtMsg").focus();
+                    responsiveVoice.speak(syms[this.value], $("#ddlLang").val(), { volume: 1, rate: 0.6 });
+                });
+            }
+
+            function say(voiceOpt) {
+                $("#txtMsg").focus();
+                var textComponent = document.getElementById('txtMsg');
+                var selectedText;
+
+                if (textComponent.selectionStart !== undefined) {
+                    var startPos = textComponent.selectionStart;
+                    var endPos = textComponent.selectionEnd;
+                    selectedText = textComponent.value.substring(startPos, endPos);
+                }
+
+                //Used to add optional pitch (range 0 to 2), rate (range 0 to 1.5), volume (range 0 to 1) 
+                responsiveVoice.speak(selectedText ? selectedText : "please select some words", $("#ddlLang").val(), voiceOpt);
+            }
+
+            //BS specfic----------------------------------------------------------------------------
+            function openPage(qPage) {
+                $("main div[role='tabpanel']").addClass("d-none");
+                $(qPage).removeClass("d-none");
+            }
+
+            $("#mnuMain >> a").each(function () {
+                $(this).on("click", function () {
+                    openPage($(this).data("page"));
+                });
+            });
+
+        })(MyApp);
+    </script>
+
+</body>
+</html>
