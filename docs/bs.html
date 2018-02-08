@@ -7,7 +7,7 @@ http://localhost:8081/AhNull/bs.html
 
 <html>
 <head>
-    <title>BS etude</title>
+    <title>Dictation</title>
     <link rel="icon" href="SharedTechnology/MultimediaResource/Graphics/favicon3.ico?v=0">
 
     <meta charset="utf-8">
@@ -22,9 +22,12 @@ http://localhost:8081/AhNull/bs.html
     <script src="SharedTechnology/ExternalDependency/JsLibrary/Underscore/underscore-min.js"></script>
 
     <script src="SharedTechnology/ExternalDependency/JsLibrary/popper/popper.min.js"></script>
-    <script src="SharedTechnology/ExternalDependency/JsLibrary/bootstrap/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="SharedTechnology/ExternalDependency/JsLibrary/bootstrap/css/bootstrap.min.css">
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/bootstrap/js/bootstrap.min.js"></script>
     <!--<link rel="stylesheet" href="SharedTechnology/ExternalDependency/JsLibrary/bootstrap/css/bootstrap-reboot.min.css">-->
+
+    <link rel="stylesheet" href="SharedTechnology/ExternalDependency/JsLibrary/shards/css/shards.min.css">
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/shards/js/shards.min.js"></script>
 
     <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
 
@@ -33,16 +36,23 @@ http://localhost:8081/AhNull/bs.html
 <body>
     <!--style-->
     <style type="text/css">
-    body {
-        padding-top: 4rem;
-    }
+        body {
+            padding-top: 4rem;
+        }
 
+        #settings_lang {
+            padding: 1px;
+        }
+
+        .sldrThin {
+            margin: 12px;
+        }
     </style>
 
     <!--UI-->
 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
-        <a class="navbar-brand" href="javascript:void(0);">{An App}</a>
+        <a class="navbar-brand" href="javascript:void(0);">Dictation</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -52,42 +62,12 @@ http://localhost:8081/AhNull/bs.html
                 <li class="nav-item active"><a class="nav-link" data-page="#settings" href="javascript:void(0);">Settings</a></li>
                 <li role="separator" class="dropdown-divider"></li>
                 <li class="nav-item active"><a class="nav-link" data-page="#about" href="javascript:void(0);">About</a></li>
-
-                <!--examples of menu bar items-->
-                <!--
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdown01">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </li>
-                    
-                -->
-
             </ul>
-
-            <!--examples of "search" form-->
-            <!--
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Ask something la" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-            -->
         </div>
     </nav>
 
     <main role="main" class="container">
         <div role="tabpanel" id="home" class="d-none">
-            <h3>Dictation</h3>
-
             <div id="ms">
                 <textarea id="txtMsg" class="form-control" rows="5">Put some words here and select.</textarea>
                 <div id="ms1" class="btn-group" role="group"></div>
@@ -95,30 +75,91 @@ http://localhost:8081/AhNull/bs.html
             </div>
 
         </div>
+        
         <div role="tabpanel" id="settings" class="d-none">
             <h3>Settings</h3>
+            <div class="container">
+                <div class="row">
+                    <div class="col">Volume</div>
+                    <div class="col-9">
+                        <div id="settings_volume" class="sldrThin">
+                            <input type="text" class='custom-slider-input' name="custom-slider-value">
+                        </div>
 
-            <select id="ddlLang" class="form-control">
-                <option value="UK English Female">UK English Female</option>
-                <option value="UK English Male">UK English Male</option>
-                <option value="US English Female">US English Female</option>
-                <option value="Chinese Female">Chinese Female</option>
-                <option value="Chinese (Hong Kong) Female">Chinese (Hong Kong) Female</option>
-                <option value="Chinese Taiwan Female">Chinese Taiwan Female</option>
-            </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">Voice</div>
+                    <div class="col-9">
+                        <select id="settings_lang" class="form-control">
+                            <option value="UK English Female">UK English Female</option>
+                            <option value="UK English Male">UK English Male</option>
+                            <option value="US English Female">US English Female</option>
+                            <option value="Chinese Female">Chinese Female</option>
+                            <option value="Chinese (Hong Kong) Female">Chinese (Hong Kong) Female</option>
+                            <option value="Chinese Taiwan Female">Chinese Taiwan Female</option>
+                        </select>
+                    </div>
+                </div>
+           </div>
+
+            <h5>Voice A</h5>
+            <div class="container">
+                <div class="row">
+                    <div class="col">Rate</div>
+                    <div class="col-9">
+                        <div id="settings_a_rate" class="sldrThin">
+                            <input type="text" class='custom-slider-input' name="custom-slider-value">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">Pitch</div>
+                    <div class="col-9">
+                        <div id="settings_a_pitch" class="sldrThin">
+                            <input type="text" class='custom-slider-input' name="custom-slider-value">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h5>Voice B</h5>
+            <div class="container">
+                <div class="row">
+                    <div class="col">Rate</div>
+                    <div class="col-9">
+                        <div id="settings_b_rate" class="sldrThin">
+                            <input type="text" class='custom-slider-input' name="custom-slider-value">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">Pitch</div>
+                    <div class="col-9">
+                        <div id="settings_b_pitch" class="sldrThin">
+                            <input type="text" class='custom-slider-input' name="custom-slider-value">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <input id="settings_save" type='button' value='Save' class='form-control' />
         </div>
 
         <div role="tabpanel" id="about" class="d-none">
             <h3>About</h3>
             <p>
-                The fundamental theorem of algebra states that every non-constant single-variable polynomial with complex coefficients has at least one complex root. This includes polynomials with real coefficients, since every real number is a complex number with an imaginary part equal to zero.<br /><br />
-
-                Equivalently (by definition), the theorem states that the field of complex numbers is algebraically closed.<br /><br />
-
-                The theorem is also stated as follows: every non-zero, single-variable, degree n polynomial with complex coefficients has, counted with multiplicity, exactly n complex roots. The equivalence of the two statements can be proven through the use of successive polynomial division.<br /><br />
-
-                <span style="font-weight:bold">In spite of its name</span>, there is no purely algebraic proof of the theorem, since any proof must use the completeness of the reals (or some other equivalent formulation of completeness), which is not an algebraic concept. Additionally, it is not fundamental for modern algebra; its name was given at a time when the study of algebra was mainly concerned with the solutions of polynomial equations with real or complex coefficients.<br /><br />
+                I have two monkeys. They are Monkey One and Monkey Two. I make this small gadget for their self study.<br />
             </p>
+            <p>
+                BTW, do you notice the relation between <span style="font-style:italic">Fundamental Theorem of Algebra (FTA)</span>
+                and <span style="font-style:italic">Holy Roman Empire (HRE)</span>...
+            </p>
+            <p>
+                <span style="font-style:italic">The Answer: </span> while HRE is "neither holy, nor Roman, nor an empire" (by Voltaire), 
+                FTA is "neither fundamental, nor a theorem, nor properly within the scope of algebra".
+            </p>
+
         </div>
     </main><!-- /.container -->
 
@@ -161,7 +202,8 @@ http://localhost:8081/AhNull/bs.html
             _AppLog("init completed");
             _AppLog("welcome");
 
-            //----------------------------------------------------------------------------
+            //Page: Home----------------------------------------------------------------------------
+            var _ls = createLoacalStorage();
             openPage("#home");
 
             var syms = (function () {
@@ -178,12 +220,20 @@ http://localhost:8081/AhNull/bs.html
                 }
             })();
 
-            $("<input type='button' value='Speak S' class='form-control'/>").appendTo("#ms1").click(function () {
-                say({ volume: 1, rate: 0.5 });
+            $("<input type='button' value='Read(A)' class='form-control'/>").appendTo("#ms1").click(function () {
+                say($("#settings_lang").val(), {
+                    volume: document.getElementById("settings_volume").noUiSlider.get(),
+                    rate: document.getElementById("settings_a_rate").noUiSlider.get(),
+                    pitch: document.getElementById("settings_a_pitch").noUiSlider.get()
+                });
             });
 
-            $("<input type='button' value='Speak F' class='form-control'/>").appendTo("#ms1").click(function () {
-                say({ volume: 1, rate: 0.8 });
+            $("<input type='button' value='Read(B)' class='form-control'/>").appendTo("#ms1").click(function () {
+                say($("#settings_lang").val(), {
+                    volume: document.getElementById("settings_volume").noUiSlider.get(),
+                    rate: document.getElementById("settings_b_rate").noUiSlider.get(),
+                    pitch: document.getElementById("settings_b_pitch").noUiSlider.get()
+                });
             });
 
             $("<input type='button' value='↷' class='form-control'/>").appendTo("#ms1").click(function () {
@@ -203,11 +253,11 @@ http://localhost:8081/AhNull/bs.html
             for (var k in syms) {
                 $("<input type='button' value='" + k + "' style='font-size:x-large' class='form-control'/>").appendTo("#ms2").click(function () {
                     $("#txtMsg").focus();
-                    responsiveVoice.speak(syms[this.value], $("#ddlLang").val(), { volume: 1, rate: 0.6 });
+                    responsiveVoice.speak(syms[this.value], $("#settings_lang").val(), { volume: 1, rate: 0.6 });
                 });
             }
 
-            function say(voiceOpt) {
+            function say(voice, voiceOpt) {
                 $("#txtMsg").focus();
                 var textComponent = document.getElementById('txtMsg');
                 var selectedText;
@@ -218,8 +268,43 @@ http://localhost:8081/AhNull/bs.html
                     selectedText = textComponent.value.substring(startPos, endPos);
                 }
 
-                //Used to add optional pitch (range 0 to 2), rate (range 0 to 1.5), volume (range 0 to 1) 
-                responsiveVoice.speak(selectedText ? selectedText : "please select some words", $("#ddlLang").val(), voiceOpt);
+                //Used to add optional volume (range 0 to 1), rate (range 0 to 1.5), pitch (range 0 to 2) 
+                responsiveVoice.speak(selectedText ? selectedText : "please select some words", voice, voiceOpt);
+            }
+
+            //Page: Settings----------------------------------------------------------------------------
+            $("#settings_save").click(function () {
+                _ls.settings.set({
+                    volume: document.getElementById("settings_volume").noUiSlider.get(),
+                    voiceA: { rate: document.getElementById("settings_a_rate").noUiSlider.get(), pitch: document.getElementById("settings_a_pitch").noUiSlider.get() },
+                    voiceB: { rate: document.getElementById("settings_b_rate").noUiSlider.get(), pitch: document.getElementById("settings_b_pitch").noUiSlider.get() }
+                });
+            });
+
+            //----------------------------------------------------------------------------
+            function createLoacalStorage() {
+                function _setObj(key, obj) {
+                    localStorage.setItem(key, JSON.stringify(obj));
+                    return _getObj(key);
+                }
+                function _getObj(key) { return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : undefined; }
+                function _crLclStrgItem(key) {
+
+                    return {
+                        get: function () { return _getObj(key); },
+                        set: function (obj) { return _setObj(key, obj); },
+                        getOrCreate: function (obj) {
+                            var _ret = _getObj(key);
+                            return _ret ? _ret : _setObj(key, obj);
+                        }
+                    };
+                }
+
+                var ret = {
+                    settings: _crLclStrgItem("settings")
+                };
+
+                return ret;
             }
 
             //BS specfic----------------------------------------------------------------------------
@@ -228,12 +313,57 @@ http://localhost:8081/AhNull/bs.html
                 $(qPage).removeClass("d-none");
             }
 
+            $(".navbar-nav li a").click(function (event) {
+                var toggle = $(".navbar-collapse").hasClass("show");
+                if (toggle) {
+                    $(".navbar-toggler").click();
+                }
+            });
+
             $("#mnuMain >> a").each(function () {
                 $(this).on("click", function () {
                     openPage($(this).data("page"));
                 });
             });
 
+            (function guiInit() {
+                var settings = _ls.settings.getOrCreate({
+                    volume: 0.8,
+                    voiceA: { rate: 0.5, pitch: 1.0 },
+                    voiceB: { rate: 0.8, pitch: 1.0 }
+                });
+
+                $("#settings_volume").customSlider({
+                    start: [settings.volume],
+                    connect: [true, false],
+                    range: { 'min': 0, 'max': 1.0 }
+                });
+
+                $("#settings_a_rate").customSlider({
+                    start: [settings.voiceA.rate],
+                    connect: [true, false],
+                    range: { 'min': 0, 'max': 1.5 }
+                });
+
+                $("#settings_a_pitch").customSlider({
+                    start: [settings.voiceA.pitch],
+                    connect: [true, false],
+                    range: { 'min': 0, 'max': 2.0 }
+                });
+
+                $("#settings_b_rate").customSlider({
+                    start: [settings.voiceB.rate],
+                    connect: [true, false],
+                    range: { 'min': 0, 'max': 1.5 }
+                });
+
+                $("#settings_b_pitch").customSlider({
+                    start: [settings.voiceB.pitch],
+                    connect: [true, false],
+                    range: { 'min': 0, 'max': 2.0 }
+                });
+
+            })()
         })(MyApp);
     </script>
 
