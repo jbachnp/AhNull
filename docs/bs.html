@@ -17,9 +17,10 @@ http://localhost:8081/AhNull/bs.html
 
     
     <!--includes-->
-    <script src="SharedTechnology/ExternalDependency/JsLibrary/JQuery/jquery-3.0.0.min.js"></script>
-    <script src="SharedTechnology/ExternalDependency/JsLibrary/LinqJS/linq.min.js"></script>
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/moment/moment.min.js"></script>
     <script src="SharedTechnology/ExternalDependency/JsLibrary/Underscore/underscore-min.js"></script>
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/LinqJS/linq.min.js"></script>
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/JQuery/jquery-3.0.0.min.js"></script>
 
     <script src="SharedTechnology/ExternalDependency/JsLibrary/popper/popper.min.js"></script>
     <link rel="stylesheet" href="SharedTechnology/ExternalDependency/JsLibrary/bootstrap/css/bootstrap.min.css">
@@ -58,6 +59,7 @@ http://localhost:8081/AhNull/bs.html
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul id="mnuMain" class="navbar-nav mr-auto">
                 <li class="nav-item active"><a class="nav-link" data-page="#home" href="javascript:void(0);">Home</a></li>
+                <li class="nav-item active"><a class="nav-link" data-page="#history" href="javascript:void(0);">Saved Passages</a></li>
                 <li class="nav-item active"><a class="nav-link" data-page="#settings" href="javascript:void(0);">Settings</a></li>
                 <li role="separator" class="dropdown-divider"></li>
                 <li class="nav-item active"><a class="nav-link" data-page="#about" href="javascript:void(0);">About</a></li>
@@ -155,10 +157,15 @@ http://localhost:8081/AhNull/bs.html
                 and <span style="font-style:italic">Holy Roman Empire (HRE)</span>...
             </p>
             <p>
-                <span style="font-style:italic">The Answer: </span> while HRE is "neither holy, nor Roman, nor an empire" (by Voltaire), 
+                <span style="font-style:italic">The Answer: </span> while HRE is "neither holy, nor Roman, nor an empire" (by Voltaire),
                 FTA is "neither fundamental, nor a theorem, nor properly within the scope of algebra".
             </p>
 
+        </div>
+
+        <div role="tabpanel" id="history" class="d-none">
+            <h3>Saved Passages</h3>
+            <div id="history_msgs"></div>
         </div>
     </main><!-- /.container -->
 
@@ -256,6 +263,27 @@ http://localhost:8081/AhNull/bs.html
                 });
             }
 
+            $("<input type='button' value='Save' class='form-control'/>").appendTo("#ms1").click(function () {
+                var msgs = _ls.msgs.getOrCreate([]);
+                msgs.push({
+                    createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
+                    msg: document.getElementById('txtMsg').value
+                });
+                _ls.msgs.set(msgs);
+            });
+
+            $("#mnuMain [data-page='#history']").click(function () {
+                var msgs = _ls.msgs.getOrCreate([]);
+
+                $("#history_msgs").empty();
+                msgs.forEach(function (msg) {
+                    $("<div class='card'><div class='card-body'><span style='font-style:italic;text-decoration:underline'>" + msg.createdAt + "</span>" + msg.msg + "</div></div>")
+                        .appendTo("#history_msgs")
+                        .click(function () { $("#txtMsg").val(msg.msg); openPage("#home"); });
+                });
+            });
+
+
             function say(voice, voiceOpt) {
                 $("#txtMsg").focus();
                 var textComponent = document.getElementById('txtMsg');
@@ -278,6 +306,7 @@ http://localhost:8081/AhNull/bs.html
                     voiceA: { rate: document.getElementById("settings_a_rate").noUiSlider.get(), pitch: document.getElementById("settings_a_pitch").noUiSlider.get() },
                     voiceB: { rate: document.getElementById("settings_b_rate").noUiSlider.get(), pitch: document.getElementById("settings_b_pitch").noUiSlider.get() }
                 });
+                openPage("#home");
             });
 
             //----------------------------------------------------------------------------
@@ -300,7 +329,8 @@ http://localhost:8081/AhNull/bs.html
                 }
 
                 var ret = {
-                    settings: _crLclStrgItem("settings")
+                    settings: _crLclStrgItem("settings"),
+                    msgs: _crLclStrgItem("msgs")
                 };
 
                 return ret;
