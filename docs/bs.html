@@ -25,7 +25,7 @@ http://localhost:8081/AhNull/bs.html
     <script src="SharedTechnology/ExternalDependency/JsLibrary/popper/popper.min.js"></script>
     <link rel="stylesheet" href="SharedTechnology/ExternalDependency/JsLibrary/bootstrap/css/bootstrap.min.css">
     <script src="SharedTechnology/ExternalDependency/JsLibrary/bootstrap/js/bootstrap.min.js"></script>
-    <!--<link rel="stylesheet" href="SharedTechnology/ExternalDependency/JsLibrary/bootstrap/css/bootstrap-reboot.min.css">-->
+    <link rel="stylesheet" href="SharedTechnology/ExternalDependency/JsLibrary/bootstrap/css/bootstrap-reboot.min.css">
 
     <link rel="stylesheet" href="SharedTechnology/ExternalDependency/JsLibrary/Shards/css/shards.min.css">
     <script src="SharedTechnology/ExternalDependency/JsLibrary/Shards/js/shards.min.js"></script>
@@ -48,7 +48,7 @@ http://localhost:8081/AhNull/bs.html
             padding-right:0.2rem;
         }
 
-        input[type='button'], button[type='button'] {
+        button[type='button'] {
             margin-top: 0.6rem;
             margin-bottom: 0.6rem;
             margin-left: 0.3rem;
@@ -61,7 +61,13 @@ http://localhost:8081/AhNull/bs.html
         #txtMsg {
             margin: 0.2rem;
             padding:0.5rem;
+            line-height:150%;
             font-size: x-large;
+        }
+
+        .blur{
+          -webkit-filter: blur(3px); /* Chrome, Safari, Opera */
+          filter: blur(3px);
         }
 
         #settings_lang {
@@ -93,11 +99,18 @@ http://localhost:8081/AhNull/bs.html
     <main role="main" class="container">
         <div role="tabpanel" id="home" class="d-none">
             <div id="ms">
-                <textarea id="txtMsg" class="form-control" rows="5">Put some words here and select.</textarea>
-                <div id="ms1" class="btn-group"></div>
+                <textarea id="txtMsg" class="form-control" rows="5">
+Tyger Tyger, burning bright,
+In the forests of the night;
+What immortal hand or eye,
+Could frame thy fearful symmetry?</textarea>
+                <div id="ms1"></div>
                 <div id="ms2"></div>
+                <div class="custom-control custom-toggle my-2">
+                    <input type="checkbox" id="home_shield" class="custom-control-input">
+                    <label class="custom-control-label" for="home_shield">Shield</label>
+                </div>
             </div>
-
         </div>
         
         <div role="tabpanel" id="settings" class="d-none">
@@ -244,12 +257,42 @@ http://localhost:8081/AhNull/bs.html
                     '"': 'quotation mark',
                     ':': 'colon',
                     ';': 'semicolon',
-                    '‐': 'hyphen',
                     '…': 'ellipsis'
                 }
             })();
 
-            $("<input type='button' value='👄-A' class='form-control btn-lg'/>").appendTo("#ms1").click(function () {
+            $("#home_shield").change(function () { $("#txtMsg").toggleClass("blur"); });
+
+            $("<button type='button' class='btn btn-lg'>⏪</button>").appendTo("#ms1").click(function () {
+                var textComponent = document.getElementById('txtMsg');
+                textComponent.selectionStart = 0;
+                textComponent.selectionEnd = 0;
+                $("#txtMsg").focus();
+            }).click();
+
+            $("<button type='button' class='btn btn-lg'>▶👉</button>").appendTo("#ms1").click(function () {
+                var textComponent = document.getElementById('txtMsg');
+
+                if (textComponent.selectionEnd == textComponent.value.length - 1) { return; }
+                var srch = textComponent.selectionStart = textComponent.selectionEnd;
+
+                while (!syms[textComponent.value[srch]] && textComponent.value[srch] != "~" && srch != textComponent.value.length - 1) { ++srch; }
+                ++srch;
+                while ((syms[textComponent.value[srch]] || textComponent.value[srch] == " ") && srch != textComponent.value.length - 1) { ++srch; }
+
+                textComponent.selectionEnd = srch;
+
+                $("#txtMsg").focus();
+
+                say($("#settings_lang").val(), {
+                    volume: document.getElementById("settings_volume").noUiSlider.get(),
+                    rate: document.getElementById("settings_a_rate").noUiSlider.get(),
+                    pitch: document.getElementById("settings_a_pitch").noUiSlider.get()
+                });
+
+            });
+
+            $("<button type='button' class='btn btn-lg'>▶👆</button>").appendTo("#ms1").click(function () {
                 say($("#settings_lang").val(), {
                     volume: document.getElementById("settings_volume").noUiSlider.get(),
                     rate: document.getElementById("settings_a_rate").noUiSlider.get(),
@@ -257,7 +300,22 @@ http://localhost:8081/AhNull/bs.html
                 });
             });
 
-            $("<input type='button' value='👄-B' class='form-control btn-lg'/>").appendTo("#ms1").click(function () {
+            $("<button type='button' class='btn btn-lg'>▶.,?</button>").appendTo("#ms1").click(function () {
+                var textComponent = document.getElementById('txtMsg');
+                var srch = textComponent.selectionEnd;
+                while (!syms[textComponent.value[srch]] && srch > 0) { --srch; }
+
+                $("#txtMsg").focus();
+
+                say0(syms[textComponent.value[srch]], $("#settings_lang").val(), {
+                    volume: document.getElementById("settings_volume").noUiSlider.get(),
+                    rate: document.getElementById("settings_a_rate").noUiSlider.get(),
+                    pitch: document.getElementById("settings_a_pitch").noUiSlider.get()
+                });
+
+            });
+
+            $("<button type='button' class='btn   btn-lg'>👄-B</button>").appendTo("#ms2").click(function () {
                 say($("#settings_lang").val(), {
                     volume: document.getElementById("settings_volume").noUiSlider.get(),
                     rate: document.getElementById("settings_b_rate").noUiSlider.get(),
@@ -265,30 +323,16 @@ http://localhost:8081/AhNull/bs.html
                 });
             });
 
-            $("<input type='button' value='↷' class='form-control btn-lg'/>").appendTo("#ms1").click(function () {
-                var textComponent = document.getElementById('txtMsg');
-                var startPos = textComponent.selectionStart;
-                var endPos = textComponent.selectionEnd;
-                if (textComponent.value[endPos] == ".") { ++endPos; }
-                if (textComponent.value[endPos] == ".") { ++endPos; }
-
-                var nextend = textComponent.value.indexOf(".", endPos);
-                if (nextend < textComponent.value.length - 1) { nextend++; }
-                textComponent.selectionStart = endPos;
-                textComponent.selectionEnd = nextend;
-                $("#txtMsg").focus();
-            });
-
             for (var k in syms) {
                 //"<input type='button' value='" + k + "' class='form-control btn-lg'/>"
                 $("<button type='button' class='btn   btn-lg'>" + k + "</button>")
                     .appendTo("#ms2").click(function () {
                         $("#txtMsg").focus();
-                        responsiveVoice.speak(syms[this.value], $("#settings_lang").val(), { volume: 1, rate: 0.6 });
+                        responsiveVoice.speak(syms[this.textContent], $("#settings_lang").val(), { volume: 1, rate: 0.6 });
                     });
             }
 
-            $("<input type='button' value='💾' class='form-control btn-lg'/>").appendTo("#ms1").click(function () {
+            $("<button type='button' class='btn btn-lg'>💾</button>").appendTo("#ms2").click(function () {
                 var msgs = _ls.msgs.getOrCreate([]);
                 msgs.push({
                     createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
@@ -308,6 +352,10 @@ http://localhost:8081/AhNull/bs.html
                 });
             });
 
+
+            function say0(s, voice, voiceOpt) {
+                responsiveVoice.speak(s, voice, voiceOpt);
+            }
 
             function say(voice, voiceOpt) {
                 $("#txtMsg").focus();
