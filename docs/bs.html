@@ -41,6 +41,21 @@ http://localhost:8081/AhNull/bs.html
             padding-top: 4rem;
         }
 
+        .navbar{padding:5px}
+
+        input[type='button'] {
+            margin: 0.2rem;
+            padding:0.1rem;
+            font-weight:bold;
+            min-width: 3.5rem;
+        }
+
+        #txtMsg {
+            margin: 0.2rem;
+            padding:0.1rem;
+            font-size: larger;
+        }
+
         #settings_lang {
             padding: 1px;
         }
@@ -226,7 +241,7 @@ http://localhost:8081/AhNull/bs.html
                 }
             })();
 
-            $("<input type='button' value='Read(A)' class='form-control'/>").appendTo("#ms1").click(function () {
+            $("<input type='button' value='👄-A' class='form-control btn-lg'/>").appendTo("#ms1").click(function () {
                 say($("#settings_lang").val(), {
                     volume: document.getElementById("settings_volume").noUiSlider.get(),
                     rate: document.getElementById("settings_a_rate").noUiSlider.get(),
@@ -234,7 +249,7 @@ http://localhost:8081/AhNull/bs.html
                 });
             });
 
-            $("<input type='button' value='Read(B)' class='form-control'/>").appendTo("#ms1").click(function () {
+            $("<input type='button' value='👄-B' class='form-control btn-lg'/>").appendTo("#ms1").click(function () {
                 say($("#settings_lang").val(), {
                     volume: document.getElementById("settings_volume").noUiSlider.get(),
                     rate: document.getElementById("settings_b_rate").noUiSlider.get(),
@@ -242,7 +257,7 @@ http://localhost:8081/AhNull/bs.html
                 });
             });
 
-            $("<input type='button' value='↷' class='form-control'/>").appendTo("#ms1").click(function () {
+            $("<input type='button' value='↷' class='form-control btn-lg'/>").appendTo("#ms1").click(function () {
                 var textComponent = document.getElementById('txtMsg');
                 var startPos = textComponent.selectionStart;
                 var endPos = textComponent.selectionEnd;
@@ -257,13 +272,13 @@ http://localhost:8081/AhNull/bs.html
             });
 
             for (var k in syms) {
-                $("<input type='button' value='" + k + "' style='font-size:x-large' class='form-control'/>").appendTo("#ms2").click(function () {
+                $("<input type='button' value='" + k + "' class='form-control btn-lg'/>").appendTo("#ms2").click(function () {
                     $("#txtMsg").focus();
                     responsiveVoice.speak(syms[this.value], $("#settings_lang").val(), { volume: 1, rate: 0.6 });
                 });
             }
 
-            $("<input type='button' value='Save' class='form-control'/>").appendTo("#ms1").click(function () {
+            $("<input type='button' value='💾' class='form-control btn-lg'/>").appendTo("#ms1").click(function () {
                 var msgs = _ls.msgs.getOrCreate([]);
                 msgs.push({
                     createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
