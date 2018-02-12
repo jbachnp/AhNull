@@ -75,7 +75,8 @@ http://localhost:8081/AhNull/bs.html
         }
 
         .sldrThin {
-            margin: 12px;
+            margin-top: 0.5rem;
+            margin-bottom: 1.5rem;
         }
     </style>
 
@@ -118,16 +119,16 @@ Could frame thy fearful symmetry?</textarea>
             <div class="container">
                 <div class="row">
                     <div class="col">Volume</div>
-                    <div class="col-9">
+                    <div class="col-10">
                         <div id="settings_volume" class="sldrThin">
-                            <input type="text" class='custom-slider-input' name="custom-slider-value">
+                            <input type="hidden" class='custom-slider-input' name="custom-slider-value">
                         </div>
 
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">Voice</div>
-                    <div class="col-9">
+                    <div class="col-10">
                         <select id="settings_lang" class="form-control">
                             <option value="UK English Female">UK English Female</option>
                             <option value="UK English Male">UK English Male</option>
@@ -138,43 +139,45 @@ Could frame thy fearful symmetry?</textarea>
                         </select>
                     </div>
                 </div>
-           </div>
+            </div>
+            <hr/>
 
             <h5>Voice A</h5>
             <div class="container">
                 <div class="row">
                     <div class="col">Rate</div>
-                    <div class="col-9">
+                    <div class="col-10">
                         <div id="settings_a_rate" class="sldrThin">
-                            <input type="text" class='custom-slider-input' name="custom-slider-value">
+                            <input type="hidden" class='custom-slider-input' name="custom-slider-value">
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">Pitch</div>
-                    <div class="col-9">
+                    <div class="col-10">
                         <div id="settings_a_pitch" class="sldrThin">
-                            <input type="text" class='custom-slider-input' name="custom-slider-value">
+                            <input type="hidden" class='custom-slider-input' name="custom-slider-value">
                         </div>
                     </div>
                 </div>
             </div>
+            <hr />
 
             <h5>Voice B</h5>
             <div class="container">
                 <div class="row">
                     <div class="col">Rate</div>
-                    <div class="col-9">
+                    <div class="col-10">
                         <div id="settings_b_rate" class="sldrThin">
-                            <input type="text" class='custom-slider-input' name="custom-slider-value">
+                            <input type="hidden" class='custom-slider-input' name="custom-slider-value">
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">Pitch</div>
-                    <div class="col-9">
+                    <div class="col-10">
                         <div id="settings_b_pitch" class="sldrThin">
-                            <input type="text" class='custom-slider-input' name="custom-slider-value">
+                            <input type="hidden" class='custom-slider-input' name="custom-slider-value">
                         </div>
                     </div>
                 </div>
@@ -246,7 +249,7 @@ Could frame thy fearful symmetry?</textarea>
 
             //Page: Home----------------------------------------------------------------------------
             var _ls = createLoacalStorage();
-            openPage("#home");
+            openPage("#settings");
 
             var syms = (function () {
                 return {
