@@ -83,16 +83,6 @@ http://localhost:8081/AhNull/bs.html
             font-size: x-large;
         }
 
-        #txtMsg2 {
-            margin: 0.2rem;
-            padding:0.5rem;
-            line-height:150%;
-            font-size: x-large;
-            font-family: 'Times New Roman';
-            border-style:solid;
-            border-width:1px;
-        }
-
         .blur{
           -webkit-filter: blur(3px); /* Chrome, Safari, Opera */
           filter: blur(3px);
@@ -292,9 +282,7 @@ Could frame thy fearful symmetry?</textarea>
             //Page: Home----------------------------------------------------------------------------
             var _ls = createLoacalStorage();
             openPage("#home");
-            $("#txtMsg2").toggle();
 
-            document.getElementById("txtMsg").readOnly = true;
 
             var syms = (function () {
                 return {
@@ -309,15 +297,10 @@ Could frame thy fearful symmetry?</textarea>
                 }
             })();
 
-            $("#home_shield").change(function () {
-                $("#txtMsg").toggleClass("blur");
-                $("#txtMsg2").toggleClass("blur");
-            });
+            $("#home_shield").change(function () { $("#txtMsg").toggleClass("blur"); });
 
             $("#home_edit").change(function () {
-                //document.getElementById("txtMsg").disabled = !document.getElementById("txtMsg").disabled;
-                $("#txtMsg").toggle();
-                $("#txtMsg2").toggle();
+                document.getElementById("txtMsg").readOnly = !document.getElementById("txtMsg").readOnly;
             });
 
             $("<button type='button' class='btn btn-lg btn-success'>▶👉</button>").appendTo("#ms1").click(function () {
@@ -422,11 +405,6 @@ Could frame thy fearful symmetry?</textarea>
                     var startPos = textComponent.selectionStart;
                     var endPos = textComponent.selectionEnd;
                     selectedText = textComponent.value.substring(startPos, endPos);
-
-                    document.getElementById("txtMsg2").innerHTML = 
-                        textComponent.value.substring(0, startPos)
-                        + "<span style='background-color:yellow'>" + textComponent.value.substring(startPos, endPos) + "</span>"
-                        + textComponent.value.substring(endPos, textComponent.value.length)
 
                     if (document.getElementById("home_sym").checked) {
                         var readtext = "";
