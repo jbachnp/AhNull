@@ -107,28 +107,28 @@ http://localhost:8081/AhNull/bs.html
     <main role="main" class="container">
         <div role="tabpanel" id="home" class="d-none">
             <div id="ms">
+                <div id="ms3">
+                    <div class="custom-control custom-toggle" style="display:inline">
+                        <input type="checkbox" id="home_shield" class="custom-control-input">
+                        <label class="custom-control-label" for="home_shield">🌁</label>
+                    </div>
+                    <div class="custom-control custom-toggle" style="display:inline">
+                        <input type="checkbox" id="home_edit" class="custom-control-input" checked>
+                        <label class="custom-control-label" for="home_edit">✎</label>
+                    </div>
+                </div>
                 <textarea id="txtMsg" class="form-control" rows="5">
 Tyger Tyger, burning bright,
 In the forests of the night;
 What immortal hand or eye,
 Could frame thy fearful symmetry?</textarea>
+
                 <div id="ms1"></div>
                 <div id="ms2"></div>
-                <div id="ms3">
-
-                    <div class="custom-control custom-toggle" style="display:inline">
-                        <input type="checkbox" id="home_shield" class="custom-control-input">
-                        <label class="custom-control-label" for="home_shield">Shield</label>
-                    </div>
+                <div id="ms4">
                     <div class="custom-control custom-toggle" style="display:inline">
                         <input type="checkbox" id="home_sym" class="custom-control-input" checked>
                         <label class="custom-control-label" for="home_sym">.,?</label>
-                    </div>
-                <!--</div>
-                <div id="ms4">-->
-                    <div class="custom-control custom-toggle" style="display:inline">
-                        <input type="checkbox" id="home_edit" class="custom-control-input" checked>
-                        <label class="custom-control-label" for="home_edit">edit</label>
                     </div>
 
                 </div>
@@ -289,7 +289,7 @@ Could frame thy fearful symmetry?</textarea>
 
             $("#home_edit").change(function () { document.getElementById("txtMsg").disabled = !document.getElementById("txtMsg").disabled; });
 
-            $("<button type='button' class='btn btn-lg'>▶👉</button>").appendTo("#ms1").click(function () {
+            $("<button type='button' class='btn btn-lg btn-success'>▶👉</button>").appendTo("#ms1").click(function () {
                 var textComponent = document.getElementById('txtMsg');
 
                 if (textComponent.selectionEnd == textComponent.value.length - 1) { return; }
@@ -311,7 +311,7 @@ Could frame thy fearful symmetry?</textarea>
 
             });
 
-            $("<button type='button' class='btn btn-lg'>▶👆</button>").appendTo("#ms1").click(function () {
+            $("<button type='button' class='btn btn-lg btn-success'>▶👆</button>").appendTo("#ms1").click(function () {
                 say($("#settings_lang").val(), {
                     volume: document.getElementById("settings_volume").noUiSlider.get(),
                     rate: document.getElementById("settings_a_rate").noUiSlider.get(),
@@ -319,7 +319,7 @@ Could frame thy fearful symmetry?</textarea>
                 });
             });
 
-            $("<button type='button' class='btn btn-lg'>▶👉</button>").appendTo("#ms2").click(function () {
+            $("<button type='button' class='btn btn-lg btn-info'>▶👉</button>").appendTo("#ms1").click(function () {
                 var textComponent = document.getElementById('txtMsg');
 
                 if (textComponent.selectionEnd == textComponent.value.length - 1) { return; }
@@ -341,7 +341,7 @@ Could frame thy fearful symmetry?</textarea>
 
             });
 
-            $("<button type='button' class='btn btn-lg'>▶👆</button>").appendTo("#ms2").click(function () {
+            $("<button type='button' class='btn btn-lg btn-info'>▶👆</button>").appendTo("#ms1").click(function () {
                 say($("#settings_lang").val(), {
                     volume: document.getElementById("settings_volume").noUiSlider.get(),
                     rate: document.getElementById("settings_b_rate").noUiSlider.get(),
@@ -350,14 +350,14 @@ Could frame thy fearful symmetry?</textarea>
             });
 
 
-            $("<button type='button' class='btn btn-lg'>⏪</button>").prependTo("#ms3").click(function () {
+            $("<button type='button' class='btn btn-sm'>⏪</button>").prependTo("#ms3").click(function () {
                 var textComponent = document.getElementById('txtMsg');
                 textComponent.selectionStart = 0;
                 textComponent.selectionEnd = 0;
                 $("#txtMsg").focus();
             }).click();
 
-            $("<button type='button' class='btn btn-lg'>💾</button>").appendTo("#ms3").click(function () {
+            $("<button type='button' class='btn btn-sm'>💾</button>").appendTo("#ms3").click(function () {
                 var msgs = _ls.msgs.getOrCreate([]);
                 msgs.push({
                     createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
@@ -376,7 +376,6 @@ Could frame thy fearful symmetry?</textarea>
                         .click(function () { $("#txtMsg").val(msg.msg); openPage("#home"); });
                 });
             });
-
 
             function say0(s, voice, voiceOpt) {
                 responsiveVoice.speak(s, voice, voiceOpt);
