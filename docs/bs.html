@@ -47,16 +47,22 @@ http://localhost:8081/AhNull/bs.html
             padding-right:0.2rem;
         }
 
-        button[type='button'] {
+        #ms1 button[type='button'], #ms2 button[type='button'] {
             margin-top: 0.6rem;
             margin-bottom: 0.6rem;
             margin-left: 0.3rem;
             margin-right: 0.3rem;
             padding:0.1rem;
             font-weight:bold;
-            min-width: 4rem;
+            min-width: 8rem;
             line-height:2;
             font-size:2rem
+        }
+
+        main .custom-control-label {
+            font-weight:bold;
+            line-height:1;
+            font-size:1rem
         }
 
         #txtMsg {
@@ -108,9 +114,23 @@ What immortal hand or eye,
 Could frame thy fearful symmetry?</textarea>
                 <div id="ms1"></div>
                 <div id="ms2"></div>
-                <div class="custom-control custom-toggle my-2">
-                    <input type="checkbox" id="home_shield" class="custom-control-input">
-                    <label class="custom-control-label" for="home_shield">Shield</label>
+                <div id="ms3">
+
+                    <div class="custom-control custom-toggle" style="display:inline">
+                        <input type="checkbox" id="home_shield" class="custom-control-input">
+                        <label class="custom-control-label" for="home_shield">Shield</label>
+                    </div>
+                    <div class="custom-control custom-toggle" style="display:inline">
+                        <input type="checkbox" id="home_sym" class="custom-control-input" checked>
+                        <label class="custom-control-label" for="home_sym">.,?</label>
+                    </div>
+                <!--</div>
+                <div id="ms4">-->
+                    <div class="custom-control custom-toggle" style="display:inline">
+                        <input type="checkbox" id="home_edit" class="custom-control-input" checked>
+                        <label class="custom-control-label" for="home_edit">edit</label>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -267,12 +287,7 @@ Could frame thy fearful symmetry?</textarea>
 
             $("#home_shield").change(function () { $("#txtMsg").toggleClass("blur"); });
 
-            $("<button type='button' class='btn btn-lg'>⏪</button>").appendTo("#ms1").click(function () {
-                var textComponent = document.getElementById('txtMsg');
-                textComponent.selectionStart = 0;
-                textComponent.selectionEnd = 0;
-                $("#txtMsg").focus();
-            }).click();
+            $("#home_edit").change(function () { document.getElementById("txtMsg").disabled = !document.getElementById("txtMsg").disabled; });
 
             $("<button type='button' class='btn btn-lg'>▶👉</button>").appendTo("#ms1").click(function () {
                 var textComponent = document.getElementById('txtMsg');
@@ -304,22 +319,29 @@ Could frame thy fearful symmetry?</textarea>
                 });
             });
 
-            $("<button type='button' class='btn btn-lg'>▶.,?</button>").appendTo("#ms1").click(function () {
+            $("<button type='button' class='btn btn-lg'>▶👉</button>").appendTo("#ms2").click(function () {
                 var textComponent = document.getElementById('txtMsg');
-                var srch = textComponent.selectionEnd;
-                while (!syms[textComponent.value[srch]] && srch > 0) { --srch; }
+
+                if (textComponent.selectionEnd == textComponent.value.length - 1) { return; }
+                var srch = textComponent.selectionStart = textComponent.selectionEnd;
+
+                while (!syms[textComponent.value[srch]] && textComponent.value[srch] != "~" && srch != textComponent.value.length - 1) { ++srch; }
+                ++srch;
+                while ((syms[textComponent.value[srch]] || textComponent.value[srch] == " ") && srch != textComponent.value.length - 1) { ++srch; }
+
+                textComponent.selectionEnd = srch;
 
                 $("#txtMsg").focus();
 
-                say0(syms[textComponent.value[srch]], $("#settings_lang").val(), {
+                say($("#settings_lang").val(), {
                     volume: document.getElementById("settings_volume").noUiSlider.get(),
-                    rate: document.getElementById("settings_a_rate").noUiSlider.get(),
-                    pitch: document.getElementById("settings_a_pitch").noUiSlider.get()
+                    rate: document.getElementById("settings_b_rate").noUiSlider.get(),
+                    pitch: document.getElementById("settings_b_pitch").noUiSlider.get()
                 });
 
             });
 
-            $("<button type='button' class='btn   btn-lg'>👄-B</button>").appendTo("#ms2").click(function () {
+            $("<button type='button' class='btn btn-lg'>▶👆</button>").appendTo("#ms2").click(function () {
                 say($("#settings_lang").val(), {
                     volume: document.getElementById("settings_volume").noUiSlider.get(),
                     rate: document.getElementById("settings_b_rate").noUiSlider.get(),
@@ -327,16 +349,15 @@ Could frame thy fearful symmetry?</textarea>
                 });
             });
 
-            for (var k in syms) {
-                //"<input type='button' value='" + k + "' class='form-control btn-lg'/>"
-                $("<button type='button' class='btn   btn-lg'>" + k + "</button>")
-                    .appendTo("#ms2").click(function () {
-                        $("#txtMsg").focus();
-                        responsiveVoice.speak(syms[this.textContent], $("#settings_lang").val(), { volume: 1, rate: 0.6 });
-                    });
-            }
 
-            $("<button type='button' class='btn btn-lg'>💾</button>").appendTo("#ms2").click(function () {
+            $("<button type='button' class='btn btn-lg'>⏪</button>").prependTo("#ms3").click(function () {
+                var textComponent = document.getElementById('txtMsg');
+                textComponent.selectionStart = 0;
+                textComponent.selectionEnd = 0;
+                $("#txtMsg").focus();
+            }).click();
+
+            $("<button type='button' class='btn btn-lg'>💾</button>").appendTo("#ms3").click(function () {
                 var msgs = _ls.msgs.getOrCreate([]);
                 msgs.push({
                     createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
@@ -370,6 +391,15 @@ Could frame thy fearful symmetry?</textarea>
                     var startPos = textComponent.selectionStart;
                     var endPos = textComponent.selectionEnd;
                     selectedText = textComponent.value.substring(startPos, endPos);
+
+                    if (document.getElementById("home_sym").checked) {
+                        var readtext = "";
+                        for (var i = 0; i < selectedText.length; ++i) {
+                            readtext = readtext + (syms[selectedText[i]] ? ("  " + syms[selectedText[i]] + "  ") : selectedText[i]);
+                        }
+                        selectedText = readtext;
+                    }
+
                 }
 
                 //Used to add optional volume (range 0 to 1), rate (range 0 to 1.5), pitch (range 0 to 2) 
