@@ -42,6 +42,17 @@ http://localhost:8081/AhNull/bs.html
 
         .navbar{padding:5px}
 
+        a.navbar-brand {
+            font-size:2rem;
+            padding:0.1rem;
+        }
+
+        a.nav-link {
+            font-size:1.5rem;
+            padding:0.1rem;
+             text-align: right;
+        }
+
         .container {
             padding-left:0.2rem;
             padding-right:0.2rem;
@@ -62,7 +73,7 @@ http://localhost:8081/AhNull/bs.html
         main .custom-control-label {
             font-weight:bold;
             line-height:1;
-            font-size:1rem
+            font-size:1.2rem;
         }
 
         #txtMsg {
@@ -70,6 +81,16 @@ http://localhost:8081/AhNull/bs.html
             padding:0.5rem;
             line-height:150%;
             font-size: x-large;
+        }
+
+        #txtMsg2 {
+            margin: 0.2rem;
+            padding:0.5rem;
+            line-height:150%;
+            font-size: x-large;
+            font-family: 'Times New Roman';
+            border-style:solid;
+            border-width:1px;
         }
 
         .blur{
@@ -122,7 +143,7 @@ Tyger Tyger, burning bright,
 In the forests of the night;
 What immortal hand or eye,
 Could frame thy fearful symmetry?</textarea>
-
+                <pre id="txtMsg2"></pre>
                 <div id="ms1"></div>
                 <div id="ms2"></div>
                 <div id="ms4">
@@ -271,6 +292,7 @@ Could frame thy fearful symmetry?</textarea>
             //Page: Home----------------------------------------------------------------------------
             var _ls = createLoacalStorage();
             openPage("#home");
+            $("#txtMsg2").toggle();
 
             var syms = (function () {
                 return {
@@ -285,30 +307,38 @@ Could frame thy fearful symmetry?</textarea>
                 }
             })();
 
-            $("#home_shield").change(function () { $("#txtMsg").toggleClass("blur"); });
+            $("#home_shield").change(function () {
+                $("#txtMsg").toggleClass("blur");
+                $("#txtMsg2").toggleClass("blur");
+            });
 
-            $("#home_edit").change(function () { document.getElementById("txtMsg").disabled = !document.getElementById("txtMsg").disabled; });
+            $("#home_edit").change(function () {
+                //document.getElementById("txtMsg").disabled = !document.getElementById("txtMsg").disabled;
+                $("#txtMsg").toggle();
+                $("#txtMsg2").toggle();
+            });
 
             $("<button type='button' class='btn btn-lg btn-success'>▶👉</button>").appendTo("#ms1").click(function () {
                 var textComponent = document.getElementById('txtMsg');
 
-                if (textComponent.selectionEnd == textComponent.value.length - 1) { return; }
-                var srch = textComponent.selectionStart = textComponent.selectionEnd;
+                if (textComponent.selectionEnd < textComponent.value.length) {
+                    var srch = textComponent.selectionStart = textComponent.selectionEnd;
 
-                while (!syms[textComponent.value[srch]] && textComponent.value[srch] != "~" && srch != textComponent.value.length - 1) { ++srch; }
-                ++srch;
-                while ((syms[textComponent.value[srch]] || textComponent.value[srch] == " ") && srch != textComponent.value.length - 1) { ++srch; }
+                    while (!syms[textComponent.value[srch]] && textComponent.value[srch] != "~" && srch != textComponent.value.length - 1) { ++srch; }
+                    ++srch;
+                    while ((syms[textComponent.value[srch]] || textComponent.value[srch] == " ") && srch != textComponent.value.length - 1) { ++srch; }
 
-                textComponent.selectionEnd = srch;
+                    textComponent.selectionEnd = srch;
+
+
+                    say($("#settings_lang").val(), {
+                        volume: document.getElementById("settings_volume").noUiSlider.get(),
+                        rate: document.getElementById("settings_a_rate").noUiSlider.get(),
+                        pitch: document.getElementById("settings_a_pitch").noUiSlider.get()
+                    });
+                }
 
                 $("#txtMsg").focus();
-
-                say($("#settings_lang").val(), {
-                    volume: document.getElementById("settings_volume").noUiSlider.get(),
-                    rate: document.getElementById("settings_a_rate").noUiSlider.get(),
-                    pitch: document.getElementById("settings_a_pitch").noUiSlider.get()
-                });
-
             });
 
             $("<button type='button' class='btn btn-lg btn-success'>▶👆</button>").appendTo("#ms1").click(function () {
@@ -322,22 +352,22 @@ Could frame thy fearful symmetry?</textarea>
             $("<button type='button' class='btn btn-lg btn-info'>▶👉</button>").appendTo("#ms1").click(function () {
                 var textComponent = document.getElementById('txtMsg');
 
-                if (textComponent.selectionEnd == textComponent.value.length - 1) { return; }
-                var srch = textComponent.selectionStart = textComponent.selectionEnd;
+                if (textComponent.selectionEnd < textComponent.value.length) {
+                    var srch = textComponent.selectionStart = textComponent.selectionEnd;
 
-                while (!syms[textComponent.value[srch]] && textComponent.value[srch] != "~" && srch != textComponent.value.length - 1) { ++srch; }
-                ++srch;
-                while ((syms[textComponent.value[srch]] || textComponent.value[srch] == " ") && srch != textComponent.value.length - 1) { ++srch; }
+                    while (!syms[textComponent.value[srch]] && textComponent.value[srch] != "~" && srch != textComponent.value.length - 1) { ++srch; }
+                    ++srch;
+                    while ((syms[textComponent.value[srch]] || textComponent.value[srch] == " ") && srch != textComponent.value.length - 1) { ++srch; }
 
-                textComponent.selectionEnd = srch;
+                    textComponent.selectionEnd = srch;
 
-                $("#txtMsg").focus();
 
-                say($("#settings_lang").val(), {
-                    volume: document.getElementById("settings_volume").noUiSlider.get(),
-                    rate: document.getElementById("settings_b_rate").noUiSlider.get(),
-                    pitch: document.getElementById("settings_b_pitch").noUiSlider.get()
-                });
+                    say($("#settings_lang").val(), {
+                        volume: document.getElementById("settings_volume").noUiSlider.get(),
+                        rate: document.getElementById("settings_b_rate").noUiSlider.get(),
+                        pitch: document.getElementById("settings_b_pitch").noUiSlider.get()
+                    });
+                }
 
             });
 
@@ -390,6 +420,11 @@ Could frame thy fearful symmetry?</textarea>
                     var startPos = textComponent.selectionStart;
                     var endPos = textComponent.selectionEnd;
                     selectedText = textComponent.value.substring(startPos, endPos);
+
+                    document.getElementById("txtMsg2").innerHTML = 
+                        textComponent.value.substring(0, startPos)
+                        + "<span style='background-color:yellow'>" + textComponent.value.substring(startPos, endPos) + "</span>"
+                        + textComponent.value.substring(endPos, textComponent.value.length)
 
                     if (document.getElementById("home_sym").checked) {
                         var readtext = "";
