@@ -65,15 +65,19 @@ http://localhost:8081/AhNull/bs.html
             margin-right: 0.3rem;
             padding:0.1rem;
             font-weight:bold;
-            min-width: 2rem;
+            min-width: 3.6rem;
             line-height:2;
             font-size:2rem
         }
 
         main .custom-control-label {
-            font-weight:bold;
-            line-height:1;
+            font-size:1.6rem;
+        }
+
+        main .btn-sm {
+            padding:0.1rem;
             font-size:1.2rem;
+            min-width:2rem;
         }
 
         #txtMsg {
@@ -132,14 +136,30 @@ http://localhost:8081/AhNull/bs.html
 Tyger Tyger, burning bright,
 In the forests of the night;
 What immortal hand or eye,
-Could frame thy fearful symmetry?</textarea>
+Could frame thy fearful symmetry?
+
+魯迅說：「希望本是無所謂有，無所謂無的。這正如地上的路；其實地上本沒有路，走的人多了，也便成了路。」
+</textarea>
                 <pre id="txtMsg2"></pre>
                 <div id="ms1"></div>
                 <div id="ms2"></div>
                 <div id="ms4">
-                    <div class="custom-control custom-toggle" style="display:inline">
+                    <div class="custom-control custom-toggle">
                         <input type="checkbox" id="home_sym" class="custom-control-input" checked>
                         <label class="custom-control-label" for="home_sym">.,?</label>
+                    </div>
+                    <div class="row">
+                        <div class="col">Voice</div>
+                        <div class="col-10">
+                            <select id="settings_lang" class="form-control">
+                                <option value="UK English Female">UK English Female</option>
+                                <option value="UK English Male">UK English Male</option>
+                                <option value="US English Female">US English Female</option>
+                                <option value="Chinese Female">Chinese Female</option>
+                                <option value="Chinese (Hong Kong) Female">Chinese (Hong Kong) Female</option>
+                                <option value="Chinese Taiwan Female">Chinese Taiwan Female</option>
+                            </select>
+                        </div>
                     </div>
 
                 </div>
@@ -156,19 +176,6 @@ Could frame thy fearful symmetry?</textarea>
                             <input type="hidden" class='custom-slider-input' name="custom-slider-value">
                         </div>
 
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">Voice</div>
-                    <div class="col-10">
-                        <select id="settings_lang" class="form-control">
-                            <option value="UK English Female">UK English Female</option>
-                            <option value="UK English Male">UK English Male</option>
-                            <option value="US English Female">US English Female</option>
-                            <option value="Chinese Female">Chinese Female</option>
-                            <option value="Chinese (Hong Kong) Female">Chinese (Hong Kong) Female</option>
-                            <option value="Chinese Taiwan Female">Chinese Taiwan Female</option>
-                        </select>
                     </div>
                 </div>
             </div>
@@ -283,8 +290,7 @@ Could frame thy fearful symmetry?</textarea>
             var _ls = createLoacalStorage();
             openPage("#home");
 
-
-            var syms = (function () {
+            var symsE = (function () {
                 return {
                     ',': 'comma',
                     '.': 'full stop',
@@ -297,13 +303,52 @@ Could frame thy fearful symmetry?</textarea>
                 }
             })();
 
+            var symsC = (function () {
+                return {
+                    '。': '句號',
+                    '？': '問號',
+                    '！': '感嘆號',
+                    '，': '逗號',
+                    '、': '頓號',
+                    '；': '分號',
+                    '：': '冒號',
+                    '「': '開引號',
+                    '」': '閂引號',
+                    '—': '破折號',
+                    '…': '省略號',
+                    '。': '句號',
+                    '？': '問號',
+                    '！': '感嘆號',
+                    '，': '逗號',
+                    '、': '頓號',
+                    '；': '分號',
+                    '：': '冒號',
+                    '「': '開引號',
+                    '」': '閂引號',
+                    '—': '破折號',
+                    '…': '省略號'
+                }
+            })();
+
+            var syms;
+
+            $("#settings_lang").change(function () {
+                var v = $("#settings_lang").val()
+                if (v.indexOf("English") >= 0) {
+                    syms = symsE;
+                } else if (v.indexOf("Chinese") >= 0) {
+                    syms = symsC;
+                }
+            })
+            $("#settings_lang").trigger('change');
+
             $("#home_shield").change(function () { $("#txtMsg").toggleClass("blur"); });
 
             $("#home_edit").change(function () {
                 document.getElementById("txtMsg").readOnly = !document.getElementById("txtMsg").readOnly;
             });
 
-            $("<button type='button' class='btn btn-lg btn-success'>▶👉</button>").appendTo("#ms1").click(function () {
+            $("<button type='button' class='btn btn-lg btn-success'>👉</button>").appendTo("#ms1").click(function () {
                 var textComponent = document.getElementById('txtMsg');
 
                 if (textComponent.selectionEnd < textComponent.value.length) {
@@ -326,7 +371,7 @@ Could frame thy fearful symmetry?</textarea>
                 $("#txtMsg").focus();
             });
 
-            $("<button type='button' class='btn btn-lg btn-success'>▶👆</button>").appendTo("#ms1").click(function () {
+            $("<button type='button' class='btn btn-lg btn-success'>👆</button>").appendTo("#ms1").click(function () {
                 say($("#settings_lang").val(), {
                     volume: document.getElementById("settings_volume").noUiSlider.get(),
                     rate: document.getElementById("settings_a_rate").noUiSlider.get(),
@@ -334,7 +379,7 @@ Could frame thy fearful symmetry?</textarea>
                 });
             });
 
-            $("<button type='button' class='btn btn-lg btn-info'>▶👉</button>").appendTo("#ms1").click(function () {
+            $("<button type='button' class='btn btn-lg btn-info'>👉</button>").appendTo("#ms1").click(function () {
                 var textComponent = document.getElementById('txtMsg');
 
                 if (textComponent.selectionEnd < textComponent.value.length) {
@@ -356,7 +401,7 @@ Could frame thy fearful symmetry?</textarea>
 
             });
 
-            $("<button type='button' class='btn btn-lg btn-info'>▶👆</button>").appendTo("#ms1").click(function () {
+            $("<button type='button' class='btn btn-lg btn-info'>👆</button>").appendTo("#ms1").click(function () {
                 say($("#settings_lang").val(), {
                     volume: document.getElementById("settings_volume").noUiSlider.get(),
                     rate: document.getElementById("settings_b_rate").noUiSlider.get(),
