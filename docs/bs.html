@@ -59,6 +59,11 @@ http://localhost:8081/AhNull/bs.html
             padding-right:0.2rem;
         }
 
+        .pagination {
+            margin-top:0.2rem;
+            margin-bottom:0.2rem;
+        }
+
         .card{
             padding:0.1rem;
             margin:0.1rem;
@@ -80,7 +85,11 @@ http://localhost:8081/AhNull/bs.html
             font-size:2rem
         }
 
-        main .custom-control-label {
+        #home_more .row {
+            margin:0.5rem;
+        }
+
+        /*main .custom-control-label {
             font-size:1.6rem;
         }
 
@@ -88,6 +97,10 @@ http://localhost:8081/AhNull/bs.html
             padding:0.1rem;
             font-size:1.2rem;
             min-width:2rem;
+        }*/
+
+        #settings_lang {
+            padding: 1px;
         }
 
         #txtMsg {
@@ -102,9 +115,6 @@ http://localhost:8081/AhNull/bs.html
           filter: blur(3px);
         }
 
-        #settings_lang {
-            padding: 1px;
-        }
 
         .sldrThin {
             margin-top: 0.5rem;
@@ -132,16 +142,6 @@ http://localhost:8081/AhNull/bs.html
     <main role="main" class="container">
         <div role="tabpanel" id="home" class="d-none">
             <div id="ms">
-                <div id="ms3">
-                    <div class="custom-control custom-toggle" style="display:inline">
-                        <input type="checkbox" id="home_shield" class="custom-control-input">
-                        <label class="custom-control-label" for="home_shield">🌁</label>
-                    </div>
-                    <div class="custom-control custom-toggle" style="display:inline">
-                        <input type="checkbox" id="home_edit" class="custom-control-input">
-                        <label class="custom-control-label" for="home_edit">✎</label>
-                    </div>
-                </div>
                 <textarea id="txtMsg" class="form-control" rows="5" readonly>
 Tyger Tyger, burning bright,
 In the forests of the night;
@@ -150,27 +150,67 @@ Could frame thy fearful symmetry?
 
 魯迅說：「希望本是無所謂有，無所謂無的。這正如地上的路；其實地上本沒有路，走的人多了，也便成了路。」
 </textarea>
-                <pre id="txtMsg2"></pre>
-                <div id="ms1"></div>
-                <div id="ms2"></div>
-                <div id="ms4">
-                    <div class="custom-control custom-toggle">
-                        <input type="checkbox" id="home_sym" class="custom-control-input" checked>
-                        <label class="custom-control-label" for="home_sym">.,?</label>
-                    </div>
-                    <div>
-                        Voice
-                        <select id="settings_lang" class="form-control">
-                            <option value="UK English Female">UK English Female</option>
-                            <option value="UK English Male">UK English Male</option>
-                            <option value="US English Female">US English Female</option>
-                            <option value="Chinese Female">Chinese Female</option>
-                            <option value="Chinese (Hong Kong) Female">Chinese (Hong Kong) Female</option>
-                            <option value="Chinese Taiwan Female">Chinese Taiwan Female</option>
-                        </select>
+
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item active"><a class="page-link" data-page="#home_play" href="javascript:void(0);">💬 Play</a></li>
+                        <li class="page-item"><a class="page-link" data-page="#home_more" href="javascript:void(0);">More...</a></li>
+                    </ul>
+                </nav>
+
+                <div id="home_pages">
+
+                    <div id="home_play">
+                        <div id="ms1"></div>
+                        <div id="ms2"></div>
                     </div>
 
+                    <div id="home_more" class='d-none'>
+
+                        <div class="row">
+                            <div class="custom-control custom-toggle">
+                                <input type="checkbox" id="home_sym" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="home_sym">Read Punctuation</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="custom-control custom-toggle" style="display:inline">
+                                <input type="checkbox" id="home_shield" class="custom-control-input">
+                                <label class="custom-control-label" for="home_shield">🌁 Shield</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div>
+                                Voice
+                                <select id="settings_lang" class="form-control">
+                                    <option value="UK English Female">UK English Female</option>
+                                    <option value="UK English Male">UK English Male</option>
+                                    <option value="US English Female">US English Female</option>
+                                    <option value="Chinese Female">Chinese Female</option>
+                                    <option value="Chinese (Hong Kong) Female">Chinese (Hong Kong) Female</option>
+                                    <option value="Chinese Taiwan Female">Chinese Taiwan Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button id='home_rewind' type='button' class='btn btn-sm'>⏪</button>
+                        </div>
+                        <div class="row">
+                            <div class="custom-control custom-toggle" style="display:inline">
+                                <input type="checkbox" id="home_edit" class="custom-control-input">
+                                <label class="custom-control-label" for="home_edit">✎ Edit</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button id='home_save' type='button' class='btn btn-sm'>💾 Save</button>
+                        </div>
+
+
+                    </div>
+
+
                 </div>
+
             </div>
         </div>
         
@@ -427,14 +467,14 @@ Could frame thy fearful symmetry?
             });
 
 
-            $("<button type='button' class='btn btn-sm'>⏪</button>").prependTo("#ms3").click(function () {
+            $("#home_rewind").click(function () {
                 var textComponent = document.getElementById('txtMsg');
                 textComponent.selectionStart = 0;
                 textComponent.selectionEnd = 0;
                 $("#txtMsg").focus();
             }).click();
 
-            $("<button type='button' class='btn btn-sm'>💾</button>").appendTo("#ms3").click(function () {
+            $("#home_save").click(function () {
                 var msgs = _ls.msgs.getOrCreate([]);
                 msgs.push({
                     createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
@@ -470,6 +510,8 @@ Could frame thy fearful symmetry?
                 //Used to add optional volume (range 0 to 1), rate (range 0 to 1.5), pitch (range 0 to 2) 
                 responsiveVoice.speak(selectedText ? selectedText : "please select some words", voice, voiceOpt);
             }
+
+            $("#home_more .card-title").click(function () { $("#home_more .card-text").toggle(); });
 
             //Page: Settings----------------------------------------------------------------------------
             $("#settings_save").click(function () {
@@ -545,6 +587,15 @@ Could frame thy fearful symmetry?
             $("#mnuMain >> a").each(function () {
                 $(this).on("click", function () {
                     openPage($(this).data("page"));
+                });
+            });
+
+            $("#home >> nav a").each(function () {
+                $(this).on("click", function () {
+                    $("#home_pages > div").addClass("d-none");
+                    $("#home >> nav  li").removeClass("active");
+                    $($(this).data("page")).removeClass("d-none");
+                    $(this).parent().addClass("active");
                 });
             });
 
