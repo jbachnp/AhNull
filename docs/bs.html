@@ -43,7 +43,6 @@ http://localhost:8081/AhNull/bs.html
         .navbar{padding:5px}
 
         a.navbar-brand {
-            /*font-family: 'Comic Sans MS';*/
             font-size:2rem;
             padding:0.1rem;
         }
@@ -58,15 +57,6 @@ http://localhost:8081/AhNull/bs.html
             padding-left:0.2rem;
             padding-right:0.2rem;
         }
-
-        /*.card{
-            padding:0.1rem;
-            margin:0.1rem;
-        }
-
-        .card-body{
-            padding:0.1rem;
-        }*/
 
         #ms1 button[type='button'], #ms2 button[type='button'] {
             margin-top: 0.6rem;
@@ -259,14 +249,7 @@ Could frame thy fearful symmetry?
 
     <!--templates -->
     <div id="tpls">
-        <script type="text/template" name="tplPassage">
-            <div class='card'>
-                <h5 class="card-title">{{-o.createdAt}}</h5>
-                <div class='card-body'>
-                    {{-o.msg}}
-                </div>
-            </div>
-
+        <script type="text/template" name="tripSelection">
         </script>
     </div>
 
@@ -443,6 +426,17 @@ Could frame thy fearful symmetry?
                 _ls.msgs.set(msgs);
             });
 
+            $("#mnuMain [data-page='#history']").click(function () {
+                var msgs = _ls.msgs.getOrCreate([]);
+
+                $("#history_msgs").empty();
+                msgs.forEach(function (msg) {
+                    $("<div class='card'><div class='card-body'><span style='font-style:italic;text-decoration:underline'>" + msg.createdAt + "</span>" + msg.msg + "</div></div>")
+                        .appendTo("#history_msgs")
+                        .click(function () { $("#txtMsg").val(msg.msg); openPage("#home"); });
+                });
+            });
+
             function say0(s, voice, voiceOpt) {
                 responsiveVoice.speak(s, voice, voiceOpt);
             }
@@ -480,19 +474,6 @@ Could frame thy fearful symmetry?
                 });
                 openPage("#home");
             });
-
-            //Page: Saved Passages----------------------------------------------------------------------------
-            $("#mnuMain [data-page='#history']").click(function () {
-                var msgs = _ls.msgs.getOrCreate([]);
-
-                $("#history_msgs").empty();
-                msgs.forEach(function (msg) {
-                    $(tplFuncs["tplPassage"](msg))
-                        .appendTo("#history_msgs")
-                        .click(function () { $("#txtMsg").val(msg.msg); openPage("#home"); });
-                });
-            });
-
 
             //----------------------------------------------------------------------------
             function createLoacalStorage() {
