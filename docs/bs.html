@@ -43,7 +43,7 @@ http://localhost:8081/AhNull/bs.html
         .navbar{padding:5px}
 
         a.navbar-brand {
-            /*font-family: 'Comic Sans MS';*/
+            font-family: 'Comic Sans MS';
             font-size:2rem;
             padding:0.1rem;
         }
@@ -59,14 +59,14 @@ http://localhost:8081/AhNull/bs.html
             padding-right:0.2rem;
         }
 
-        /*.card{
+        .card{
             padding:0.1rem;
             margin:0.1rem;
         }
 
         .card-body{
             padding:0.1rem;
-        }*/
+        }
 
         #ms1 button[type='button'], #ms2 button[type='button'] {
             margin-top: 0.6rem;
@@ -158,18 +158,16 @@ Could frame thy fearful symmetry?
                         <input type="checkbox" id="home_sym" class="custom-control-input" checked>
                         <label class="custom-control-label" for="home_sym">.,?</label>
                     </div>
-                    <div class="row">
-                        <div class="col">Voice</div>
-                        <div class="col-10">
-                            <select id="settings_lang" class="form-control">
-                                <option value="UK English Female">UK English Female</option>
-                                <option value="UK English Male">UK English Male</option>
-                                <option value="US English Female">US English Female</option>
-                                <option value="Chinese Female">Chinese Female</option>
-                                <option value="Chinese (Hong Kong) Female">Chinese (Hong Kong) Female</option>
-                                <option value="Chinese Taiwan Female">Chinese Taiwan Female</option>
-                            </select>
-                        </div>
+                    <div>
+                        Voice
+                        <select id="settings_lang" class="form-control">
+                            <option value="UK English Female">UK English Female</option>
+                            <option value="UK English Male">UK English Male</option>
+                            <option value="US English Female">US English Female</option>
+                            <option value="Chinese Female">Chinese Female</option>
+                            <option value="Chinese (Hong Kong) Female">Chinese (Hong Kong) Female</option>
+                            <option value="Chinese Taiwan Female">Chinese Taiwan Female</option>
+                        </select>
                     </div>
 
                 </div>
@@ -261,9 +259,11 @@ Could frame thy fearful symmetry?
     <div id="tpls">
         <script type="text/template" name="tplPassage">
             <div class='card'>
-                <h5 class="card-title">{{-o.createdAt}}</h5>
                 <div class='card-body'>
-                    {{-o.msg}}
+                    <h5 class="card-title">{{-o.createdAt}}
+                        <button name="btnLoad" type="button" class="btn btn-success btn-pill btn-sm">➠</button>
+                    </h5>
+                    {{-o.msg}}<button name="btnDelete" type="button" class="btn btn-danger btn-pill btn-sm">✘</button>
                 </div>
             </div>
 
@@ -486,10 +486,18 @@ Could frame thy fearful symmetry?
                 var msgs = _ls.msgs.getOrCreate([]);
 
                 $("#history_msgs").empty();
-                msgs.forEach(function (msg) {
-                    $(tplFuncs["tplPassage"](msg))
-                        .appendTo("#history_msgs")
-                        .click(function () { $("#txtMsg").val(msg.msg); openPage("#home"); });
+                msgs.forEach(function (msg, i) {
+                    var joCard = $(tplFuncs["tplPassage"](msg)).appendTo("#history_msgs");
+
+                    joCard.find("[name='btnLoad']").click(function () {
+                        $("#txtMsg").val(msg.msg); openPage("#home");
+                    });
+
+                    joCard.find("[name='btnDelete']").click(function () {
+                        msgs.splice(i, 1);
+                        _ls.msgs.set(msgs);
+                        joCard.remove();
+                    });
                 });
             });
 
