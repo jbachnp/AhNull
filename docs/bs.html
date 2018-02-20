@@ -555,8 +555,10 @@ Could frame thy fearful symmetry?
             });
 
             $("#history_sync").click(function () {
-                appDataStore.addUser($("#settings_userid").val(), function (s) { console.log(s); });
-                appDataStore.setUserPassages($("#settings_userid").val(), _ls.msgs.getOrCreate([]));
+                appDataStore.addUser($("#settings_userid").val(), function (s) { 
+                    console.log(s); 
+                    appDataStore.setUserPassages($("#settings_userid").val(), _ls.msgs.getOrCreate([]));
+                });
             });
 
             //https://api.myjson.com/bins/y1wgx----------------------------------------------------------------------------
