@@ -635,7 +635,7 @@ Could frame thy fearful symmetry?
                 _ret.addUser = function (userid, fMsg) {
                     fMsg = fMsg ? fMsg : function () { };
                     _libMJ.getData(didAppRoot, function (appRoot) {
-                        if (appRoot.users.userid) {
+                        if (appRoot.users[userid]) {
                             fMsg("user already exists");
                         } else {
                             var oUserdata = {
