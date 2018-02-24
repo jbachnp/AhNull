@@ -161,8 +161,12 @@ Could frame thy fearful symmetry?
                 <div id="home_pages">
 
                     <div id="home_play">
-                        <div id="ms1"></div>
-                        <div id="ms2"></div>
+                        <div id="ms1">
+                            <button id="home_a_next" type='button' class='btn btn-lg btn-success'>👉</button>
+                            <button id="home_a_current" type='button' class='btn btn-lg btn-success'>👆</button>
+                            <button id="home_b_next" type='button' class='btn btn-lg btn-info'>👉</button>
+                            <button id="home_b_current" type='button' class='btn btn-lg btn-info'>👆</button>
+                        </div>
                         <div>
                             <button id='home_rewind' type='button' class='btn btn-lg'>⏪</button>
                         </div>
@@ -415,7 +419,7 @@ Could frame thy fearful symmetry?
                 document.getElementById("txtMsg").readOnly = !document.getElementById("txtMsg").readOnly;
             });
 
-            $("<button type='button' class='btn btn-lg btn-success'>👉</button>").appendTo("#ms1").click(function () {
+            $("#home_a_next").click(function () {
                 var textComponent = document.getElementById('txtMsg');
 
                 if (textComponent.selectionEnd < textComponent.value.length) {
@@ -438,7 +442,7 @@ Could frame thy fearful symmetry?
                 $("#txtMsg").focus();
             });
 
-            $("<button type='button' class='btn btn-lg btn-success'>👆</button>").appendTo("#ms1").click(function () {
+            $("#home_a_current").click(function () {
                 say($("#settings_lang").val(), {
                     volume: document.getElementById("settings_volume").noUiSlider.get(),
                     rate: document.getElementById("settings_a_rate").noUiSlider.get(),
@@ -446,7 +450,7 @@ Could frame thy fearful symmetry?
                 });
             });
 
-            $("<button type='button' class='btn btn-lg btn-info'>👉</button>").appendTo("#ms1").click(function () {
+            $("#home_b_next").click(function () {
                 var textComponent = document.getElementById('txtMsg');
 
                 if (textComponent.selectionEnd < textComponent.value.length) {
@@ -468,7 +472,7 @@ Could frame thy fearful symmetry?
 
             });
 
-            $("<button type='button' class='btn btn-lg btn-info'>👆</button>").appendTo("#ms1").click(function () {
+            $("#home_b_current").click(function () {
                 say($("#settings_lang").val(), {
                     volume: document.getElementById("settings_volume").noUiSlider.get(),
                     rate: document.getElementById("settings_b_rate").noUiSlider.get(),

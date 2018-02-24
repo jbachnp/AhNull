@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+
+<!--
+https://jbachnp.github.io/AhNull/null.html
+http://localhost:8081/AhNull/null.html
+-->
+
+<html>
+<head>
+    <title>null</title>
+    <link rel="icon" href="favicon.ico">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--<link rel="manifest" href="manifest.json">-->
+    
+    <!--includes-->
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/moment/moment.min.js"></script>
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/Underscore/underscore-min.js"></script>
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/LinqJS/linq.min.js"></script>
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/JQuery/jquery-3.0.0.min.js"></script>
+
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/popper/popper.min.js"></script>
+    <link rel="stylesheet" href="SharedTechnology/ExternalDependency/JsLibrary/bootstrap/css/bootstrap.min.css">
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/bootstrap/js/bootstrap.min.js"></script>
+
+    <!--<link rel="stylesheet" href="SharedTechnology/ExternalDependency/JsLibrary/Shards/css/shards.min.css">
+    <script src="SharedTechnology/ExternalDependency/JsLibrary/Shards/js/shards.min.js"></script>-->
+
+    <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+
+</head>
+
+<body>
+    <!--style-->
+    <style type="text/css">
+        /*fix for bs*/
+        body {
+          padding-top: 3.7rem; /*match the navbar height*/
+        }
+
+        /*opinionated .anull-page*/
+        main.container {    /*main client area*/
+            padding-left:0.2rem;
+            padding-right:0.2rem;
+        }
+
+        main > div {    /*pages*/
+          padding: 0.1rem 0.1rem 0.1rem 0.1rem;
+          border-style: solid;
+          border-width: 1px;
+          border-color: lightgray;
+        }
+    </style>
+
+    <!--UI-->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="#">Dictation</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto" data-anull-pageContainer="main">
+                <li class="nav-item active"><a class="nav-link" href="javascript:void(0);" data-anull-page="#home">Home</a></li>
+                <li class="nav-item active"><a class="nav-link" href="javascript:void(0);" data-anull-page="#history">Saved Passages</a></li>
+                <li class="nav-item active"><a class="nav-link" href="javascript:void(0);" data-anull-page="#settings">Settings</a></li>
+                <li role="separator" class="dropdown-divider"></li>
+                <li class="nav-item active"><a class="nav-link" href="javascript:void(0);" data-anull-page="#about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+    <main role="main" class="container">
+        <div id="home">
+            <h1>Bootstrap starter template</h1>
+            <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+        </div>
+
+        <div id="history">
+            <h3>Saved Passages</h3>
+            <button id='history_sync' type='button' class='btn btn-lg'>sync</button>
+            <div id="history_msgs"></div>
+        </div>
+
+        <div id="about">
+            <h3>About</h3>
+            <p>
+                I have two monkeys. They are Monkey One and Monkey Two. I make this small gadget for their self study.<br />
+            </p>
+            <p>
+                BTW, do you notice the relation between <span style="font-style:italic">Fundamental Theorem of Algebra (FTA)</span>
+                and <span style="font-style:italic">Holy Roman Empire (HRE)</span>...
+            </p>
+            <p>
+                <span style="font-style:italic">The Answer: </span> while HRE is "neither holy, nor Roman, nor an empire" (by Voltaire),
+                FTA is "neither fundamental, nor a theorem, nor properly within the scope of algebra".
+            </p>
+
+        </div>
+
+    </main><!-- /.container -->
+
+    <!--templates -->
+    <div id="tpls">
+        <script type="text/template" name="tplPassage">
+            <div class='card'>
+                <div class='card-body'>
+                    <h5 class="card-title">{{-o.createdAt}}
+                        <button name="btnLoad" type="button" class="btn btn-success btn-pill btn-sm">➠</button>
+                    </h5>
+                    {{-o.msg}}<button name="btnDelete" type="button" class="btn btn-danger btn-pill btn-sm">✘</button>
+                </div>
+            </div>
+
+        </script>
+    </div>
+
+    <!--config-->
+    <script type="text/javascript">
+        (function bs_plus() {
+            function openPage(qPage) {
+                $("main div[role='tabpanel']").addClass("d-none");
+                $(qPage).removeClass("d-none");
+            }
+
+            $("#mnuMain >> a").each(function () {
+                $(this).on("click", function () {
+                    openPage($(this).data("page"));
+                });
+            });
+
+        })()
+    </script>
+
+    <!--app logic-->
+    <script>
+
+    </script>
+
+</body>
+</html>
