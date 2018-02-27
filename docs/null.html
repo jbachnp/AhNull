@@ -3,8 +3,7 @@
 <!--
     
     porting pages from bs.html
-    //settings page: done
-    //home: next
+    //home: wip (making the btn to full width)
 
 
 -->
@@ -51,13 +50,17 @@ http://localhost:8081/AhNull/null.html
         }
 
         /*opinionated*/
-        main.container, main.container-fluid {    /*main client area*/
+        main.container {    /*main client area*/
             padding-left:0.2rem;
             padding-right:0.2rem;
         }
 
+        .row {
+            margin: 0.1rem 0rem 0.1rem 0rem;
+        }
+
         main > div {    /*pages*/
-          padding: 0.1rem 0.1rem 0.1rem 0.1rem;
+          padding: 0.2rem 0.1rem 0.1rem 0.1rem;
           border-style: solid;
           border-width: 1px;
           border-color: lightgray;
@@ -83,8 +86,60 @@ http://localhost:8081/AhNull/null.html
 
     <main role="main" class="container">
         <div name="pgHome">
-            <h1>Bootstrap starter template</h1>
-            <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+            <textarea name="txtMsg" class="form-control" rows="5" readonly>
+Tyger Tyger, burning bright,
+In the forests of the night;
+What immortal hand or eye,
+Could frame thy fearful symmetry?
+
+魯迅說：「希望本是無所謂有，無所謂無的。這正如地上的路；其實地上本沒有路，走的人多了，也便成了路。」</textarea>
+            <div class="container">
+                <div class="row">
+                    <div class="col-3"><button name='btnPlayOneStep' type='button' class='btn btn-lg w-100'>ONE</button></div>
+                    <div class="col-6">
+                        <select name="uiMode" class="form-control">
+                            <option value="modeWord1">Word 1</option>
+                            <option value="modeWord2">Word 2</option>
+                        </select>
+                    </div>
+                    <!--<div class="col-3"><button name='btnRewind' type='button' class='btn btn-lg'>⏪</button></div>-->
+                    <div class="col-3">
+                        <button name="btnSave" class="btn w-100">Save</button>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-3"><button id="btnPlayNextA" type='button' class='btn w-100 btn-success'>👉</button></div>
+                    <div class="col-3"><button id="btnPlayCurrentA" type='button' class='btn btn-lg btn-success'>👆</button></div>
+                    <div class="col-3"><button id="btnPlayNextB" type='button' class='btn btn-lg btn-info'>👉</button></div>
+                    <div class="col-3"><button id="btnPlayCurrentB" type='button' class='btn btn-lg btn-info'>👆</button></div>
+                </div>
+                <div class="row">
+                    <div class="form-check">
+                        <input type="checkbox" class="filled-in form-check-input" id="checkbox105" checked="checked">
+                        <label class="form-check-label" for="checkbox105">Read Punctuation</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">Volume</div>
+                    <div class="col-9"><input type="range" name="uiVolume" class="w-100" /></div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        Voice
+                    </div>
+                    <div class="col-9">
+                        <select name="uiVoice" class="form-control">
+                            <option value="UK English Female">UK English Female</option>
+                            <option value="UK English Male">UK English Male</option>
+                            <option value="US English Female">US English Female</option>
+                            <option value="Chinese Female">Chinese Female</option>
+                            <option value="Chinese (Hong Kong) Female">Chinese (Hong Kong) Female</option>
+                            <option value="Chinese Taiwan Female">Chinese Taiwan Female</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div name="pgPassages">
@@ -99,10 +154,6 @@ http://localhost:8081/AhNull/null.html
                 <div class="row">
                     <div class="col-3">User Id</div>
                     <div class="col-9"><input type="text" name="uiUserId" class="w-100"/></div>
-                </div>
-                <div class="row">
-                    <div class="col-3">Volume</div>
-                    <div class="col-9"><input type="range" name="uiVolume" class="w-100" /></div>
                 </div>
 
                 <h5>Voice A</h5>
@@ -127,7 +178,7 @@ http://localhost:8081/AhNull/null.html
 
                 <div class="row">
                     <div class="offset-3 col-9">
-                        <button name="btnSave" class="btn">Save</button>
+                        <button name="btnSave" class="btn w-100">Save</button>
                     </div>
                 </div>
 
@@ -191,19 +242,23 @@ http://localhost:8081/AhNull/null.html
     <!--app logic uiVolume-->
     <script>
         (function initBSGui() {
-            function qPgCtrl(pg, ctrl) { return "main > div[name='" + pg + "'] input[name='" + ctrl + "']"; }
+            function qPgCtrl(pg, ctrl) { return "main > div[name='" + pg + "'] *[name='" + ctrl + "']"; }
 
             [
-                ["uiVolume", 0, 1, 0.01],
-                ["uiARate", 0, 1.5, 0.01],
-                ["uiAPitch", 0, 2, 0.01],
-                ["uiBRate", 0, 1.5, 0.01],
-                ["uiBPitch", 0, 2, 0.01]
+                ["pgHome", "uiVolume", 0, 1, 0.01],
+                ["pgSettings", "uiARate", 0, 1.5, 0.01],
+                ["pgSettings", "uiAPitch", 0, 2, 0.01],
+                ["pgSettings", "uiBRate", 0, 1.5, 0.01],
+                ["pgSettings", "uiBPitch", 0, 2, 0.01]
             ].forEach(function (ctlCfg) {
-                var eInput = document.querySelector(qPgCtrl("pgSettings", ctlCfg[0]));
-                eInput.min = ctlCfg[1];
-                eInput.max = ctlCfg[2];
-                eInput.step = ctlCfg[3];
+                var eInput = document.querySelector(qPgCtrl(ctlCfg[0], ctlCfg[1]));
+                eInput.min = ctlCfg[2];
+                eInput.max = ctlCfg[3];
+                eInput.step = ctlCfg[4];
+            });
+            
+            $(qPgCtrl("pgSettings", "btnSave")).click(function () {
+                console.log("yo");
             });
 
         })()
