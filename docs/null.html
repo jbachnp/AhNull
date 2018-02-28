@@ -49,14 +49,20 @@ http://localhost:8081/AhNull/null.html
           padding-top: 3.7rem; /*match the navbar height*/
         }
 
-        /*opinionated*/
+        /*opinionated twist of BS default*/
+        .row {
+            margin: 0.1rem 0rem 0.1rem 0rem;
+        }
+
+        div[class^="col-"]{
+            padding-left:0.1rem;
+            padding-right:0.1rem;
+        }
+        
+        /*my app*/
         main.container {    /*main client area*/
             padding-left:0.2rem;
             padding-right:0.2rem;
-        }
-
-        .row {
-            margin: 0.1rem 0rem 0.1rem 0rem;
         }
 
         main > div {    /*pages*/
@@ -65,16 +71,21 @@ http://localhost:8081/AhNull/null.html
           border-width: 1px;
           border-color: lightgray;
         }
+
+        main > div > div.container{    /*container inside page*/
+            padding-left:0.2rem;
+            padding-right:0.2rem;
+        }
     </style>
 
     <!--UI-->
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="#">Dictation</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault">
+    <nav class="navbar navbar-expand-md bg-light fixed-top">
+        <a class="navbar-brand" href="#"><img src="favicon.ico" style="height:24px;" /> Dictation</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" data-anull_pagescontainer="main">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto" data-anull_pagescontainer ="main">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item active"><a class="nav-link" href="javascript:void(0);" data-anull_page="div[name='pgHome']">Home</a></li>
                 <li class="nav-item active"><a class="nav-link" href="javascript:void(0);" data-anull_page="div[name='pgPassages']">Saved Passages</a></li>
                 <li class="nav-item active"><a class="nav-link" href="javascript:void(0);" data-anull_page="div[name='pgSettings']">Settings</a></li>
@@ -95,31 +106,46 @@ Could frame thy fearful symmetry?
 魯迅說：「希望本是無所謂有，無所謂無的。這正如地上的路；其實地上本沒有路，走的人多了，也便成了路。」</textarea>
             <div class="container">
                 <div class="row">
-                    <div class="col-3"><button name='btnPlayOneStep' type='button' class='btn btn-lg w-100'>ONE</button></div>
+                    <div class="col-9"><button name='btnPlayOneStep' type='button' class='btn btn-lg w-100 btn-success'>ONE</button></div>
+                    <div class="col-3">
+                        <button name="btnMark" class="btn w-100">#</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3"><button id="btnPlayNextA" type='button' class='btn btn-lg w-100 btn-primary'>👉</button></div>
+                    <div class="col-3"><button id="btnPlayCurrentA" type='button' class='btn btn-lg w-100 btn-primary'>👆</button></div>
+                    <div class="col-3"><button id="btnPlayNextB" type='button' class='btn btn-lg w-100 btn-info'>👉</button></div>
+                    <div class="col-3"><button id="btnPlayCurrentB" type='button' class='btn btn-lg w-100 btn-info'>👆</button></div>
+                </div>
+                <hr/>
+
+                <div class="row">
+                    <div class="col-3">Play Mode</div>
                     <div class="col-6">
-                        <select name="uiMode" class="form-control">
+                        <select name="uiPlayMode" class="form-control">
                             <option value="modeWord1">Word 1</option>
                             <option value="modeWord2">Word 2</option>
                         </select>
                     </div>
-                    <!--<div class="col-3"><button name='btnRewind' type='button' class='btn btn-lg'>⏪</button></div>-->
-                    <div class="col-3">
-                        <button name="btnSave" class="btn w-100">Save</button>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="3b8dc25a-ed00-44cd-ad86-be4e84f58b97">
+                            <label name="uiIsShield" class="custom-control-label" for="3b8dc25a-ed00-44cd-ad86-be4e84f58b97">🌁 Shield</label>
+                        </div>
                     </div>
+                </div>
 
-                </div>
                 <div class="row">
-                    <div class="col-3"><button id="btnPlayNextA" type='button' class='btn w-100 btn-success'>👉</button></div>
-                    <div class="col-3"><button id="btnPlayCurrentA" type='button' class='btn btn-lg btn-success'>👆</button></div>
-                    <div class="col-3"><button id="btnPlayNextB" type='button' class='btn btn-lg btn-info'>👉</button></div>
-                    <div class="col-3"><button id="btnPlayCurrentB" type='button' class='btn btn-lg btn-info'>👆</button></div>
-                </div>
-                <div class="row">
-                    <div class="form-check">
-                        <input type="checkbox" class="filled-in form-check-input" id="checkbox105" checked="checked">
-                        <label class="form-check-label" for="checkbox105">Read Punctuation</label>
+                    <div class="col-12">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="c0e59e72-b11d-43e5-9295-58b3e15439af" checked="checked">
+                            <label name="uiIsReadPunc" class="custom-control-label" for="c0e59e72-b11d-43e5-9295-58b3e15439af"># Read Punctuation</label>
+                        </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-3">Volume</div>
                     <div class="col-9"><input type="range" name="uiVolume" class="w-100" /></div>
@@ -152,9 +178,10 @@ Could frame thy fearful symmetry?
             <div class="container">
                 <h5>General Settings</h5>
                 <div class="row">
-                    <div class="col-3">User Id</div>
+                    <div class="col-3">Login</div>
                     <div class="col-9"><input type="text" name="uiUserId" class="w-100"/></div>
                 </div>
+                <hr />
 
                 <h5>Voice A</h5>
                 <div class="row">
@@ -165,6 +192,7 @@ Could frame thy fearful symmetry?
                     <div class="col-3">Pitch</div>
                     <div class="col-9"><input type="range" name="uiAPitch" class="w-100" /></div>
                 </div>
+                <hr />
 
                 <h5>Voice B</h5>
                 <div class="row">
@@ -175,11 +203,17 @@ Could frame thy fearful symmetry?
                     <div class="col-3">Pitch</div>
                     <div class="col-9"><input type="range" name="uiBPitch" class="w-100" /></div>
                 </div>
+                <hr />
 
                 <div class="row">
                     <div class="offset-3 col-9">
                         <button name="btnSave" class="btn w-100">Save</button>
                     </div>
+                </div>
+
+                <div class="row" hidden><!--for dev: layout trial-->
+                    <div class="col-3" style="background-color:lightblue">3</div>
+                    <div class="col-9" style="background-color:lightcyan">9</div>
                 </div>
 
             </div>
@@ -221,8 +255,6 @@ Could frame thy fearful symmetry?
     <!--config-->
     <script type="text/javascript">
         (function bs_plus() {
-            return;
-
             $("*[data-anull_pagescontainer]").each(function (i, eMnu) {
                 var joPagesContainer = $(eMnu.dataset["anull_pagescontainer"]);
                 function openPage(pageSelector) {
@@ -230,9 +262,12 @@ Could frame thy fearful symmetry?
                     joPagesContainer.children(pageSelector).removeClass("d-none");
                 }
 
-                $(eMnu).find("a[data-anull_page]").each(function (j, eMnuItem) {
+                $(eMnu.dataset["target"]).find("a[data-anull_page]").each(function (j, eMnuItem) {
+                    var ps = eMnuItem.dataset["anull_page"]
+                    joPagesContainer.children(ps).addClass("d-none");
                     $(eMnuItem).click(function () {
-                        openPage(eMnuItem.dataset["anull_page"]);
+                        $(eMnu).click();
+                        openPage(ps);
                     })
                 });
             });
@@ -242,8 +277,6 @@ Could frame thy fearful symmetry?
     <!--app logic uiVolume-->
     <script>
         (function initBSGui() {
-            function qPgCtrl(pg, ctrl) { return "main > div[name='" + pg + "'] *[name='" + ctrl + "']"; }
-
             [
                 ["pgHome", "uiVolume", 0, 1, 0.01],
                 ["pgSettings", "uiARate", 0, 1.5, 0.01],
@@ -257,10 +290,9 @@ Could frame thy fearful symmetry?
                 eInput.step = ctlCfg[4];
             });
             
-            $(qPgCtrl("pgSettings", "btnSave")).click(function () {
-                console.log("yo");
-            });
+            $("main>div[name='pgHome']").removeClass("d-none");
 
+            function qPgCtrl(pg, ctrl) { return "main > div[name='" + pg + "'] *[name='" + ctrl + "']"; }
         })()
 
     </script>
