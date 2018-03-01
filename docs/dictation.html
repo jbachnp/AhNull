@@ -17,7 +17,7 @@ http://localhost:8081/AhNull/dictation.html
 
 <html>
 <head>
-    <title>null</title>
+    <title>Dictation</title>
     <link rel="icon" href="favicon.ico">
 
     <meta charset="utf-8">
@@ -46,7 +46,7 @@ http://localhost:8081/AhNull/dictation.html
     <style type="text/css">
         /*fix for bs*/
         body {
-          padding-top: 3.7rem; /*match the navbar height*/
+          padding-top: 3.2rem; /*match the navbar height*/
         }
 
         /*opinionated twist of BS default*/
@@ -59,6 +59,22 @@ http://localhost:8081/AhNull/dictation.html
             padding-right:0.1rem;
         }
         
+
+        .navbar{padding:0.1rem;}
+
+        a.navbar-brand {
+            font-family: 'Comic Sans MS';
+            font-size:1.6rem;
+            padding:0.1rem;
+        }
+
+        a.nav-link {
+            font-size:1.5rem;
+            padding:0.1rem;
+            text-align: right;
+        }
+
+
         /*my app*/
         main.container {    /*main client area*/
             padding-left:0.2rem;
@@ -76,11 +92,25 @@ http://localhost:8081/AhNull/dictation.html
             padding-left:0.2rem;
             padding-right:0.2rem;
         }
+
+
+        main > div[name='pgHome'] textarea[name='txtMsg'] {
+            margin: 0.2rem;
+            padding:0.5rem;
+            line-height:150%;
+            font-size: x-large;
+        }
+
+        .blur{
+          -webkit-filter: blur(3px);
+          filter: blur(3px);
+        }
+
     </style>
 
     <!--UI-->
-    <nav class="navbar navbar-expand-md bg-light fixed-top">
-        <a class="navbar-brand" href="#"><img src="favicon.ico" style="height:24px;" /> Dictation</a>
+    <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-primary">
+        <a class="navbar-brand" href="javascript:void(0);"><img src="favicon.ico" style="height:1.4rem;" /> Dictation</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" data-anull_pagescontainer="main">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -97,7 +127,7 @@ http://localhost:8081/AhNull/dictation.html
 
     <main role="main" class="container">
         <div name="pgHome">
-            <textarea name="txtMsg" id="txtMsg" class="form-control" rows="5" readonly>
+            <textarea name="txtMsg" class="form-control" rows="5" readonly>
 Tyger Tyger, burning bright,
 In the forests of the night;
 What immortal hand or eye,
@@ -106,21 +136,24 @@ Could frame thy fearful symmetry?
 魯迅說：「希望本是無所謂有，無所謂無的。這正如地上的路；其實地上本沒有路，走的人多了，也便成了路。」
             </textarea>
             <div class="container">
-                <div class="row">
+                <div class="row d-none">
                     <div class="col-9"><button name='btnPlayOneStep' type='button' class='btn btn-lg w-100 btn-success'>ONE</button></div>
                     <div class="col-3">
                         <button name="btnMark" class="btn w-100">#</button>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-3"><button id="btnPlayNextA" type='button' class='btn btn-lg w-100 btn-primary'>👉</button></div>
-                    <div class="col-3"><button id="btnPlayCurrentA" type='button' class='btn btn-lg w-100 btn-primary'>👆</button></div>
-                    <div class="col-3"><button id="btnPlayNextB" type='button' class='btn btn-lg w-100 btn-info'>👉</button></div>
-                    <div class="col-3"><button id="btnPlayCurrentB" type='button' class='btn btn-lg w-100 btn-info'>👆</button></div>
+                    <div class="col-3"><button name="btnPlayNextA" type='button' class='btn btn-lg w-100 btn-primary'>👉</button></div>
+                    <div class="col-3"><button name="btnPlayCurrentA" type='button' class='btn btn-lg w-100 btn-primary'>👆</button></div>
+                    <div class="col-3"><button name="btnPlayNextB" type='button' class='btn btn-lg w-100 btn-info'>👉</button></div>
+                    <div class="col-3"><button name="btnPlayCurrentB" type='button' class='btn btn-lg w-100 btn-info'>👆</button></div>
+                </div>
+                <div class="row">
+                    <div class="col-12"><button name='btnRewind' type='button' class='btn btn-lg'>⏪</button></div>
                 </div>
                 <hr/>
 
-                <div class="row">
+                <div class="row d-none">
                     <div class="col-3">Play Mode</div>
                     <div class="col-6">
                         <select name="uiPlayMode" class="form-control">
@@ -132,8 +165,8 @@ Could frame thy fearful symmetry?
                 <div class="row">
                     <div class="col-12">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="3b8dc25a-ed00-44cd-ad86-be4e84f58b97">
-                            <label name="uiIsShield" class="custom-control-label" for="3b8dc25a-ed00-44cd-ad86-be4e84f58b97">🌁 Shield</label>
+                            <input name="uiIsShield" type="checkbox" class="custom-control-input" id="3b8dc25a-ed00-44cd-ad86-be4e84f58b97">
+                            <label class="custom-control-label" for="3b8dc25a-ed00-44cd-ad86-be4e84f58b97">🌁 Shield</label>
                         </div>
                     </div>
                 </div>
@@ -141,8 +174,8 @@ Could frame thy fearful symmetry?
                 <div class="row">
                     <div class="col-12">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="c0e59e72-b11d-43e5-9295-58b3e15439af" checked="checked">
-                            <label name="uiIsReadPunc" class="custom-control-label" for="c0e59e72-b11d-43e5-9295-58b3e15439af"># Read Punctuation</label>
+                            <input name="uiIsReadPunc" type="checkbox" class="custom-control-input" id="c0e59e72-b11d-43e5-9295-58b3e15439af" checked="checked">
+                            <label class="custom-control-label" for="c0e59e72-b11d-43e5-9295-58b3e15439af"># Read Punctuation</label>
                         </div>
                     </div>
                 </div>
@@ -370,6 +403,77 @@ Could frame thy fearful symmetry?
 
             var syms;
 
+            $(qPgCtrl("pgHome", "btnPlayNextA")).click(function () {
+                var textComponent = document.querySelector(qPgCtrl("pgHome", "txtMsg"));
+
+                if (textComponent.selectionEnd < textComponent.value.length) {
+                    var srch = textComponent.selectionStart = textComponent.selectionEnd;
+
+                    while (!syms[textComponent.value[srch]] && textComponent.value[srch] != "~" && srch != textComponent.value.length - 1) { ++srch; }
+                    ++srch;
+                    while ((syms[textComponent.value[srch]] || textComponent.value[srch] == " ") && srch != textComponent.value.length - 1) { ++srch; }
+
+                    textComponent.selectionEnd = srch;
+
+
+                    say($(qPgCtrl("pgHome", "uiVoice")).val(), {
+                        volume: document.querySelector(qPgCtrl("pgHome", "uiVolume")).value,
+                        rate: document.querySelector(qPgCtrl("pgSettings", "uiARate")).value,
+                        pitch: document.querySelector(qPgCtrl("pgSettings", "uiAPitch")).value
+                    });
+                }
+
+                $(qPgCtrl("pgHome", "txtMsg")).focus();
+            });
+
+            $(qPgCtrl("pgHome", "btnPlayCurrentA")).click(function () {
+                say($(qPgCtrl("pgHome", "uiVoice")).val(), {
+                    volume: document.querySelector(qPgCtrl("pgHome", "uiVolume")).value,
+                    rate: document.querySelector(qPgCtrl("pgSettings", "uiARate")).value,
+                    pitch: document.querySelector(qPgCtrl("pgSettings", "uiAPitch")).value
+                });
+            });
+
+            $(qPgCtrl("pgHome", "btnPlayNextB")).click(function () {
+                var textComponent = document.querySelector(qPgCtrl("pgHome", "txtMsg"));
+
+                if (textComponent.selectionEnd < textComponent.value.length) {
+                    var srch = textComponent.selectionStart = textComponent.selectionEnd;
+
+                    while (!syms[textComponent.value[srch]] && textComponent.value[srch] != "~" && srch != textComponent.value.length - 1) { ++srch; }
+                    ++srch;
+                    while ((syms[textComponent.value[srch]] || textComponent.value[srch] == " ") && srch != textComponent.value.length - 1) { ++srch; }
+
+                    textComponent.selectionEnd = srch;
+
+                    say($(qPgCtrl("pgHome", "uiVoice")).val(), {
+                        volume: document.querySelector(qPgCtrl("pgHome", "uiVolume")).value,
+                        rate: document.querySelector(qPgCtrl("pgSettings", "uiBRate")).value,
+                        pitch: document.querySelector(qPgCtrl("pgSettings", "uiBPitch")).value
+                    });
+                }
+
+            });
+
+            $(qPgCtrl("pgHome", "btnPlayCurrentB")).click(function () {
+                say($(qPgCtrl("pgHome", "uiVoice")).val(), {
+                    volume: document.querySelector(qPgCtrl("pgHome", "uiVolume")).value,
+                    rate: document.querySelector(qPgCtrl("pgSettings", "uiBRate")).value,
+                    pitch: document.querySelector(qPgCtrl("pgSettings", "uiBPitch")).value
+                });
+            });
+            
+            $(qPgCtrl("pgHome", "btnRewind")).click(function () {
+                var textComponent = document.querySelector(qPgCtrl("pgHome", "txtMsg"));
+                textComponent.selectionStart = 0;
+                textComponent.selectionEnd = 0;
+                $(qPgCtrl("pgHome", "txtMsg")).focus();
+            }).click();
+
+            $(qPgCtrl("pgHome", "uiIsShield")).change(function () {
+                $(qPgCtrl("pgHome", "txtMsg")).toggleClass("blur");
+            });
+
             $(qPgCtrl("pgHome", "uiVoice")).change(function () {
                 var v = $(qPgCtrl("pgHome", "uiVoice")).val()
                 if (v.indexOf("English") >= 0) {
@@ -380,86 +484,15 @@ Could frame thy fearful symmetry?
             })
             $(qPgCtrl("pgHome", "uiVoice")).trigger('change');
 
-            $(qPgCtrl("pgHome", "uiIsShield")).change(function () { $("#txtMsg").toggleClass("blur"); });
-
-            $("#home_edit").change(function () {
-                document.getElementById("txtMsg").readOnly = !document.getElementById("txtMsg").readOnly;
-            });
-
-            $(qPgCtrl("pgHome", "btnPlayNextA")).click(function () {
-                var textComponent = document.getElementById('txtMsg');
-
-                if (textComponent.selectionEnd < textComponent.value.length) {
-                    var srch = textComponent.selectionStart = textComponent.selectionEnd;
-
-                    while (!syms[textComponent.value[srch]] && textComponent.value[srch] != "~" && srch != textComponent.value.length - 1) { ++srch; }
-                    ++srch;
-                    while ((syms[textComponent.value[srch]] || textComponent.value[srch] == " ") && srch != textComponent.value.length - 1) { ++srch; }
-
-                    textComponent.selectionEnd = srch;
-
-
-                    say($("#settings_lang").val(), {
-                        volume: document.getElementById("settings_volume").noUiSlider.get(),
-                        rate: document.getElementById("settings_a_rate").noUiSlider.get(),
-                        pitch: document.getElementById("settings_a_pitch").noUiSlider.get()
-                    });
-                }
-
-                $("#txtMsg").focus();
-            });
-
-            $(qPgCtrl("pgHome", "btnPlayCurrentA")).click(function () {
-                say($("#settings_lang").val(), {
-                    volume: document.getElementById("settings_volume").noUiSlider.get(),
-                    rate: document.getElementById("settings_a_rate").noUiSlider.get(),
-                    pitch: document.getElementById("settings_a_pitch").noUiSlider.get()
-                });
-            });
-
-            $(qPgCtrl("pgHome", "btnPlayNextB")).click(function () {
-                var textComponent = document.getElementById('txtMsg');
-
-                if (textComponent.selectionEnd < textComponent.value.length) {
-                    var srch = textComponent.selectionStart = textComponent.selectionEnd;
-
-                    while (!syms[textComponent.value[srch]] && textComponent.value[srch] != "~" && srch != textComponent.value.length - 1) { ++srch; }
-                    ++srch;
-                    while ((syms[textComponent.value[srch]] || textComponent.value[srch] == " ") && srch != textComponent.value.length - 1) { ++srch; }
-
-                    textComponent.selectionEnd = srch;
-
-
-                    say($("#settings_lang").val(), {
-                        volume: document.getElementById("settings_volume").noUiSlider.get(),
-                        rate: document.getElementById("settings_b_rate").noUiSlider.get(),
-                        pitch: document.getElementById("settings_b_pitch").noUiSlider.get()
-                    });
-                }
-
-            });
-
-            $(qPgCtrl("pgHome", "btnPlayCurrentB")).click(function () {
-                say($("#settings_lang").val(), {
-                    volume: document.getElementById("settings_volume").noUiSlider.get(),
-                    rate: document.getElementById("settings_b_rate").noUiSlider.get(),
-                    pitch: document.getElementById("settings_b_pitch").noUiSlider.get()
-                });
-            });
-
-
-            $("#home_rewind").click(function () {
-                var textComponent = document.getElementById('txtMsg');
-                textComponent.selectionStart = 0;
-                textComponent.selectionEnd = 0;
-                $("#txtMsg").focus();
-            }).click();
+            //$("#home_edit").change(function () {
+            //    document.querySelector(qPgCtrl("pgHome", "txtMsg")).readOnly = !document.querySelector(qPgCtrl("pgHome", "txtMsg")).readOnly;
+            //});
 
             $("#home_save").click(function () {
                 var msgs = _ls.msgs.getOrCreate([]);
                 msgs.push({
                     createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
-                    msg: document.getElementById('txtMsg').value
+                    msg: document.querySelector(qPgCtrl("pgHome", "txtMsg")).value
                 });
                 _ls.msgs.set(msgs);
             });
@@ -469,8 +502,8 @@ Could frame thy fearful symmetry?
             }
 
             function say(voice, voiceOpt) {
-                $("#txtMsg").focus();
-                var textComponent = document.getElementById('txtMsg');
+                $(qPgCtrl("pgHome", "txtMsg")).focus();
+                var textComponent = document.querySelector(qPgCtrl("pgHome", "txtMsg"));
                 var selectedText;
 
                 if (textComponent.selectionStart !== undefined) {
@@ -514,7 +547,7 @@ Could frame thy fearful symmetry?
                     var joCard = $(tplFuncs["tplPassage"](msg)).appendTo("#history_msgs");
 
                     joCard.find("[name='btnLoad']").click(function () {
-                        $("#txtMsg").val(msg.msg); openPage("#home");
+                        $(qPgCtrl("pgHome", "txtMsg")).val(msg.msg); openPage("#home");
                     });
 
                     joCard.find("[name='btnDelete']").click(function () {
