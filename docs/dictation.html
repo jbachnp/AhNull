@@ -1,11 +1,7 @@
 ﻿<!DOCTYPE html>
 
 <!--
-    
-    porting pages from bs.html
-    //home: wip (making the btn to full width)
-
-
+[] one gui for 2 voice lib
 -->
 
 
@@ -324,6 +320,16 @@ Could frame thy fearful symmetry?
     <script>
 
         (function (app, undefined) {
+            var cnstSelectedVoices = {
+                'Microsoft Anna - English (United States)': 'US Female 2',
+                'Google US English': 'US Female',
+                'Google UK English Female': 'UK Female',
+                'Google UK English Male': 'UK Male',
+                'Google 普通话（中国大陆）': '陸女',
+                'Google 粤語（香港）': '港女',
+                'Google 國語（臺灣）': '臺女'
+            };
+
             var _AppLog = function (s) { console.log(s); };
             var tplFuncs = (function () {
                 var ret = {};
@@ -403,6 +409,24 @@ Could frame thy fearful symmetry?
 
             var syms;
 
+            function loadVoices() {
+                var uiVoice = document.querySelector(qPgCtrl("pgHome", "uiVoice"));
+                $(uiVoice).empty();
+                var voices = window.speechSynthesis.getVoices();
+                console.log("loadVoices() > " + voices.length);
+                voices.forEach(function (voice, i) {
+                    if (!cnstSelectedVoices[voice.name]) { return; }
+                    var option = document.createElement('option');
+                    option.value = voice.name;
+                    option.innerHTML = cnstSelectedVoices[voice.name] + (voice.localService?"*":"");
+                    option["__myApp_voice"] = voice;
+                    uiVoice.appendChild(option);
+                });
+            }
+
+            $(document).ready(function () { loadVoices(); });
+            window.speechSynthesis.onvoiceschanged = function() { loadVoices(); };
+
             $(qPgCtrl("pgHome", "btnPlayNextA")).click(function () {
                 var textComponent = document.querySelector(qPgCtrl("pgHome", "txtMsg"));
 
@@ -416,11 +440,15 @@ Could frame thy fearful symmetry?
                     textComponent.selectionEnd = srch;
 
 
-                    say($(qPgCtrl("pgHome", "uiVoice")).val(), {
-                        volume: document.querySelector(qPgCtrl("pgHome", "uiVolume")).value,
-                        rate: document.querySelector(qPgCtrl("pgSettings", "uiARate")).value,
-                        pitch: document.querySelector(qPgCtrl("pgSettings", "uiAPitch")).value
-                    });
+                    //say($(qPgCtrl("pgHome", "uiVoice")).val(), {
+                    //    volume: document.querySelector(qPgCtrl("pgHome", "uiVolume")).value,
+                    //    rate: document.querySelector(qPgCtrl("pgSettings", "uiARate")).value,
+                    //    pitch: document.querySelector(qPgCtrl("pgSettings", "uiAPitch")).value
+                    //});
+
+                    var uiVoice = document.querySelector(qPgCtrl("pgHome", "uiVoice"));
+                    sayNative(getTextToRead() || "please select some words", uiVoice.options[uiVoice.selectedIndex]["__myApp_voice"]);
+
                 }
 
                 $(qPgCtrl("pgHome", "txtMsg")).focus();
@@ -472,11 +500,15 @@ Could frame thy fearful symmetry?
 
             $(qPgCtrl("pgHome", "uiIsShield")).change(function () {
                 $(qPgCtrl("pgHome", "txtMsg")).toggleClass("blur");
+
+                var msg = new SpeechSynthesisUtterance('In the forests of the night');
+                window.speechSynthesis.speak(msg);
+
             });
 
             $(qPgCtrl("pgHome", "uiVoice")).change(function () {
                 var v = $(qPgCtrl("pgHome", "uiVoice")).val()
-                if (v.indexOf("English") >= 0) {
+                if (v.indexOf("English") >= 0 || v.indexOf("U") >= 0) { //[] temp code to discrminate the voice
                     syms = symsE;
                 } else if (v.indexOf("Chinese") >= 0) {
                     syms = symsC;
@@ -502,9 +534,16 @@ Could frame thy fearful symmetry?
             }
 
             function say(voice, voiceOpt) {
+                var selectedText = getTextToRead();
+
+                //Used to add optional volume (range 0 to 1), rate (range 0 to 1.5), pitch (range 0 to 2) 
+                responsiveVoice.speak(selectedText ? selectedText : "please select some words", voice, voiceOpt);
+            }
+
+            function getTextToRead() {
                 $(qPgCtrl("pgHome", "txtMsg")).focus();
                 var textComponent = document.querySelector(qPgCtrl("pgHome", "txtMsg"));
-                var selectedText;
+                var selectedText = "";
 
                 if (textComponent.selectionStart !== undefined) {
                     var startPos = textComponent.selectionStart;
@@ -520,9 +559,20 @@ Could frame thy fearful symmetry?
                     }
 
                 }
+                return selectedText;
+            }
 
-                //Used to add optional volume (range 0 to 1), rate (range 0 to 1.5), pitch (range 0 to 2) 
-                responsiveVoice.speak(selectedText ? selectedText : "please select some words", voice, voiceOpt);
+            function sayNative(txt, voice, voiceOpt) {
+                var msg = new SpeechSynthesisUtterance(txt);
+
+                msg.voice = voice;
+                //Used to add optional volume (range 0 to 1), rate (range 0.1 to 10), pitch (range 0 to 2) 
+
+                //msg.volume = parseFloat(volumeInput.value);
+                //msg.rate = parseFloat(rateInput.value);
+                //msg.pitch = parseFloat(pitchInput.value);
+
+                window.speechSynthesis.speak(msg);
             }
 
             $("#home_more .card-title").click(function () { $("#home_more .card-text").toggle(); });
