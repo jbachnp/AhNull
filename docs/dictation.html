@@ -321,6 +321,8 @@ Could frame thy fearful symmetry?
 
         (function (app, undefined) {
             var cnstSelectedVoices = {
+                'English United States': 'US Female',
+                'English United Kingdom': 'UK Female',
                 'Microsoft Anna - English (United States)': 'US Female 2',
                 'Google US English': 'US Female',
                 'Google UK English Female': 'UK Female',
@@ -415,14 +417,14 @@ Could frame thy fearful symmetry?
                 var voices = window.speechSynthesis.getVoices();
                 console.log("loadVoices() > " + voices.length);
                 voices.forEach(function (voice, i) {
-                    //if (!cnstSelectedVoices[voice.name]) { return; }
+                    if (!cnstSelectedVoices[voice.name]) { return; }
                     var option = document.createElement('option');
                     option.value = voice.name;
                     option.innerHTML = cnstSelectedVoices[voice.name] + (voice.localService?"*":"");
                     option["__myApp_voice"] = voice;
                     uiVoice.appendChild(option);
 
-                    $(qPgCtrl("pgHome", "txtMsg")).val($(qPgCtrl("pgHome", "txtMsg")).val() + ' [' + voice.name + ']');
+                    //$(qPgCtrl("pgHome", "txtMsg")).val($(qPgCtrl("pgHome", "txtMsg")).val() + ' [' + voice.name + ']');
                 });
             }
 
