@@ -421,6 +421,8 @@ Could frame thy fearful symmetry?
                     option.innerHTML = cnstSelectedVoices[voice.name] + (voice.localService?"*":"");
                     option["__myApp_voice"] = voice;
                     uiVoice.appendChild(option);
+
+                    $(qPgCtrl("pgHome", "txtMsg")).val($(qPgCtrl("pgHome", "txtMsg")).val() + ' [' + voice.name + ']');
                 });
             }
 
