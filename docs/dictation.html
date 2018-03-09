@@ -415,7 +415,7 @@ Could frame thy fearful symmetry?
                 var voices = window.speechSynthesis.getVoices();
                 console.log("loadVoices() > " + voices.length);
                 voices.forEach(function (voice, i) {
-                    if (!cnstSelectedVoices[voice.name]) { return; }
+                    //if (!cnstSelectedVoices[voice.name]) { return; }
                     var option = document.createElement('option');
                     option.value = voice.name;
                     option.innerHTML = cnstSelectedVoices[voice.name] + (voice.localService?"*":"");
