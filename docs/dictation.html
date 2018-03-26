@@ -3,9 +3,6 @@
 <!--
 [] one gui for 2 voice lib
 -->
-
-
-
 <!--
 https://jbachnp.github.io/AhNull/dictation.html
 http://localhost:8081/AhNull/dictation.html
@@ -20,7 +17,6 @@ http://localhost:8081/AhNull/dictation.html
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!--<link rel="manifest" href="manifest.json">-->
-    
     <!--includes-->
     <script src="SharedTechnology/ExternalDependency/JsLibrary/moment/moment.min.js"></script>
     <script src="SharedTechnology/ExternalDependency/JsLibrary/Underscore/underscore-min.js"></script>
@@ -43,7 +39,7 @@ http://localhost:8081/AhNull/dictation.html
     <style type="text/css">
         /*fix for bs*/
         body {
-          padding-top: 3.2rem; /*match the navbar height*/
+            padding-top: 3.2rem; /*match the navbar height*/
         }
 
         /*opinionated twist of BS default*/
@@ -51,61 +47,69 @@ http://localhost:8081/AhNull/dictation.html
             margin: 0.1rem 0rem 0.1rem 0rem;
         }
 
-        div[class^="col-"]{
-            padding-left:0.1rem;
-            padding-right:0.1rem;
+        div[class^="col-"] {
+            padding-left: 0.1rem;
+            padding-right: 0.1rem;
         }
 
-        .navbar{padding:0.1rem;}
+        .navbar {
+            padding: 0.1rem;
+        }
 
         a.navbar-brand {
             font-family: 'Comic Sans MS';
-            font-size:1.6rem;
-            padding:0.1rem;
+            font-size: 1.6rem;
+            padding: 0.1rem;
         }
 
         a.nav-link {
-            font-size:1.5rem;
-            padding:0.1rem;
+            font-size: 1.5rem;
+            padding: 0.1rem;
             text-align: right;
         }
 
+        .card{
+            padding:0.1rem;
+            margin:0.1rem;
+        }
+
+        .card-body{
+            padding:0.1rem;
+        }
 
         /*my app*/
-        main.container {    /*main client area*/
-            padding-left:0.2rem;
-            padding-right:0.2rem;
+        main.container { /*main client area*/
+            padding-left: 0.2rem;
+            padding-right: 0.2rem;
         }
 
-        main > div {    /*pages*/
-          padding: 0.2rem 0.1rem 0.1rem 0.1rem;
-          border-style: solid;
-          border-width: 1px;
-          border-color: lightgray;
+        main > div { /*pages*/
+            padding: 0.2rem 0.1rem 0.1rem 0.1rem;
+            border-style: solid;
+            border-width: 1px;
+            border-color: lightgray;
         }
 
-        main > div > div.container{    /*container inside page*/
-            padding-left:0.2rem;
-            padding-right:0.2rem;
-        }
+            main > div > div.container { /*container inside page*/
+                padding-left: 0.2rem;
+                padding-right: 0.2rem;
+            }
 
+            main > div[name='pgHome'] textarea[name='txtMsg'] {
+                margin: 0.2rem;
+                padding: 0.5rem;
+                line-height: 150%;
+                font-size: x-large;
+            }
 
-        main > div[name='pgHome'] textarea[name='txtMsg'] {
-            margin: 0.2rem;
-            padding:0.5rem;
-            line-height:150%;
-            font-size: x-large;
-        }
-
-        .blur{
-          -webkit-filter: blur(3px);
-          filter: blur(3px);
+        .blur {
+            -webkit-filter: blur(3px);
+            filter: blur(3px);
         }
 
         textarea:focus {
             background-color: Khaki !important;
         }
-
     </style>
 
     <!--UI-->
@@ -117,7 +121,7 @@ http://localhost:8081/AhNull/dictation.html
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active"><a class="nav-link" href="javascript:void(0);" data-anull_page="div[name='pgHome']">Home</a></li>
-                <li class="nav-item active"><a class="nav-link" href="javascript:void(0);" data-anull_page="div[name='pgPassages']">Saved Passages</a></li>
+                <li class="nav-item active"><a class="nav-link" href="javascript:void(0);" data-anull_page="div[name='pgPassages']">Passages</a></li>
                 <li class="nav-item active"><a class="nav-link" href="javascript:void(0);" data-anull_page="div[name='pgSettings']">Settings</a></li>
                 <li role="separator" class="dropdown-divider"></li>
                 <li class="nav-item active"><a class="nav-link" href="javascript:void(0);" data-anull_page="div[name='pgAbout']">About</a></li>
@@ -127,6 +131,7 @@ http://localhost:8081/AhNull/dictation.html
 
     <main role="main" class="container">
         <div name="pgHome">
+            <div name="txtMsgAnchor" class="d-none"></div>
             <textarea name="txtMsg" class="form-control" rows="5" readonly>
 Tyger Tyger, burning bright,
 In the forests of the night;
@@ -149,9 +154,12 @@ Could frame thy fearful symmetry?
                     <div class="col-3"><button name="btnPlayCurrentB" type='button' class='btn btn-lg w-100 btn-info'>👆</button></div>
                 </div>
                 <div class="row">
-                    <div class="col-12"><button name='btnRewind' type='button' class='btn btn-lg'>⏪</button></div>
+                    <div class="col-12">
+                        <button name='btnRewind' type='button' class='btn btn-lg'>⏪</button>
+                        <button name='btnEdit' type='button' class='btn btn-lg'>Edit</button>
+                    </div>
                 </div>
-                <hr/>
+                <hr />
 
                 <div class="row d-none">
                     <div class="col-3">Play Mode</div>
@@ -203,8 +211,11 @@ Could frame thy fearful symmetry?
         </div>
 
         <div name="pgPassages">
-            <h3>Saved Passages</h3>
-            <button name='btnSync' class='btn'>sync</button>
+            <h3>Passages</h3>
+            <button name='btnHome' class='btn'>Home</button>
+            <button name='btnSave' class='btn'>💾 Save</button>
+            <button name='btnUpload' class='btn'>Upload</button>
+            <div name="txtMsgAnchor" class="d-none"></div>
             <div name="divMsgs"></div>
         </div>
 
@@ -213,7 +224,7 @@ Could frame thy fearful symmetry?
                 <h5>General Settings</h5>
                 <div class="row">
                     <div class="col-3">Login</div>
-                    <div class="col-9"><input type="text" name="uiUserId" class="w-100"/></div>
+                    <div class="col-9"><input type="text" name="uiUserId" class="w-100" /></div>
                 </div>
                 <hr />
 
@@ -245,7 +256,8 @@ Could frame thy fearful symmetry?
                     </div>
                 </div>
 
-                <div class="row" hidden><!--for dev: layout trial-->
+                <div class="row" hidden>
+                    <!--for dev: layout trial-->
                     <div class="col-3" style="background-color:lightblue">3</div>
                     <div class="col-9" style="background-color:lightcyan">9</div>
                 </div>
@@ -269,14 +281,15 @@ Could frame thy fearful symmetry?
             </p>
         </div>
 
-    </main><!-- /.container -->
+    </main>
 
     <!--templates -->
     <div id="tpls">
         <script type="text/template" name="tplPassage">
             <div class='card'>
                 <div class='card-body'>
-                    <h5 class="card-title">{{-o.createdAt}}
+                    <h5 class="card-title">
+                        {{-o.createdAt}}
                         <button name="btnLoad" type="button" class="btn btn-success btn-pill btn-sm">➠</button>
                     </h5>
                     {{-o.msg}}<button name="btnDelete" type="button" class="btn btn-danger btn-pill btn-sm">✘</button>
@@ -300,24 +313,67 @@ Could frame thy fearful symmetry?
 
         })(MyApp);
 
-        (function bs_plus() {
-            $("*[data-anull_pagescontainer]").each(function (i, eMnu) {
-                var joPagesContainer = $(eMnu.dataset["anull_pagescontainer"]);
-                function openPage(pageSelector) {
-                    joPagesContainer.children("div").addClass("d-none");
-                    joPagesContainer.children(pageSelector).removeClass("d-none");
+        MyApp.BsExtra = (function bs_plus() {
+            var cnst_BsExtra_OpeningPage = "_BsExtra_OpeningPage";
+            var cnst_BsExtra_fPageOnOpen = "_BsExtra_fPageOnOpen";
+            var cnst_BsExtra_fPageOnClose = "_BsExtra_fPageOnClose";
+
+            var _ret = {};
+
+            function openPage(ePageRepo, pageSelector) {
+                var joPageRepo = $(ePageRepo);
+
+                var joCurrentPage = joPageRepo.children("div." + cnst_BsExtra_OpeningPage);
+                if (joCurrentPage.length > 0) {
+                    joCurrentPage.addClass("d-none").removeClass(cnst_BsExtra_OpeningPage);
+                    if (joCurrentPage[0][cnst_BsExtra_fPageOnClose]) {
+                        joCurrentPage[0][cnst_BsExtra_fPageOnClose]();
+                    }
                 }
 
+                var joNextPage = joPageRepo.children(pageSelector);
+                if (joNextPage.length > 0) {
+                    joNextPage.removeClass("d-none").addClass(cnst_BsExtra_OpeningPage);
+                    if (joNextPage[0][cnst_BsExtra_fPageOnOpen]) {
+                        joNextPage[0][cnst_BsExtra_fPageOnOpen]();
+                    }
+                }
+            }
+
+            $("*[data-anull_pagescontainer]").each(function (i, eMnu) {
+                var ePageRepo = document.querySelector(eMnu.dataset["anull_pagescontainer"]);
+
                 $(eMnu.dataset["target"]).find("a[data-anull_page]").each(function (j, eMnuItem) {
-                    var ps = eMnuItem.dataset["anull_page"]
-                    joPagesContainer.children(ps).addClass("d-none");
+                    var ps = eMnuItem.dataset["anull_page"];
+                    $(ePageRepo).children(ps).addClass("d-none").removeClass(cnst_BsExtra_OpeningPage);
                     $(eMnuItem).click(function () {
                         $(eMnu).click();
-                        openPage(ps);
+                        openPage(ePageRepo, ps);
                     })
                 });
             });
+
+            function pageOnOpen(ePageRepo, pageSelector, fPageOnOpen) {
+                var joPageRepo = $(ePageRepo);
+                joPageRepo.children(pageSelector).each(function (i, ePage) {
+                    ePage[cnst_BsExtra_fPageOnOpen] = fPageOnOpen;
+                });
+            }
+
+            function pageOnClose(ePageRepo, pageSelector, fPageOnClose) {
+                var joPageRepo = $(ePageRepo);
+                joPageRepo.children(pageSelector).each(function (i, ePage) {
+                    ePage[cnst_BsExtra_fPageOnClose] = fPageOnClose;
+                });
+            }
+
+            _ret.openPage = openPage;
+            _ret.pageOnOpen = pageOnOpen;
+            _ret.pageOnClose = pageOnClose;
+
+            return _ret;
         })()
+
     </script>
 
     <!--app logic uiVolume-->
@@ -326,6 +382,7 @@ Could frame thy fearful symmetry?
         (function (app, undefined) {
 
             var _AppLog = function (s) { console.log(s); };
+            var _BsExtra = app.BsExtra;
             var tplFuncs = (function () {
                 var ret = {};
                 $('#tpls > script[type="text/template"]').each(function (i, o) {
@@ -428,42 +485,26 @@ Could frame thy fearful symmetry?
                     });
                 })();
 
-                $("main>div[name='pgHome']").removeClass("d-none");
+                appDataStore.getUserPassages($(qPgCtrl("pgSettings", "uiUserId")).val(), function (psgs) {
+                    _ls.msgs.set(psgs);
+                })
 
+                _BsExtra.openPage(document.querySelector("main"), "main>div[name='pgHome']");
             })()
             _AppLog("init completed");
             _AppLog("welcome");
 
-            function openPage(pageSelector) {
-                var joPagesContainer = $("main");
-                joPagesContainer.children("div").addClass("d-none");
-                joPagesContainer.children(pageSelector).removeClass("d-none");
-            }
-
-            //Page: tbd----------------------------------------------------------------------------
-
-            //$("#home_edit").change(function () {
-            //    document.querySelector(qPgCtrl("pgHome", "txtMsg")).readOnly = !document.querySelector(qPgCtrl("pgHome", "txtMsg")).readOnly;
-            //});
-
-            $("#home_save").click(function () {
-                var msgs = _ls.msgs.getOrCreate([]);
-                msgs.push({
-                    createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
-                    msg: document.querySelector(qPgCtrl("pgHome", "txtMsg")).value
-                });
-                _ls.msgs.set(msgs);
-            });
-
-            $("#home_more .card-title").click(function () { $("#home_more .card-text").toggle(); });
-
 
             //Page: Home----------------------------------------------------------------------------
+            _BsExtra.pageOnOpen(document.querySelector("main"), "main>div[name='pgHome']", function () {
+                $("main textarea[name='txtMsg']").insertAfter(qPgCtrl("pgHome", "txtMsgAnchor"));
+                $("main textarea[name='txtMsg']")[0].readOnly = true;
+            });
 
             $(qPgCtrl("pgHome", "btnPlayNextA")).click(function () {
                 var textComponent = document.querySelector(qPgCtrl("pgHome", "txtMsg"));
                 selectNextPhrase(textComponent);
-                readSelectedText(textComponent, procPunctuation, $(qPgCtrl("pgHome", "uiVoice")).val(), getVoicOpt("A") );
+                readSelectedText(textComponent, procPunctuation, $(qPgCtrl("pgHome", "uiVoice")).val(), getVoicOpt("A"));
 
                 $(qPgCtrl("pgHome", "txtMsg")).focus();
             });
@@ -489,13 +530,17 @@ Could frame thy fearful symmetry?
 
                 $(qPgCtrl("pgHome", "txtMsg")).focus();
             });
-            
+
             $(qPgCtrl("pgHome", "btnRewind")).click(function () {
                 var textComponent = document.querySelector(qPgCtrl("pgHome", "txtMsg"));
                 textComponent.selectionStart = 0;
                 textComponent.selectionEnd = 0;
                 $(qPgCtrl("pgHome", "txtMsg")).focus();
             }).click();
+
+            $(qPgCtrl("pgHome", "btnEdit")).click(function () {
+                _BsExtra.openPage(document.querySelector("main"), "main>div[name='pgPassages']");
+            });
 
             $(qPgCtrl("pgHome", "uiIsShield")).change(function () {
                 $(qPgCtrl("pgHome", "txtMsg")).toggleClass("blur");
@@ -525,8 +570,7 @@ Could frame thy fearful symmetry?
                 return ret;
             }
 
-            function getVoicOpt(v)
-            {
+            function getVoicOpt(v) {
                 if (v == "A") {
                     return {
                         volume: document.querySelector(qPgCtrl("pgHome", "uiVolume")).value,
@@ -570,7 +614,7 @@ Could frame thy fearful symmetry?
                     return selectedText;
                 })();
 
-                //Used to add optional volume (range 0 to 1), rate (range 0 to 1.5), pitch (range 0 to 2) 
+                //Used to add optional volume (range 0 to 1), rate (range 0 to 1.5), pitch (range 0 to 2)
                 responsiveVoice.speak(selectedText ? selectedText : "please select some words", voice, voiceOpt);
             }
 
@@ -583,19 +627,24 @@ Could frame thy fearful symmetry?
                     voiceA: { rate: $(qPgCtrl("pgSettings", "uiARate")).val(), pitch: $(qPgCtrl("pgSettings", "uiAPitch")).val() },
                     voiceB: { rate: $(qPgCtrl("pgSettings", "uiBRate")).val(), pitch: $(qPgCtrl("pgSettings", "uiBPitch")).val() }
                 });
-                openPage("div[name='pgHome']");
+                _BsExtra.openPage(document.querySelector("main"), "main>div[name='pgHome']");
             });
 
             //Page: Saved Passages----------------------------------------------------------------------------
-            $("#mnuMain [data-page='#history']").click(function () {
+            _BsExtra.pageOnOpen(document.querySelector("main"), "main>div[name='pgPassages']", function () {
+                $("main textarea[name='txtMsg']").insertAfter(qPgCtrl("pgPassages", "txtMsgAnchor"));
+                $("main textarea[name='txtMsg']")[0].readOnly = false;
+
                 var msgs = _ls.msgs.getOrCreate([]);
 
-                $("#history_msgs").empty();
+                var joMsgs = $(qPgCtrl("pgPassages", "divMsgs"))
+                joMsgs.empty();
                 msgs.forEach(function (msg, i) {
-                    var joCard = $(tplFuncs["tplPassage"](msg)).appendTo("#history_msgs");
+                    var joCard = $(tplFuncs["tplPassage"](msg)).appendTo(joMsgs);
 
                     joCard.find("[name='btnLoad']").click(function () {
-                        $(qPgCtrl("pgHome", "txtMsg")).val(msg.msg); openPage("#home");
+                        $(qPgCtrl("pgPassages", "txtMsg")).val(msg.msg);
+                        _BsExtra.openPage(document.querySelector("main"), "main>div[name='pgHome']");
                     });
 
                     joCard.find("[name='btnDelete']").click(function () {
@@ -606,10 +655,23 @@ Could frame thy fearful symmetry?
                 });
             });
 
-            $("#history_sync").click(function () {
-                appDataStore.addUser($("#settings_userid").val(), function (s) {
+            $(qPgCtrl("pgPassages", "btnHome")).click(function () {
+                _BsExtra.openPage(document.querySelector("main"), "main>div[name='pgHome']");
+            });
+
+            $(qPgCtrl("pgPassages", "btnSave")).click(function () {
+                var msgs = _ls.msgs.getOrCreate([]);
+                msgs.push({
+                    createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
+                    msg: document.querySelector(qPgCtrl("pgPassages", "txtMsg")).value
+                });
+                _ls.msgs.set(msgs);
+            });
+
+            $(qPgCtrl("pgPassages", "btnUpload")).click(function () {
+                appDataStore.addUser($(qPgCtrl("pgSettings", "uiUserId")).val(), function (s) {
                     console.log(s);
-                    appDataStore.setUserPassages($("#settings_userid").val(), _ls.msgs.getOrCreate([]));
+                    appDataStore.setUserPassages($(qPgCtrl("pgSettings", "uiUserId")).val(), _ls.msgs.getOrCreate([]));
                 });
             });
 
@@ -762,33 +824,6 @@ Could frame thy fearful symmetry?
                 return ret;
             }
 
-            //BS specfic----------------------------------------------------------------------------
-            //function openPage(qPage) {
-            //    $("main div[role='tabpanel']").addClass("d-none");
-            //    $(qPage).removeClass("d-none");
-            //}
-
-            //$(".navbar-nav li a").click(function (event) {
-            //    var toggle = $(".navbar-collapse").hasClass("show");
-            //    if (toggle) {
-            //        $(".navbar-toggler").click();
-            //    }
-            //});
-
-            //$("#mnuMain >> a").each(function () {
-            //    $(this).on("click", function () {
-            //        openPage($(this).data("page"));
-            //    });
-            //});
-
-            //$("#home >> nav a").each(function () {
-            //    $(this).on("click", function () {
-            //        $("#home_pages > div").addClass("d-none");
-            //        $("#home >> nav  li").removeClass("active");
-            //        $($(this).data("page")).removeClass("d-none");
-            //        $(this).parent().addClass("active");
-            //    });
-            //});
         })(MyApp);
 
 
