@@ -1,6 +1,6 @@
 ﻿{
-    "short_name": "etudePWA",
-    "name": "etudePWA!!",
+    "short_name": "Dictation",
+    "name": "Dictation!!",
     "gcm_sender_id": "793598221356",
     "display": "standalone",
     "icons": [
@@ -25,7 +25,7 @@
             "type": "image/png"
         }
     ],
-    "start_url": "etudePWA.html?utm_source=homescreen",
+    "start_url": "dictation.html?utm_source=homescreen",
     "theme_color": "#FFA07A",
     "background_color": "#90EE90"
 }
