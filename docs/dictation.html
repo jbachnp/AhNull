@@ -214,7 +214,6 @@ Could frame thy fearful symmetry?
             <h3>Passages</h3>
             <button name='btnHome' class='btn'>Home</button>
             <button name='btnSave' class='btn'>💾 Save</button>
-            <button name='btnUpload' class='btn'>Upload</button>
             <div name="txtMsgAnchor" class="d-none"></div>
             <div name="divMsgs"></div>
         </div>
@@ -634,7 +633,30 @@ Could frame thy fearful symmetry?
             _BsExtra.pageOnOpen(document.querySelector("main"), "main>div[name='pgPassages']", function () {
                 $("main textarea[name='txtMsg']").insertAfter(qPgCtrl("pgPassages", "txtMsgAnchor"));
                 $("main textarea[name='txtMsg']")[0].readOnly = false;
+                refreshPassages();
+            });
 
+            $(qPgCtrl("pgPassages", "btnHome")).click(function () {
+                _BsExtra.openPage(document.querySelector("main"), "main>div[name='pgHome']");
+            });
+
+            $(qPgCtrl("pgPassages", "btnSave")).click(function () {
+                var msgs = _ls.msgs.getOrCreate([]);
+                msgs.push({
+                    createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
+                    msg: document.querySelector(qPgCtrl("pgPassages", "txtMsg")).value
+                });
+                _ls.msgs.set(msgs);
+
+                appDataStore.addUser($(qPgCtrl("pgSettings", "uiUserId")).val(), function (s) {
+                    appDataStore.setUserPassages($(qPgCtrl("pgSettings", "uiUserId")).val(), _ls.msgs.getOrCreate([]), function (z) {
+                        refreshPassages();
+                        alert("Done! //" + z);
+                    });
+                });
+            });
+
+            function refreshPassages() {
                 var msgs = _ls.msgs.getOrCreate([]);
 
                 var joMsgs = $(qPgCtrl("pgPassages", "divMsgs"))
@@ -653,27 +675,8 @@ Could frame thy fearful symmetry?
                         joCard.remove();
                     });
                 });
-            });
+            }
 
-            $(qPgCtrl("pgPassages", "btnHome")).click(function () {
-                _BsExtra.openPage(document.querySelector("main"), "main>div[name='pgHome']");
-            });
-
-            $(qPgCtrl("pgPassages", "btnSave")).click(function () {
-                var msgs = _ls.msgs.getOrCreate([]);
-                msgs.push({
-                    createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
-                    msg: document.querySelector(qPgCtrl("pgPassages", "txtMsg")).value
-                });
-                _ls.msgs.set(msgs);
-            });
-
-            $(qPgCtrl("pgPassages", "btnUpload")).click(function () {
-                appDataStore.addUser($(qPgCtrl("pgSettings", "uiUserId")).val(), function (s) {
-                    console.log(s);
-                    appDataStore.setUserPassages($(qPgCtrl("pgSettings", "uiUserId")).val(), _ls.msgs.getOrCreate([]));
-                });
-            });
 
             //https://api.myjson.com/bins/y1wgx----------------------------------------------------------------------------
             function createLibMJ() {
