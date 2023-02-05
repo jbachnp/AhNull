@@ -245,17 +245,24 @@
             _AppLog("init completed");
             _AppLog("welcome");
 
-            $2("pgHome", "uiCiphertext").val("8xRKHF+hMyRP8StPsKctEh8LNEuQPFjN9N5wNgq/tuQmRZCERv8hn3Clp7MKFf7FhTv2HCUOTXhdERaiFWF8yQ2bL4GuYIXzdx19VEM8min5WAOQEfLghhC2RPlaZiIXv05BnIXCNUKa6SRKwIJCrFRV2xvNNg2yJp0TF70CJhW4W574YOxFy5wAF5d81UJNuPwr56Tr6fdUt9NvTbL223E1bee4pAlB8+PZYpNcQS0=");
-            $2("pgHome", "uiIV").val("0123456789012345");
-            $2("pgHome", "uiKey").val("01234567890123456789012345678901");
+            $2("pgHome", "uiCiphertext").val("lMDnzk2GKOKHby6htJd/stZvEUFxAfVikhEfoP3lMZNZa4yRu15CoVtoI3NrhE0fA0VSRDm4F4xdLv9ZxjbhwsxpgUM47pAtUHnbYen3/gGNO8YM0K028LOYyVkxmAk/iXQbxPE5sZPIT9nVtMZcZQ==");
+            $2("pgHome", "uiMaLeMaLeHom").val("That I cannot do");
 
             //Page: Home----------------------------------------------------------------------------
             $2("pgHome", "btnGo").click(async function () {
-                const textAsBuffer = new TextEncoder().encode($2("pgHome", "uiMaLeMaLeHom").val());
-                const hashBuffer = await crypto.subtle.digest('SHA-256', textAsBuffer);
-                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                const ct = Uint8Array.from(atob($2("pgHome", "uiCiphertext").val()), c => c.charCodeAt(0));
+                const kyiv = await crypto.subtle.digest('SHA-384', (new TextEncoder()).encode($2("pgHome", "uiMaLeMaLeHom").val()));
+                const ky = kyiv.slice(0, 255);
+                const iv = kyiv.slice(256, 383);
 
-                console.log(hashBuffer, hashArray);
+                let decryptedText = (new TextDecoder()).decode(await crypto.subtle.decrypt(
+                    {name: "AES-CBC", iv: iv},
+                    await crypto.subtle.importKey("raw", ky, {name: "AES-CBC"}, false, ["decrypt"]),
+                    ct
+                ));                
+                console.log(decryptedText);
+
+                $2("pgHome", "txtDecrypted").val(decryptedText);
             });
 
             
