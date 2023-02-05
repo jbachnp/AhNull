@@ -268,8 +268,8 @@
                 hashBytes = await crypto.subtle.digest("SHA-256", inputBytes);
                 console.log(JSON.stringify({hash: buf2Base64(hashBytes)})); // {"hash":"16j7swfXgJRpypq8sAguT41WUeRtPNt2LQLQvzfJ5ZI="}
 
-                let _k = await crypto.subtle.importKey("raw", btoa(ky), {name: "AES-CBC"}, false, ["encrypt", "decrypt"]);
-                console.log(key);
+                let _k = await crypto.subtle.importKey("raw", (new TextEncoder()).encode(ky), {name: "AES-CBC"}, false, ["encrypt", "decrypt"]);
+                console.log(_k);
             });
 
             //Page: ABout----------------------------------------------------------------------------
