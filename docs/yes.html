@@ -269,7 +269,17 @@
                 console.log(JSON.stringify({hash: buf2Base64(hashBytes)})); // {"hash":"16j7swfXgJRpypq8sAguT41WUeRtPNt2LQLQvzfJ5ZI="}
 
                 let _k = await crypto.subtle.importKey("raw", (new TextEncoder()).encode(ky), {name: "AES-CBC"}, false, ["encrypt", "decrypt"]);
-                console.log(_k);
+
+                let decrypted = await window.crypto.subtle.decrypt(
+                    {
+                        name: "AES-CBC",
+                        iv: (new TextEncoder()).encode(iv)
+                    },
+                    _k,
+                    atob(ct)
+                );                
+
+                console.log(decrypted);
             });
 
             //Page: ABout----------------------------------------------------------------------------
