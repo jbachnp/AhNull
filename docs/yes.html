@@ -252,8 +252,8 @@
             $2("pgHome", "btnGo").click(async function () {
                 const ct = Uint8Array.from(atob($2("pgHome", "uiCiphertext").val()), c => c.charCodeAt(0));
                 const kyiv = await crypto.subtle.digest('SHA-384', (new TextEncoder()).encode($2("pgHome", "uiMaLeMaLeHom").val()));
-                const ky = kyiv.slice(0, 31);
-                const iv = kyiv.slice(32, 47);
+                const ky = kyiv.slice(0, 32);
+                const iv = kyiv.slice(32, 48);
 
                 let decryptedText = (new TextDecoder()).decode(await crypto.subtle.decrypt(
                     {name: "AES-CBC", iv: iv},
