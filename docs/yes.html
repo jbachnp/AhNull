@@ -116,11 +116,9 @@
     </nav>
 
     <main role="main" class="container">
-
         <div name="pgHome">
             <input type="text" name="uiCiphertext" class="form-control" placeholder="Ciphertext" />
-            <input type="text" name="uiIV" class="form-control" placeholder="IV" />
-            <input type="text" name="uiKey" class="form-control" placeholder="Key" />
+            <input type="text" name="uiMaLeMaLeHom" class="form-control" placeholder="Ma Le Ma Le Hom" />
 
             <button name="btnGo" class="btn form-control">Go</button>
             <textarea name="txtDecrypted" class="form-control" rows="5" readonly>
@@ -253,6 +251,15 @@
 
             //Page: Home----------------------------------------------------------------------------
             $2("pgHome", "btnGo").click(async function () {
+                const textAsBuffer = new TextEncoder().encode($2("pgHome", "uiMaLeMaLeHom").val());
+                const hashBuffer = await crypto.subtle.digest('SHA-256', textAsBuffer);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+                console.log(hashBuffer, hashArray);
+            });
+
+            
+            async function bak(){
                 //${} ${$2("pgHome", "uiIV").val()} ${$2("pgHome", "uiKey").val()} `);
                 const ct = Uint8Array.from(atob($2("pgHome", "uiCiphertext").val()), c => c.charCodeAt(0));
                 const [iv, ky] = (ec=>["uiIV", "uiKey"].map(ui=>ec.encode($2("pgHome", ui).val())))(new TextEncoder());
@@ -265,9 +272,9 @@
                 console.log(decryptedText);
 
                 $2("pgHome", "txtDecrypted").val(decryptedText);
-            });
 
-            
+            }
+
             //Page: ABout----------------------------------------------------------------------------
 
         })(MyApp);
