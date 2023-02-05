@@ -228,8 +228,7 @@ https://jbachnp.github.io/AhNull/yes.html
 
     <!--app logic uiVolume-->
     <script>
-        (function (app, undefined) {
-
+        (async function (app, undefined) {
             var _AppLog = function (s) { console.log(s); };
             var tplFuncs = (function () {
                 var ret = {};
@@ -249,10 +248,28 @@ https://jbachnp.github.io/AhNull/yes.html
             _AppLog("init completed");
             _AppLog("welcome");
 
+            $2("pgHome", "uiCiphertext").val("8xRKHF+hMyRP8StPsKctEh8LNEuQPFjN9N5wNgq/tuQmRZCERv8hn3Clp7MKFf7FhTv2HCUOTXhdERaiFWF8yQ2bL4GuYIXzdx19VEM8min5WAOQEfLghhC2RPlaZiIXv05BnIXCNUKa6SRKwIJCrFRV2xvNNg2yJp0TF70CJhW4W574YOxFy5wAF5d81UJNuPwr56Tr6fdUt9NvTbL223E1bee4pAlB8+PZYpNcQS0=");
+            $2("pgHome", "uiIV").val("0123456789012345");
+            $2("pgHome", "uiKey").val("01234567890123456789012345678901");
+
             //Page: Home----------------------------------------------------------------------------
-            $2("pgHome", "btnGo").click(function () {
-                alert(`diu${$2("pgHome", "uiCiphertext").val()}`);
-                $2("pgHome", "txtDecrypted").val(`${$2("pgHome", "uiCiphertext").val()} ${$2("pgHome", "uiIV").val()} ${$2("pgHome", "uiKey").val()} `);
+            $2("pgHome", "btnGo").click(async function () {
+                //${} ${$2("pgHome", "uiIV").val()} ${$2("pgHome", "uiKey").val()} `);
+                const ct = $2("pgHome", "uiCiphertext").val();
+                const iv = $2("pgHome", "uiIV").val();
+                const ky = $2("pgHome", "uiKey").val();
+
+                // from https://stackoverflow.com/a/11562550/9014097
+                function buf2Base64(buffer) {
+                    return btoa(String.fromCharCode.apply(null, new Uint8Array(buffer)));
+                }
+
+                var inputString = "The quick brown fox jumps over the lazy dog";
+                inputBytes = new TextEncoder().encode(inputString);
+                hashBytes = await window.crypto.subtle.digest("SHA-256", inputBytes);
+                console.log(JSON.stringify({hash: buf2Base64(hashBytes)})); // {"hash":"16j7swfXgJRpypq8sAguT41WUeRtPNt2LQLQvzfJ5ZI="}
+
+
             });
 
             //Page: ABout----------------------------------------------------------------------------
