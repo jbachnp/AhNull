@@ -120,8 +120,12 @@ https://jbachnp.github.io/AhNull/yes.html
 
         <div name="pgHome">
             <input type="text" name="uiCiphertext" class="form-control" placeholder="Ciphertext" />
+            <input type="text" name="uiIV" class="form-control" placeholder="IV" />
+            <input type="text" name="uiKey" class="form-control" placeholder="Key" />
 
-            <button name="btnGo" class="btn">Go</button>
+            <button name="btnGo" class="btn form-control">Go</button>
+            <textarea name="txtDecrypted" class="form-control" rows="5" readonly>
+            </textarea>
         </div>
 
         <div name="pgAbout">
@@ -239,17 +243,16 @@ https://jbachnp.github.io/AhNull/yes.html
             const $2 = (pg, ctrl)=>$(`main > div[name='${pg}'] *[name='${ctrl}']`);
 
             //----------------------------------------------------------------------------
-
             (function initGui() {
                 _BsExtra.openPage(document.querySelector("main"), "main>div[name='pgHome']");
             })()
             _AppLog("init completed");
             _AppLog("welcome");
 
-
             //Page: Home----------------------------------------------------------------------------
             $2("pgHome", "btnGo").click(function () {
                 alert(`diu${$2("pgHome", "uiCiphertext").val()}`);
+                $2("pgHome", "txtDecrypted").val(`${$2("pgHome", "uiCiphertext").val()} ${$2("pgHome", "uiIV").val()} ${$2("pgHome", "uiKey").val()} `);
             });
 
             //Page: ABout----------------------------------------------------------------------------
