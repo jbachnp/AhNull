@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 
 <!--
-    My AES Decryptor
-https://jbachnp.github.io/AhNull/yes.html
+    https://jbachnp.github.io/AhNull/yes.html
 -->
 
 <html>
@@ -266,10 +265,11 @@ https://jbachnp.github.io/AhNull/yes.html
 
                 var inputString = "The quick brown fox jumps over the lazy dog";
                 inputBytes = new TextEncoder().encode(inputString);
-                hashBytes = await window.crypto.subtle.digest("SHA-256", inputBytes);
+                hashBytes = await crypto.subtle.digest("SHA-256", inputBytes);
                 console.log(JSON.stringify({hash: buf2Base64(hashBytes)})); // {"hash":"16j7swfXgJRpypq8sAguT41WUeRtPNt2LQLQvzfJ5ZI="}
 
-
+                let _k = await crypto.subtle.importKey("raw", btoa(ky), {name: "AES-CBC"}, false, ["encrypt", "decrypt"]);
+                console.log(key);
             });
 
             //Page: ABout----------------------------------------------------------------------------
