@@ -119,7 +119,7 @@ https://jbachnp.github.io/AhNull/yes.html
     <main role="main" class="container">
 
         <div name="pgHome">
-            <input type="text" name="uiCiphertext" placeholder="Ciphertext" />
+            <input type="text" name="uiCiphertext" class="form-control" placeholder="Ciphertext" />
 
             <button name="btnGo" class="btn">Go</button>
         </div>
@@ -249,7 +249,7 @@ https://jbachnp.github.io/AhNull/yes.html
 
             //Page: Home----------------------------------------------------------------------------
             $2("pgHome", "btnGo").click(function () {
-                alert(`diu${$2("pgHome", "uiCiphertext")}`);
+                alert(`diu${$2("pgHome", "uiCiphertext").val()}`);
             });
 
             //Page: ABout----------------------------------------------------------------------------
