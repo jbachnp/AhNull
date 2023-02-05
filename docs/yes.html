@@ -2,6 +2,8 @@
 
 <!--
     https://jbachnp.github.io/AhNull/yes.html
+
+    see also: https://string-o-matic.com/
 -->
 
 <html>
@@ -120,7 +122,7 @@
             <input type="text" name="uiCiphertext" class="form-control" placeholder="Ciphertext" />
             <input type="text" name="uiMaLeMaLeHom" class="form-control" placeholder="Ma Le Ma Le Hom" />
 
-            <button name="btnGo" class="btn form-control">Go</button>
+            <button name="btnGo" class="btn form-control btn-success">Go</button>
             <textarea name="txtDecrypted" class="form-control" rows="5" readonly>
             </textarea>
         </div>
@@ -245,8 +247,8 @@
             _AppLog("init completed");
             _AppLog("welcome");
 
-            $2("pgHome", "uiCiphertext").val("lMDnzk2GKOKHby6htJd/stZvEUFxAfVikhEfoP3lMZNZa4yRu15CoVtoI3NrhE0fA0VSRDm4F4xdLv9ZxjbhwsxpgUM47pAtUHnbYen3/gGNO8YM0K028LOYyVkxmAk/iXQbxPE5sZPIT9nVtMZcZQ==");
-            $2("pgHome", "uiMaLeMaLeHom").val("That I cannot do");
+            //$2("pgHome", "uiCiphertext").val("lMDnzk2GKOKHby6htJd/stZvEUFxAfVikhEfoP3lMZNZa4yRu15CoVtoI3NrhE0fA0VSRDm4F4xdLv9ZxjbhwsxpgUM47pAtUHnbYen3/gGNO8YM0K028LOYyVkxmAk/iXQbxPE5sZPIT9nVtMZcZQ==");
+            //$2("pgHome", "uiMaLeMaLeHom").val("That I cannot do");
 
             //Page: Home----------------------------------------------------------------------------
             $2("pgHome", "btnGo").click(async function () {
@@ -264,23 +266,6 @@
 
                 $2("pgHome", "txtDecrypted").val(decryptedText);
             });
-
-            
-            async function bak(){
-                //${} ${$2("pgHome", "uiIV").val()} ${$2("pgHome", "uiKey").val()} `);
-                const ct = Uint8Array.from(atob($2("pgHome", "uiCiphertext").val()), c => c.charCodeAt(0));
-                const [iv, ky] = (ec=>["uiIV", "uiKey"].map(ui=>ec.encode($2("pgHome", ui).val())))(new TextEncoder());
-
-                let decryptedText = (new TextDecoder()).decode(await crypto.subtle.decrypt(
-                    {name: "AES-CBC", iv: iv},
-                    await crypto.subtle.importKey("raw", ky, {name: "AES-CBC"}, false, ["decrypt"]),
-                    ct
-                ));                
-                console.log(decryptedText);
-
-                $2("pgHome", "txtDecrypted").val(decryptedText);
-
-            }
 
             //Page: ABout----------------------------------------------------------------------------
 
