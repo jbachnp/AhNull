@@ -254,34 +254,17 @@
             //Page: Home----------------------------------------------------------------------------
             $2("pgHome", "btnGo").click(async function () {
                 //${} ${$2("pgHome", "uiIV").val()} ${$2("pgHome", "uiKey").val()} `);
-                const ct = $2("pgHome", "uiCiphertext").val();
-                const iv = $2("pgHome", "uiIV").val();
-                const ky = $2("pgHome", "uiKey").val();
+                const ct = Uint8Array.from(atob($2("pgHome", "uiCiphertext").val()), c => c.charCodeAt(0));
+                const [iv, ky] = (ec=>["uiIV", "uiKey"].map(ui=>ec.encode($2("pgHome", ui).val())))(new TextEncoder());
 
-                // from https://stackoverflow.com/a/11562550/9014097
-                // function buf2Base64(buffer) {
-                //     return btoa(String.fromCharCode.apply(null, new Uint8Array(buffer)));
-                // }
+                let decryptedText = (new TextDecoder()).decode(await crypto.subtle.decrypt(
+                    {name: "AES-CBC", iv: iv},
+                    await crypto.subtle.importKey("raw", ky, {name: "AES-CBC"}, false, ["decrypt"]),
+                    ct
+                ));                
+                console.log(decryptedText);
 
-                // var inputString = "The quick brown fox jumps over the lazy dog";
-                // inputBytes = new TextEncoder().encode(inputString);
-                // hashBytes = await crypto.subtle.digest("SHA-256", inputBytes);
-                // console.log(JSON.stringify({hash: buf2Base64(hashBytes)})); // {"hash":"16j7swfXgJRpypq8sAguT41WUeRtPNt2LQLQvzfJ5ZI="}
-
-                let _k = await crypto.subtle.importKey("raw", (new TextEncoder()).encode(ky), {name: "AES-CBC"}, false, ["encrypt", "decrypt"]);
-
-                let argbuf = Uint8Array.from(atob(ct), c => c.charCodeAt(0));
-
-                let decrypted = await window.crypto.subtle.decrypt(
-                    {
-                        name: "AES-CBC",
-                        iv: (new TextEncoder()).encode(iv)
-                    },
-                    _k,
-                    argbuf
-                );                
-
-                console.log(decrypted);
+                $2("pgHome", "txtDecrypted").val(decryptedText);
             });
 
             //Page: ABout----------------------------------------------------------------------------
