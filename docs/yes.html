@@ -253,7 +253,7 @@
 
 
             //Page: Home----------------------------------------------------------------------------
-            $("btnClearMaLeMaLeHom").click(()=>$("#uiMaLeMaLeHom").val(""));
+            $("#btnClearMaLeMaLeHom").click(()=>$("#uiMaLeMaLeHom").val(""));
 
             $2("pgHome", "btnPasteInput").click(async function () {
                 $2("pgHome", "uiText").val(await navigator.clipboard.readText());
