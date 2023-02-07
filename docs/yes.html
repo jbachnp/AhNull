@@ -122,7 +122,6 @@
             <div class="input-group">
                 <input type="text" name="uiMaLeMaLeHom" class="form-control" placeholder="Ma Le Ma Le Hom" />
                 <div class="input-group-append">
-                    <button name="btnClearMaLeMaLeHom" class="btn">❌</button>
                     <button name="btnPasteMaLeMaLeHom" class="btn">🩹</button>
                 </div>
             </div>            
@@ -265,28 +264,36 @@
             //$2("pgHome", "uiMaLeMaLeHom").val("That I cannot do");
 
             //Page: Home----------------------------------------------------------------------------
-            $2("pgHome", "btnClearMaLeMaLeHom").click(async function () {
-                $2("pgHome", "uiMaLeMaLeHom").val();
-            });
-            
             $2("pgHome", "btnPasteMaLeMaLeHom").click(async function () {
                 $2("pgHome", "uiMaLeMaLeHom").val(await navigator.clipboard.readText());
-            });
-            
-            $2("pgHome", "btnClearInput").click(async function () {
-                $2("pgHome", "uiInput").val();
             });
             
             $2("pgHome", "btnPasteInput").click(async function () {
                 $2("pgHome", "uiInput").val(await navigator.clipboard.readText());
             });
             
+            $2("pgHome", "btnEncrypt").click(async function () {
+                let decryptedText = await my_decrypt($2("pgHome", "uiInput").val(), $2("pgHome", "uiMaLeMaLeHom").val());
+                console.log(decryptedText);
+                await navigator.clipboard.writeText(decryptedText);
+                $2("pgHome", "txtOutput").val(decryptedText);
+            });
+
             $2("pgHome", "btnDecrypt").click(async function () {
                 let decryptedText = await my_decrypt($2("pgHome", "uiInput").val(), $2("pgHome", "uiMaLeMaLeHom").val());
                 console.log(decryptedText);
                 await navigator.clipboard.writeText(decryptedText);
                 $2("pgHome", "txtOutput").val(decryptedText);
             });
+
+            async function my_encrypt(plaintext, passphrase){
+                const x = (new TextEncoder()).encode(plaintext);
+                const kyiv = await crypto.subtle.digest('SHA-384', (new TextEncoder()).encode(passphrase));
+
+                return arrarybuf_to_b64(
+                    await aes_cbc_encrypt(new Uint8Array(kyiv, 0, 32), new Uint8Array(kyiv, 32, 16), x)
+                );
+            }
 
             async function my_decrypt(b64Chipertext, passphrase){
                 const ct = b64_to_arrarybuf(b64Chipertext);
@@ -301,18 +308,39 @@
 
 
             //============================================================================
+            function isBase64(s){
+                return /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/.test(s);
+            }
+
+            function arrarybuf_to_b64( buffer ) {
+                var binary = '';
+                var bytes = new Uint8Array( buffer );
+                var len = bytes.byteLength;
+                for (var i = 0; i < len; i++) {
+                    binary += String.fromCharCode( bytes[ i ] );
+                }
+                return btoa( binary );
+            }            
+
             function b64_to_arrarybuf(b64Text){
                 return Uint8Array.from(atob(b64Text), c => c.charCodeAt(0)).buffer;
             }
 
-            async function aes_cbc_decrypt(abufKey, abufIV, abufChiptertext){
-                return await crypto.subtle.decrypt(
+            async function aes_cbc_encrypt(abufKey, abufIV, abufPlain){
+                return await crypto.subtle.encrypt(
                     {name: "AES-CBC", iv: abufIV},
                     await crypto.subtle.importKey("raw", abufKey, {name: "AES-CBC"}, false, ["decrypt"]),
-                    abufChiptertext
+                    abufPlain
                 );
             }
 
+            async function aes_cbc_decrypt(abufKey, abufIV, abufChipter){
+                return await crypto.subtle.decrypt(
+                    {name: "AES-CBC", iv: abufIV},
+                    await crypto.subtle.importKey("raw", abufKey, {name: "AES-CBC"}, false, ["decrypt"]),
+                    abufChipter
+                );
+            }
 
         })(MyApp);
     </script>
