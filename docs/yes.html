@@ -262,7 +262,7 @@
             //Page: Home----------------------------------------------------------------------------
             $2("pgHome", "btnPasteMaLeMaLeHom").click(async function () {
                 $2("pgHome", "uiInput").val(await navigator.clipboard.readText());
-            }
+            });
             
             $2("pgHome", "btnEncrypt").click(async function () {
                 let decryptedText = await my_decrypt($2("pgHome", "uiInput").val(), $2("pgHome", "uiMaLeMaLeHom").val());
