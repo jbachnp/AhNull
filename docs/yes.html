@@ -125,19 +125,9 @@
                     <button name="btnPasteMaLeMaLeHom" class="btn">🩹</button>
                 </div>
             </div>            
-
-            <div class="input-group">
-                <!-- <input type="text" name="uiInput" class="form-control" placeholder="Input" /> -->
-                <textarea name="uiInput" class="form-control" rows="5" readonly></textarea>
-                <div class="input-group-append">
-                    <button name="btnPasteInput" class="btn">🩹</button>
-                </div>
-            </div>            
-
-
-            <button name="btnEncrypt" class="btn form-control btn-success">Encrypt</button>
-            <button name="btnDecrypt" class="btn form-control btn-success">Decrypt</button>
-            <textarea name="txtOutput" class="form-control" rows="5" readonly></textarea>
+            <button name="btnPasteInput" class="btn">🩹</button>
+            <button name="btnGo" class="btn form-control btn-success">🔃</button>
+            <textarea name="uiText" class="form-control" rows="5"></textarea>
         </div>
 
         <div name="pgAbout">
@@ -272,20 +262,24 @@
                 $2("pgHome", "uiInput").val(await navigator.clipboard.readText());
             });
             
-            $2("pgHome", "btnEncrypt").click(async function () {
-                let encryptedText = await my_encrypt($2("pgHome", "uiInput").val(), $2("pgHome", "uiMaLeMaLeHom").val());
-                console.log(encryptedText);
-                await navigator.clipboard.writeText(encryptedText);
-                $2("pgHome", "txtOutput").val(encryptedText);
+            $2("pgHome", "btnGo").click(async function () {
+
+                if(isBase64($2("pgHome", "uiText").val())){
+                    let decryptedText = await my_decrypt($2("pgHome", "uiInput").val(), $2("pgHome", "uiMaLeMaLeHom").val());
+                    console.log(decryptedText);
+                    await navigator.clipboard.writeText(decryptedText);
+                    $2("pgHome", "uiText").val(decryptedText);
+
+                }else{
+                    let encryptedText = await my_encrypt($2("pgHome", "uiInput").val(), $2("pgHome", "uiMaLeMaLeHom").val());
+                    console.log(encryptedText);
+                    await navigator.clipboard.writeText(encryptedText);
+                    $2("pgHome", "uiText").val(encryptedText);
+                }
+
             });
 
-            $2("pgHome", "btnDecrypt").click(async function () {
-                let decryptedText = await my_decrypt($2("pgHome", "uiInput").val(), $2("pgHome", "uiMaLeMaLeHom").val());
-                console.log(decryptedText);
-                await navigator.clipboard.writeText(decryptedText);
-                $2("pgHome", "txtOutput").val(decryptedText);
-            });
-
+            
             async function my_encrypt(plaintext, passphrase){
                 const pt = (new TextEncoder()).encode(plaintext);
                 const kyiv = await crypto.subtle.digest('SHA-384', (new TextEncoder()).encode(passphrase));
