@@ -120,8 +120,7 @@
     <main role="main" class="container">
         <div name="pgHome">
             <input type="text" name="uiMaLeMaLeHom" class="" placeholder="Ma Le Ma Le Hom" />
-            <button name="btnPasteMaLeMaLeHom" class="btn">🩹⬅️</button>
-            <button name="btnPasteInput" class="btn">🩹⬇️</button>
+            <button name="btnPasteInput" class="btn">📋</button>
             <button name="btnGo" class="btn btn-success">🔃</button>
             <textarea name="uiText" class="form-control" rows="5"></textarea>
         </div>
@@ -250,10 +249,6 @@
             //$2("pgHome", "uiMaLeMaLeHom").val("That I cannot do");
 
             //Page: Home----------------------------------------------------------------------------
-            $2("pgHome", "btnPasteMaLeMaLeHom").click(async function () {
-                $2("pgHome", "uiMaLeMaLeHom").val(await navigator.clipboard.readText());
-            });
-            
             $2("pgHome", "btnPasteInput").click(async function () {
                 $2("pgHome", "uiText").val(await navigator.clipboard.readText());
             });
