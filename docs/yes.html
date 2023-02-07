@@ -253,13 +253,13 @@
             $2("pgHome", "btnGo").click(async function () {
 
                 if(isBase64($2("pgHome", "uiText").val())){
-                    let decryptedText = await my_decrypt($2("pgHome", "uiText").val(), $2("pgHome", "uiMaLeMaLeHom").val());
+                    let decryptedText = await my_decrypt($2("pgHome", "uiText").val(), $("uiMaLeMaLeHom").val());
                     console.log(decryptedText);
                     await navigator.clipboard.writeText(decryptedText);
                     $2("pgHome", "uiText").val(decryptedText);
 
                 }else{
-                    let encryptedText = await my_encrypt($2("pgHome", "uiText").val(), $2("pgHome", "uiMaLeMaLeHom").val());
+                    let encryptedText = await my_encrypt($2("pgHome", "uiText").val(), $("uiMaLeMaLeHom").val());
                     console.log(encryptedText);
                     await navigator.clipboard.writeText(encryptedText);
                     $2("pgHome", "uiText").val(encryptedText);
