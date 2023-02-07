@@ -329,7 +329,7 @@
             async function aes_cbc_encrypt(abufKey, abufIV, abufPlain){
                 return await crypto.subtle.encrypt(
                     {name: "AES-CBC", iv: abufIV},
-                    await crypto.subtle.importKey("raw", abufKey, {name: "AES-CBC"}, false, ["decrypt"]),
+                    await crypto.subtle.importKey("raw", abufKey, {name: "AES-CBC"}, false, ["encrypt"]),
                     abufPlain
                 );
             }
