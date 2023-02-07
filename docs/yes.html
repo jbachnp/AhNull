@@ -276,14 +276,14 @@
 
             async function my_encrypt(plaintext, passphrase){
                 const pt = (new TextEncoder()).encode(plaintext);
-                const [ky, iv] = await passphrase2keyiv((new TextEncoder()).encode(passphrase));
+                const [ky, iv] = await passphrase2keyiv(passphrase);
 
                 return arrarybuf_to_b64(await aes_cbc_encrypt(ky, iv, pt));
             }
 
             async function my_decrypt(b64Chipertext, passphrase){
                 const ct = b64_to_arrarybuf(b64Chipertext);
-                const [ky, iv] = await passphrase2keyiv((new TextEncoder()).encode(passphrase));
+                const [ky, iv] = await passphrase2keyiv(passphrase);
 
                 return (new TextDecoder()).decode(await aes_cbc_decrypt(ky, iv, ct));
             }
