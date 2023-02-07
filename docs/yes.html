@@ -268,22 +268,23 @@
             });
 
             
+            async function passphrase2keyiv(passphrase){
+                const kyiv = await crypto.subtle.digest('SHA-384', (new TextEncoder()).encode(passphrase));
+                return [new Uint8Array(kyiv, 0, 32), new Uint8Array(kyiv, 32, 16)];
+            }
+
             async function my_encrypt(plaintext, passphrase){
                 const pt = (new TextEncoder()).encode(plaintext);
-                const kyiv = await crypto.subtle.digest('SHA-384', (new TextEncoder()).encode(passphrase));
+                const [ky, iv] = await passphrase2keyiv((new TextEncoder()).encode(passphrase));
 
-                return arrarybuf_to_b64(
-                    await aes_cbc_encrypt(new Uint8Array(kyiv, 0, 32), new Uint8Array(kyiv, 32, 16), pt)
-                );
+                return arrarybuf_to_b64(await aes_cbc_encrypt(ky, iv, pt));
             }
 
             async function my_decrypt(b64Chipertext, passphrase){
                 const ct = b64_to_arrarybuf(b64Chipertext);
-                const kyiv = await crypto.subtle.digest('SHA-384', (new TextEncoder()).encode(passphrase));
+                const [ky, iv] = await passphrase2keyiv((new TextEncoder()).encode(passphrase));
 
-                return (new TextDecoder()).decode(
-                    await aes_cbc_decrypt(new Uint8Array(kyiv, 0, 32), new Uint8Array(kyiv, 32, 16), ct)
-                );
+                return (new TextDecoder()).decode(await aes_cbc_decrypt(ky, iv, ct));
             }
 
             //Page: ABout----------------------------------------------------------------------------
