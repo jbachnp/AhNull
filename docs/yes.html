@@ -8,13 +8,13 @@
 
 <html>
 <head>
-    <title>My AES Decryptor</title>
+    <title>Treehole</title>
     <link rel="icon" href="favicon.ico">
     <link rel="manifest" href="manifest.json">
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!--<link rel="manifest" href="manifest.json">-->
+
     <!--includes-->
     <script src="SharedTechnology/ExternalDependency/JsLibrary/Underscore/underscore-min.js"></script>
     <script src="SharedTechnology/ExternalDependency/JsLibrary/JQuery/jquery-3.0.0.min.js"></script>
@@ -111,7 +111,7 @@
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active"><a class="nav-link" href="javascript:void(0);" data-anull_page="div[name='pgHome']">🏡</a></li>
-                <li class="nav-item active"><input type="text" name="uiMaLeMaLeHom2" class="" placeholder="Ma Le Ma Le Hom" /> </li>
+                <li class="nav-item active"><input type="text" id="uiMaLeMaLeHom" class="" placeholder="Ma Le Ma Le Hom" /> </li>
                 <li role="separator" class="dropdown-divider"></li>
                 <li class="nav-item active"><a class="nav-link" href="javascript:void(0);" data-anull_page="div[name='pgAbout']">❗</a></li>
             </ul>
@@ -120,9 +120,7 @@
 
     <main role="main" class="container">
         <div name="pgHome">
-            <input type="text" name="uiMaLeMaLeHom" class="" placeholder="Ma Le Ma Le Hom" />
-            <button name="btnPasteInput" class="btn">📋</button>
-            <button name="btnGo" class="btn btn-success">🔃</button>
+            <button name="btnGo" class="btn form-control btn-success">🔃</button>
             <textarea name="uiText" class="form-control" rows="5"></textarea>
         </div>
 
@@ -246,8 +244,6 @@
             _AppLog("init completed");
             _AppLog("welcome");
 
-            //$2("pgHome", "uiCiphertext").val("lMDnzk2GKOKHby6htJd/stZvEUFxAfVikhEfoP3lMZNZa4yRu15CoVtoI3NrhE0fA0VSRDm4F4xdLv9ZxjbhwsxpgUM47pAtUHnbYen3/gGNO8YM0K028LOYyVkxmAk/iXQbxPE5sZPIT9nVtMZcZQ==");
-            //$2("pgHome", "uiMaLeMaLeHom").val("That I cannot do");
 
             //Page: Home----------------------------------------------------------------------------
             $2("pgHome", "btnPasteInput").click(async function () {
