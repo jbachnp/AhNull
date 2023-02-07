@@ -111,7 +111,14 @@
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active"><a class="nav-link" href="javascript:void(0);" data-anull_page="div[name='pgHome']">🏡</a></li>
-                <li class="nav-item active"><input type="text" id="uiMaLeMaLeHom" class="" placeholder="Ma Le Ma Le Hom" /> </li>
+                <li class="nav-item active">    
+                    <input type="text" id="uiMaLeMaLeHom" class="form-control" placeholder="Ma Le Ma Le Hom" />
+                    <div class="input-group">
+                        <div class="input-group-append">
+                            <button id="btnClearMaLeMaLeHom" class="btn">❌</button>
+                        </div>
+                    </div>
+                </li>
                 <li role="separator" class="dropdown-divider"></li>
                 <li class="nav-item active"><a class="nav-link" href="javascript:void(0);" data-anull_page="div[name='pgAbout']">❗</a></li>
             </ul>
@@ -246,25 +253,19 @@
 
 
             //Page: Home----------------------------------------------------------------------------
+            $("btnClearMaLeMaLeHom").click(()=>$("#uiMaLeMaLeHom").val(""));
+
             $2("pgHome", "btnPasteInput").click(async function () {
                 $2("pgHome", "uiText").val(await navigator.clipboard.readText());
             });
             
             $2("pgHome", "btnGo").click(async function () {
-
-                if(isBase64($2("pgHome", "uiText").val())){
-                    let decryptedText = await my_decrypt($2("pgHome", "uiText").val(), $("uiMaLeMaLeHom").val());
-                    console.log(decryptedText);
-                    await navigator.clipboard.writeText(decryptedText);
-                    $2("pgHome", "uiText").val(decryptedText);
-
-                }else{
-                    let encryptedText = await my_encrypt($2("pgHome", "uiText").val(), $("uiMaLeMaLeHom").val());
-                    console.log(encryptedText);
-                    await navigator.clipboard.writeText(encryptedText);
-                    $2("pgHome", "uiText").val(encryptedText);
-                }
-
+                let dada = isBase64($2("pgHome", "uiText").val()) ?
+                    await my_decrypt($2("pgHome", "uiText").val(), $("#uiMaLeMaLeHom").val()):
+                    await my_encrypt($2("pgHome", "uiText").val(), $("#uiMaLeMaLeHom").val())
+                
+                $2("pgHome", "uiText").val(dada);
+                await navigator.clipboard.writeText(dada);
             });
 
             
