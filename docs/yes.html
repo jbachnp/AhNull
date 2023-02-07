@@ -271,7 +271,8 @@
             
             async function passphrase2keyiv(passphrase){
                 const kyiv = await crypto.subtle.digest('SHA-384', (new TextEncoder()).encode(passphrase));
-                return [new Uint8Array(kyiv, 0, 32), new Uint8Array(kyiv, 32, 16)];
+                //return [new Uint8Array(kyiv, 0, 32), new Uint8Array(kyiv, 32, 16)];
+                return [kyiv.slice(0, 32), kyiv.slice(32, 48)];
             }
 
             async function my_encrypt(plaintext, passphrase){
