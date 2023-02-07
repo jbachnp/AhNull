@@ -273,10 +273,10 @@
             });
             
             $2("pgHome", "btnEncrypt").click(async function () {
-                let decryptedText = await my_decrypt($2("pgHome", "uiInput").val(), $2("pgHome", "uiMaLeMaLeHom").val());
-                console.log(decryptedText);
-                await navigator.clipboard.writeText(decryptedText);
-                $2("pgHome", "txtOutput").val(decryptedText);
+                let encryptedText = await my_encrypt($2("pgHome", "uiInput").val(), $2("pgHome", "uiMaLeMaLeHom").val());
+                console.log(encryptedText);
+                await navigator.clipboard.writeText(encryptedText);
+                $2("pgHome", "txtOutput").val(encryptedText);
             });
 
             $2("pgHome", "btnDecrypt").click(async function () {
@@ -287,11 +287,11 @@
             });
 
             async function my_encrypt(plaintext, passphrase){
-                const x = (new TextEncoder()).encode(plaintext);
+                const pt = (new TextEncoder()).encode(plaintext);
                 const kyiv = await crypto.subtle.digest('SHA-384', (new TextEncoder()).encode(passphrase));
 
                 return arrarybuf_to_b64(
-                    await aes_cbc_encrypt(new Uint8Array(kyiv, 0, 32), new Uint8Array(kyiv, 32, 16), x)
+                    await aes_cbc_encrypt(new Uint8Array(kyiv, 0, 32), new Uint8Array(kyiv, 32, 16), pt)
                 );
             }
 
