@@ -248,18 +248,14 @@
         
       function messageTemplate(message, username, timestamp) {
         return `<li>
-          <div class="flex space-x-2 pl-2 pt-2">
-            <div class="flex flex-col">
-              <div class="flex items-baseline space-x-2">
-                <div class="text-sm font-bold">${username}</div>
-                <div class="text-sm text-gray-400">${
+          <div class="">
+            <div class="">${
                   new Date(timestamp.seconds * 1000).toLocaleDateString() +
                   " " +
                   new Date(timestamp.seconds * 1000).toLocaleTimeString()
-                }</div>
-              </div>
-              <div class="text-sm text-gray-500">${message}</div>
+              }
             </div>
+            <div class="">${message}</div>
           </div>
         </li>`;
       }
