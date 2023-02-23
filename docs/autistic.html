@@ -143,6 +143,9 @@
       const messageInput = document.getElementById("messageInput");
       const sendButton = document.getElementById("sendButton");
 
+      joinView.style.display = 'block';
+      chatsView.style.display = 'none';
+
       let userLoggedIn = false;
       let specifiedUsername = "";
       let messages = [];
@@ -160,8 +163,8 @@
           console.log("User logged-in");
           userLoggedIn = true;
 
-          joinView.classList.add("hidden");
-          chatsView.classList.remove("hidden");
+          joinView.style.display = 'none';
+          chatsView.style.display = 'block';
 
           await loadHistoricalMessages();
           await subscribeToNewMessages();
