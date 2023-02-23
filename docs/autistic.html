@@ -21,10 +21,7 @@
     </div>
 
     <div id="chatsView" class="">
-      <div class="">
-        <ul id="messageList">
-        </ul>
-      </div>
+      <div id="messageList" class=""></div>
       <div class="">
         <textarea id="messageInput" class="form-control" rows="5"></textarea>
         <button id="sendButton" class="">➤ </button>
@@ -247,17 +244,16 @@
       }
         
       function messageTemplate(message, username, timestamp) {
-        return `<li>
-          <div class="">
-            <div class="">${
-                  new Date(timestamp.seconds * 1000).toLocaleDateString() +
-                  " " +
-                  new Date(timestamp.seconds * 1000).toLocaleTimeString()
-              }
-            </div>
-            <div class="">${message}</div>
+        return `<div class="">
+          <div class="">${
+                new Date(timestamp.seconds * 1000).toLocaleDateString() +
+                " " +
+                new Date(timestamp.seconds * 1000).toLocaleTimeString()
+            }
           </div>
-        </li>`;
+          <div class="" style="white-space: pre-wrap">${message}</div>
+        </div>
+        <hr/>`;
       }
     
     </script>
