@@ -7,39 +7,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
   <body>
     <!--UI-->
-    <div id="joinView" class="bg-gray-100 w-96 items-center mx-auto flex flex-col mt-10 rounded-md p-4 space-y-4">
-      <h1 class="text-center font-bold">Join Chat</h1>
-      <div class="flex space-x-1">
-        <input id="usernameInput" type="text" class="bg-white border border-gray-200 rounded-md px-2" placeholder="Enter your name" />
-        <button id="joinButton" class="bg-indigo-600 px-2 py-1 text-sm text-white rounded-md" > Join </button>
+    <div id="joinView" class="">
+      <h1 class="">Join Chat</h1>
+      <div class="">
+        <input id="usernameInput" type="text" placeholder="Enter your name" class="" />
+        <button id="joinButton" class="" > Join </button>
       </div>
     </div>
 
-    <div id="chatsView" class="w-64 h-96 mx-auto flex flex-col mt-10 hidden">
-      <div class="messages flex-1 bg-gray-100">
+    <div id="chatsView" class="">
+      <div class="">
         <ul id="messageList">
-          <li>
-            <div class="flex space-x-2 pl-2 pt-2">
-              <div class="flex flex-col">
-                <div class="flex items-baseline space-x-2">
-                  <div class="text-sm font-bold">Tommy Lee</div>
-                  <div class="text-sm text-gray-400">5:20 pm</div>
-                </div>
-                <div class="text-sm text-gray-500">Hello world</div>
-              </div>
-            </div>
-          </li>
         </ul>
       </div>
-      <div class="input h-11 w-full flex border border-slate-200 rounded-md">
-        <input id="messageInput" type="text" class="outline-none flex-1 px-1" />
-        <div class="p-1">
-          <button id="sendButton" class="bg-indigo-600 p-2 rounded-lg">➤ </button>
+      <div class="">
+        <input id="messageInput" type="text" class="" />
+        <div class="">
+          <button id="sendButton" class="">➤ </button>
         </div>
       </div>
     </div>
