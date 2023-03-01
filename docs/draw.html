@@ -33,7 +33,7 @@
     </style>
 
     <!--UI-->
-    <svg id="freehand-canvas"><path /></svg>
+    <svg id="freehand-canvas"></svg>
 
     <!--app logic-->
     <script type="module">
@@ -60,7 +60,7 @@
         document.addEventListener('DOMContentLoaded', (e) => {
             let points = [];
             const svg = document.querySelector('svg');
-            const path = svg.querySelector('path');
+            let path = null;
             
             function render() {
                 path.setAttribute('d', getSvgPathFromStroke(
@@ -74,8 +74,9 @@
             }
             
             function handlePointerDown(e) {
-                //points = [[e.pageX, e.pageY, e.pressure]];
-                points = [...points, [e.pageX, e.pageY, e.pressure]];
+                path = document.createElement('path');
+                svg.append(path);
+                points = [[e.pageX, e.pageY, e.pressure]];
                 render();
             }
 
@@ -88,7 +89,7 @@
             
             svg.addEventListener('pointerdown', handlePointerDown);
             svg.addEventListener('pointermove', handlePointerMove);
-            svg.addEventListener('dblclick', ()=>points = []);
+            svg.addEventListener('dblclick', ()=>{});
         });
 
     </script>
