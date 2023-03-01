@@ -4,17 +4,26 @@
 -->
 <html lang="en">
     <head>
-        <title>Autistic仔</title>
+        <title>Draw</title>
         <link rel="icon" href="img/snake-96.png">
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
     </head>
     
   <body>
     <!--style-->
     <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
         svg {
             /* width: 100dvw;
             height: 100dvh; */
@@ -29,58 +38,58 @@
 
     <!--app logic-->
     <script type="module">
-        console.log("loading old script");
+        console.log("出發");
         import { getStroke } from "https://cdn.skypack.dev/perfect-freehand"
 
-// @ref https://github.com/steveruizok/perfect-freehand#rendering
-function getSvgPathFromStroke(stroke) {
-  if (!stroke.length) return ''
+        // @ref https://github.com/steveruizok/perfect-freehand#rendering
+        function getSvgPathFromStroke(stroke) {
+        if (!stroke.length) return ''
 
-  const d = stroke.reduce(
-    (acc, [x0, y0], i, arr) => {
-      const [x1, y1] = arr[(i + 1) % arr.length]
-      acc.push(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2)
-      return acc
-    },
-    ['M', ...stroke[0], 'Q']
-  )
+        const d = stroke.reduce(
+            (acc, [x0, y0], i, arr) => {
+            const [x1, y1] = arr[(i + 1) % arr.length]
+            acc.push(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2)
+            return acc
+            },
+            ['M', ...stroke[0], 'Q']
+        )
 
-  d.push('Z')
-  return d.join(' ')
-}
+        d.push('Z')
+        return d.join(' ')
+        }
 
-document.addEventListener('DOMContentLoaded', (e) => {
-	let points = [];
-	const svg = document.querySelector('svg');
-	const path = svg.querySelector('path');
-	
-	function render() {
-		path.setAttribute('d', getSvgPathFromStroke(
-            getStroke(points, {
-              size: 16,
-              thinning: 0.5,
-              smoothing: 0.5,
-              streamline: 0.5,
-            })
-          )
-				);
-	}
-	
-	function handlePointerDown(e) {
-		points = [[e.pageX, e.pageY, e.pressure]];
-		render();
-	}
+        document.addEventListener('DOMContentLoaded', (e) => {
+            let points = [];
+            const svg = document.querySelector('svg');
+            const path = svg.querySelector('path');
+            
+            function render() {
+                path.setAttribute('d', getSvgPathFromStroke(
+                    getStroke(points, {
+                    size: 16,
+                    thinning: 0.5,
+                    smoothing: 0.5,
+                    streamline: 0.5,
+                    })
+                )
+                        );
+            }
+            
+            function handlePointerDown(e) {
+                points = [[e.pageX, e.pageY, e.pressure]];
+                render();
+            }
 
-	function handlePointerMove(e) {
-		if (e.buttons === 1) {
-			points = [...points, [e.pageX, e.pageY, e.pressure]];
-			render();
-		}
-	}
-	
-	svg.addEventListener('pointerdown', handlePointerDown);
-	svg.addEventListener('pointermove', handlePointerMove);
-});
+            function handlePointerMove(e) {
+                if (e.buttons === 1) {
+                    points = [...points, [e.pageX, e.pageY, e.pressure]];
+                    render();
+                }
+            }
+            
+            svg.addEventListener('pointerdown', handlePointerDown);
+            svg.addEventListener('pointermove', handlePointerMove);
+        });
 
     </script>
   </body>
