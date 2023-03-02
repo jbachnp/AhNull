@@ -34,7 +34,7 @@
     </style>
 
     <!--UI-->
-    <svg id="freehand-canvas"><path /></svg>
+    <svg id="freehand-canvas"></svg>
 
     <!--app logic-->
     <script type="module">
@@ -61,8 +61,10 @@
         document.addEventListener('DOMContentLoaded', (e) => {
             let points = [];
             const svg = document.querySelector('svg');
-            const path = svg.querySelector('path');
-            
+            let path = null;
+            path = document.createElement('path');
+            svg.append(path);            
+
             function render() {
                 path.setAttribute('d', getSvgPathFromStroke(
                     getStroke(points, {
