@@ -25,15 +25,15 @@
         }
 
         svg {
-            width: 100dvw;
-            height: 100dvh;
+            /* width: 100dvw;
+            height: 100dvh; */
             background-color: bisque;
             touch-action: none;
         }
     </style>
 
     <!--UI-->
-    <svg id="freehand-canvas"></svg>
+    <svg id="freehand-canvas"><path /></svg>
 
     <!--app logic-->
     <script type="module">
@@ -60,12 +60,12 @@
         document.addEventListener('DOMContentLoaded', (e) => {
             let points = [];
             const svg = document.querySelector('svg');
-            let path = null;
+            const path = svg.querySelector('path');
             
             function render() {
                 path.setAttribute('d', getSvgPathFromStroke(
                     getStroke(points, {
-                        size: 16,
+                        size: 4,
                         thinning: 0.5,
                         smoothing: 0.5,
                         streamline: 0.5,
@@ -74,9 +74,8 @@
             }
             
             function handlePointerDown(e) {
-                path = document.createElement('path');
-                svg.append(path);
-                points = [[e.pageX, e.pageY, e.pressure]];
+                //points = [[e.pageX, e.pageY, e.pressure]];
+                points = [...points, [e.pageX, e.pageY, e.pressure]];
                 render();
             }
 
@@ -89,7 +88,7 @@
             
             svg.addEventListener('pointerdown', handlePointerDown);
             svg.addEventListener('pointermove', handlePointerMove);
-            svg.addEventListener('dblclick', ()=>{});
+            svg.addEventListener('dblclick', ()=>points = []);
         });
 
     </script>
