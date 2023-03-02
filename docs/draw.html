@@ -1,7 +1,6 @@
 <!DOCTYPE html> 
 <!--
     https://jbachnp.github.io/AhNull/draw.html
-    😎
 -->
 <html lang="en">
     <head>
@@ -34,7 +33,7 @@
     </style>
 
     <!--UI-->
-    <svg id="freehand-canvas"></svg>
+    <svg id="freehand-canvas"><path /></svg>
 
     <!--app logic-->
     <script type="module">
@@ -61,10 +60,8 @@
         document.addEventListener('DOMContentLoaded', (e) => {
             let points = [];
             const svg = document.querySelector('svg');
-            let path = null;
-            path = document.createElement('path');
-            svg.append(path);            
-
+            const path = svg.querySelector('path');
+            
             function render() {
                 path.setAttribute('d', getSvgPathFromStroke(
                     getStroke(points, {
