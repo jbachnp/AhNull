@@ -33,7 +33,7 @@
     </style>
 
     <!--UI-->
-    <svg id="freehand-canvas"></svg>
+    <svg id="freehand-canvas"><path /></svg>
 
     <!--app logic-->
     <script type="module">
@@ -60,7 +60,7 @@
         document.addEventListener('DOMContentLoaded', (e) => {
             let points = [];
             const svg = document.querySelector('svg');
-            let path = null;
+            const path = svg.querySelector('path');
             
             function render() {
                 path.setAttribute('d', getSvgPathFromStroke(
@@ -75,9 +75,6 @@
             
             function handlePointerDown(e) {
                 //points = [[e.pageX, e.pageY, e.pressure]];
-                path = document.createElement('path');
-                svg.append(path);
-                
                 points = [...points, [e.pageX, e.pageY, e.pressure]];
                 render();
             }
