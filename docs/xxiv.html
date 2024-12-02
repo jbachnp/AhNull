@@ -25,7 +25,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
     </style>
 
     <!--UI-->
-    <h1>🟢xxiv</h1>
+    <h1>🟢🟢xxiv</h1>
     <div>
         <input type="text" id="txtSearch" placeholder="Type your search here..." onkeyup="handleKeyUp(event)">
         <button onclick="showAlert()">Search</button>
@@ -44,12 +44,14 @@ https://jbachnp.github.io/AhNull/xxiv.html
             var inputText = document.getElementById("txtSearch").value;
             // Show an alert with the input value
             //alert(inputText);
-const cb_onload = `document.getElementById("ad_topslot").remove();
+const cb_onload = `console.log('🟢 go go go');
+document.getElementById("ad_topslot").remove();
 document.getElementById("ad_leftslot").remove();
 document.getElementById("ad_rightslot").remove();
 document.getElementById("ad_houseslot_a").remove();
 document.getElementById("ad_btmslot").remove();
 document.querySelector('.hfr-s.lt2s.lmt-10').remove();
+alert('yeah');
 `
 		
             openpage('cambridge', `https://dictionary.cambridge.org/dictionary/english-chinese-traditional/${inputText}`, cb_onload);
