@@ -71,7 +71,9 @@ alert('yeah');
             newTab.onload = function() {
                 // Create a script element
                 const script = newTab.document.createElement('script');
-                
+
+//does not work as expected
+		    
                 // Set the script content
                 script.textContent = `
                     document.addEventListener('DOMContentLoaded', function() {
