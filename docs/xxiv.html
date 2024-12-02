@@ -25,7 +25,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
     </style>
 
     <!--UI-->
-    <h1>xxiv</h1>
+    <h1>xxiv!</h1>
     <div>
         <input type="text" id="txtSearch" placeholder="Type your search here..." onkeyup="handleKeyUp(event)">
         <button onclick="showAlert()">Search</button>
@@ -43,7 +43,8 @@ https://jbachnp.github.io/AhNull/xxiv.html
             // Get the value from the text box
             var inputText = document.getElementById("txtSearch").value;
             // Show an alert with the input value
-            alert(inputText);
+            //alert(inputText);
+            openpage(`https://dictionary.cambridge.org/dictionary/english-chinese-traditional/${inputText}`, '_blank',  'console.log("this injected")');
         }
 
         // Function to handle keyup event for Enter key
@@ -51,7 +52,29 @@ https://jbachnp.github.io/AhNull/xxiv.html
             if (event.key === 'Enter') {
                 showAlert();
             }
-        }	    
+        }
+	    
+        function openpage(targetName, url, txtjsOnLoad) {
+            const newTab = window.open(url, jsInject);
+
+            // Wait for the new tab to load
+            newTab.onload = function() {
+                // Create a script element
+                const script = newTab.document.createElement('script');
+                
+                // Set the script content
+                script.textContent = `
+                    document.addEventListener('DOMContentLoaded', function() {
+                        console.log('The page has fully loaded!');
+                        ${jsInject}
+                    });
+                `;
+                
+                // Append the script to the new tab's document
+                newTab.document.body.appendChild(script);
+            };
+        }
+	    
     </script>
 
 </body>
