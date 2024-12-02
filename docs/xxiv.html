@@ -10,7 +10,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
 
 <html>
 <head>
-    <title>xxiv!</title>
+    <title>xxiv</title>
     <link rel="icon" href="favicon.ico">
 
     <meta charset="utf-8">
@@ -25,7 +25,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
     </style>
 
     <!--UI-->
-    <h1>xxiv!</h1>
+    <h1>xxiv🟠</h1>
     <div>
         <input type="text" id="txtSearch" placeholder="Type your search here..." onkeyup="handleKeyUp(event)">
         <button onclick="showAlert()">Search</button>
@@ -44,7 +44,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
             var inputText = document.getElementById("txtSearch").value;
             // Show an alert with the input value
             //alert(inputText);
-            openpage(`https://dictionary.cambridge.org/dictionary/english-chinese-traditional/${inputText}`, '_blank',  'console.log("this injected")');
+            openpage(`https://dictionary.cambridge.org/dictionary/english-chinese-traditional/${inputText}`, 'cambridge',  'console.log("this injected")');
         }
 
         // Function to handle keyup event for Enter key
@@ -54,8 +54,8 @@ https://jbachnp.github.io/AhNull/xxiv.html
             }
         }
 	    
-        function openpage(targetName, url, txtjsOnLoad) {
-            const newTab = window.open(url, jsInject);
+        function openpage(targetName, url, jsInject) {
+            const newTab = window.open(url, targetName);
 
             // Wait for the new tab to load
             newTab.onload = function() {
