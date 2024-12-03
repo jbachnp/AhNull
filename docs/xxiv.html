@@ -84,6 +84,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
 				joWord.find("a").click(()=>{
 					window.open(`https://dictionary.cambridge.org/dictionary/english-chinese-traditional/${oWord.w}`, "_Cambridge");
 					window.open(`https://www.oxfordlearnersdictionaries.com/definition/english/${oWord.w}`, "_Oxford");
+					window.focus();
 				});
 				joWord.appendTo("#divWordList");
 			});
@@ -97,7 +98,11 @@ https://jbachnp.github.io/AhNull/xxiv.html
 
 		function loadWordlist(lvl, pgr){
 			$(".word-entry").addClass("hide2");
-			$(`.word-entry[data-level='${lvl}']`).removeClass("hide2");
+			if(lvl == "Z"){
+				$(".word-entry").removeClass("hide2");
+			}else{
+				$(`.word-entry[data-level='${lvl}']`).removeClass("hide2");
+			}
 		}
 
 	    function tplWord(oWord){
