@@ -70,8 +70,9 @@ https://jbachnp.github.io/AhNull/xxiv.html
 
     <!--app logic uiVolume-->
     <script>
-		main();
-
+		window.addEventListener("load", function() {
+			main();
+		});
 
 		function main(){
 			let wordlist = getData();
@@ -86,7 +87,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
 	    function tplWord(oWord){
 			return `
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                ${oWord.w} (${oWord.w})
+                ${oWord.w} (${oWord.s})
                 <div class="btn-group" role="group" aria-label="Options for Word 1">
                     <button type="button" class="btn btn-secondary">🔴</button>
                     <button type="button" class="btn btn-secondary">🟡</button>
