@@ -96,7 +96,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
 		function main(){
 			let wordlist = getData();
 			
-			wordlist.slice(0, 9999).forEach(oWord=>{
+			wordlist.slice(0, 2).forEach(oWord=>{
 				let joWord = $(tplWord(oWord));
 				joWord.find("a").click(()=>{
 					window.open(`https://dictionary.cambridge.org/dictionary/english-chinese-traditional/${oWord.w}`, "_Cambridge");
