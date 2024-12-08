@@ -20,7 +20,14 @@ https://jbachnp.github.io/AhNull/xxiv.html
 	<style>
         .hide2 {
             display: none !important; 
-        }	
+        }
+        .selectedCell{
+            background-color:yellowgreen !important;
+            font:bold;
+        }
+        .mixedCell{
+            background-color:green !important;
+        }
 	</style>
 
     <!--🟢 templates -->
@@ -46,28 +53,61 @@ https://jbachnp.github.io/AhNull/xxiv.html
 				</button>
 				
 				<div class="collapse navbar-collapse" id="navbarCollapse">
-					<form class="d-flex">
-						<select class="form-select" id="optLvl">
-							<option selected value="Z">(all)</option>
-							<option value="A1">A1</option>
-							<option value="A2">A2</option>
-							<option value="B1">B1</option>
-							<option value="B2">B2</option>
-							<option value="C1">C1</option>
-						</select>
-						<select class="form-select" id="optPOS">
-							<option selected value="z">(all)</option>
-							<option value="n">.</option>
-							<option value="v">v.</option>
-							<option value="adj">adj.</option>
-							<option value="misc">misc.</option>
-						</select>
+                    <table class="table table-bordered" id="tblWordGroup">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col" data-option='A1'>A1</th>
+                                <th scope="col" data-option='A2'>A2</th>
+                                <th scope="col" data-option='B1'>B1</th>
+                                <th scope="col" data-option='B2'>B2</th>
+                                <th scope="col" data-option='C1'>C1</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row" data-option='n.'>n.</th>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" data-option='v.'>v.</th>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" data-option='adj.'>adj.</th>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" data-option='misc.'>misc.</th>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <form class="d-flex">
 						<select class="form-select" id="optProgress">
-							<option selected value="z">(all)</option>
+							<option value="Z">(all)</option>
 							<option value="p">🔴</option>
 							<option value="q">🟡</option>
 							<option value="r">🟢</option>
 						</select>
+                        <input class="btn btn-outline-success" type="button" id="btnFilter" value="Filter"></input>
 					</form>							
 				</div>
 	
@@ -77,7 +117,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
 
 	<main class="flex-shrink-0">
 	<div class="container">
-		<ul class="list-group" id="divWordList">
+		<ul class="list-group" id="divWordList"></ul>
 	</div>
 	</main>
 
@@ -94,46 +134,167 @@ https://jbachnp.github.io/AhNull/xxiv.html
 		});
 
 		function main(){
-			let wordlist = getData();
-			
-			wordlist.slice(0, 2).forEach(oWord=>{
-				let joWord = $(tplWord(oWord));
-				joWord.find("a").click(()=>{
-					window.open(`https://dictionary.cambridge.org/dictionary/english-chinese-traditional/${oWord.w}`, "_Cambridge");
-					window.open(`https://www.oxfordlearnersdictionaries.com/definition/english/${oWord.w}`, "_Oxford");
-					window.focus();
-				});
-				joWord.appendTo("#divWordList");
-			});
-			
-			document.getElementById('optLvl').addEventListener('change', (event) => {
-				loadWordlist(event.target.value);
-			});
-			
-			loadWordlist("Z");
+            let wordlistfilter = createWordListFilter(document.querySelector('#tblWordGroup'), document.querySelector('#optProgress'));           
+
+            document.querySelector('#btnFilter').addEventListener('click', e=>{
+                reloadWordlist(wordlistfilter.getValue());
+            });
+
+			reloadWordlist(wordlistfilter.getValue());
 		}
 
-		function loadWordlist(lvl, pgr){
+        function createWordListFilter(ePOSLvlTable, eSelProgress){
+            init();
+            render();
+
+            return {
+                getValue: getValue
+            };
+
+            function init(){
+                $(ePOSLvlTable).find('td')
+                    .data('selected', false)
+                    .click(function(){
+                        let selected = $(this).data('selected');
+                        $(this).data('selected', !selected);
+                        render();
+                    });
+
+                $(ePOSLvlTable.rows[3].cells[4]).data('selected', true);
+
+                $(ePOSLvlTable.rows[0].cells).slice(1).click(function(){
+                    let selected = $(this).data('selected');
+                    $(this).data('selected', !selected);
+                    let col = $(this).index();
+                    Array.from(ePOSLvlTable.rows).slice(1).forEach(eRow=>$(eRow.cells[col]).data('selected', !selected));
+                    render();
+                });
+
+                Array.from(ePOSLvlTable.rows).slice(1).forEach(eRow=>{
+                    $(eRow.cells[0]).click(function(){
+                        let selected = $(this).data('selected');
+                        $(this).data('selected', !selected);
+                        Array.from(eRow.cells).slice(1).forEach(eTD=>$(eTD).data('selected', !selected));
+                        render();
+                    });
+                });
+
+                $(ePOSLvlTable.rows[0].cells[0]).click(function(){
+                    let selected = $(this).data('selected');
+                    $(this).data('selected', !selected);
+                    Array.from(ePOSLvlTable.rows).slice(1).forEach(eRow=>Array.from(eRow.cells).slice(1).forEach(eTD=>$(eTD).data('selected', !selected)));
+                    render();
+                });
+            }
+
+            function render(){
+                //render cells
+                $(ePOSLvlTable).find('td').each(function(){
+                    $(this).removeClass('selectedCell');
+                    let selected = $(this).data('selected');
+                    if(selected){
+                        $(this).addClass('selectedCell');
+                    }
+                });
+
+                //render row header
+                Array.from(ePOSLvlTable.rows).slice(1).forEach(eRow=>{
+                    renderCell(eRow.cells[0], Array.from(eRow.cells).slice(1).map(eTD=>$(eTD).data('selected')));
+                });
+
+                //render column header
+                Array.from(ePOSLvlTable.rows[0].cells).slice(1).forEach((eCell, i)=>{
+                    renderCell(eCell, Array.from(ePOSLvlTable.rows).slice(1).map(eRow=>$(eRow.cells[i + 1]).data('selected')));
+                });
+
+                //render the upper left corner
+                renderCell(ePOSLvlTable.rows[0].cells[0], 
+                    Array.from(ePOSLvlTable.rows).slice(1).reduce((ret, row)=>{ ret.push(...Array.from(row.cells).slice(1).map(eTD=>$(eTD).data('selected'))); return ret}, []));
+
+                return;
+                function renderCell(eCell, selected){
+                    $(eCell).removeClass('selectedCell mixedCell');
+                    if(selected.every(e=>e)){
+                        $(eCell).addClass('selectedCell');
+                    }else if(selected.some(e=>e)){
+                        $(eCell).addClass('mixedCell');
+                    }
+                }
+            }
+        
+            function getValue(){
+                let ret = {
+                    pos_lvl: [],
+                    progress: eSelProgress.value
+                };
+                $(ePOSLvlTable).find('td').each(function(){
+                    if($(this).data('selected')){
+                        let cell = this;
+                        var rowIndex = cell.parentNode.rowIndex;
+                        var colIndex = cell.cellIndex;
+
+                        ret.pos_lvl.push({
+                            pos: ePOSLvlTable.rows[rowIndex].cells[0].dataset.option,
+                            lvl: ePOSLvlTable.rows[0].cells[colIndex].dataset.option
+                        });
+                    }
+                });
+                return ret;
+            }
+        
+        }
+
+
+
+        function updateWordList(){
+            let lvl = document.getElementById('optLvl').value;
+            let pos = document.getElementById('optPOS').value;
+            let pgr = document.getElementById('optProgress').value;
+            console.log(lvl, pos, pgr);
 			$(".word-entry").addClass("hide2");
 			if(lvl == "Z"){
 				$(".word-entry").removeClass("hide2");
 			}else{
 				$(`.word-entry[data-level='${lvl}']`).removeClass("hide2");
 			}
-		}
+        }
 
-	    function tplWord(oWord){
-			return `
-            <li class="list-group-item d-flex justify-content-between align-items-center word-entry" data-level="${oWord.l}">
-				<span class="flex-grow-0"><a>${oWord.w}</a> (<i>${oWord.s}</i>) <span class="badge bg-secondary">${oWord.l}</span></span>
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-secondary">🔴</button>
-                    <button type="button" class="btn btn-secondary">🟡</button>
-                    <button type="button" class="btn btn-secondary">🟢</button>
-                </div>
-            </li>
-			`;
-		}
+        function reloadWordlist(filterValue){
+            $("#divWordList").empty();
+
+			let wordlist = getData();
+			
+			wordlist.slice(0, 9999)
+                .filter(w=>{
+                    return filterValue.pos_lvl.some(e=>((e.pos != 'misc.' && e.pos == w.s) || (e.pos == 'misc.' && ['n.', 'v.', 'adj.'].every(t=> w.s != t) )) && e.lvl == w.l);
+                })
+                .forEach(oWord=>{
+                    let joWord = $(tplWord(oWord));
+                    joWord.find("a").click(()=>{
+                        window.open(`https://dictionary.cambridge.org/dictionary/english-chinese-traditional/${oWord.w}`, "_Cambridge");
+                        window.open(`https://www.oxfordlearnersdictionaries.com/definition/english/${oWord.w}`, "_Oxford");
+                        window.focus();
+                    });
+                    joWord.appendTo("#divWordList");
+                });
+
+            return;
+
+            function tplWord(oWord){
+                return `
+                <li class="list-group-item d-flex justify-content-between align-items-center word-entry" data-level="${oWord.l}">
+                    <span class="flex-grow-0"><a>${oWord.w}</a> (<i>${oWord.s}</i>) <span class="badge bg-secondary">${oWord.l}</span></span>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-secondary">🔴</button>
+                        <button type="button" class="btn btn-secondary">🟡</button>
+                        <button type="button" class="btn btn-secondary">🟢</button>
+                    </div>
+                </li>
+                `;
+            }
+
+        }
+
 
 		function getData(){
 			return [
