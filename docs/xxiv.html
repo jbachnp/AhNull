@@ -51,62 +51,31 @@ https://jbachnp.github.io/AhNull/xxiv.html
 				</button>
 				
 				<div class="collapse navbar-collapse" id="navbarCollapse">
-                    <table class="table table-bordered" id="tblWordGroup">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col" data-option='A1'>A1</th>
-                                <th scope="col" data-option='A2'>A2</th>
-                                <th scope="col" data-option='B1'>B1</th>
-                                <th scope="col" data-option='B2'>B2</th>
-                                <th scope="col" data-option='C1'>C1</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row" data-option='n.'>n.</th>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                            </tr>
-                            <tr>
-                                <th scope="row" data-option='v.'>v.</th>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                            </tr>
-                            <tr>
-                                <th scope="row" data-option='adj.'>adj.</th>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                            </tr>
-                            <tr>
-                                <th scope="row" data-option='misc.'>misc.</th>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <form class="d-flex">
-						<select class="form-select" id="optProgress">
-							<option value="Z">(all)</option>
-							<option value="p">🔴</option>
-							<option value="q">🟡</option>
-							<option value="r">🟢</option>
-						</select>
-                        <input class="btn btn-outline-success" type="button" id="btnFilter" value="Filter"></input>
-					</form>							
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="#" id="btnOpenFilter"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Filter</a>
+						</li>
+						<!--
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="#">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Link</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item" href="#">Action</a></li>
+								<li><a class="dropdown-item" href="#">Another action</a></li>
+								<li><hr class="dropdown-divider"></li>
+								<li><a class="dropdown-item" href="#">Something else here</a></li>
+							</ul>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+						</li>
+						-->
+					</ul>
 				</div>
 	
 			</div>
@@ -125,7 +94,77 @@ https://jbachnp.github.io/AhNull/xxiv.html
 		</div>
 	</footer>
 
-    <!--🟢 app logic uiVolume-->
+<!-- Filter dialogue -->
+	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="staticBackdropLabel">Filter Words</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<table class="table table-bordered" id="tblWordGroup">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col" data-option='A1'>A1</th>
+								<th scope="col" data-option='A2'>A2</th>
+								<th scope="col" data-option='B1'>B1</th>
+								<th scope="col" data-option='B2'>B2</th>
+								<th scope="col" data-option='C1'>C1</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row" data-option='n.'>n.</th>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+							</tr>
+							<tr>
+								<th scope="row" data-option='v.'>v.</th>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+							</tr>
+							<tr>
+								<th scope="row" data-option='adj.'>adj.</th>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+							</tr>
+							<tr>
+								<th scope="row" data-option='misc.'>misc.</th>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<select class="form-select" id="optProgress">
+						<option value="Z">(all)</option>
+						<option value="p">🔴</option>
+						<option value="q">🟡</option>
+						<option value="r">🟢</option>
+					</select>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnFilter">Apply</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <!--🟢 app btnOpenFilter-->
     <script>
 	(async function(){
 		let wordlist = await getWordList();
