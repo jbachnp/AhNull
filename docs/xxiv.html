@@ -168,19 +168,20 @@ https://jbachnp.github.io/AhNull/xxiv.html
     <!--🟢 app btnOpenFilter-->
     <script>
 	window.addEventListener("load",(async function(){
-		let wordlist = await getWordList();
 		const db = new Dexie("MyDatabase");
 		db.version(1).stores({
-			wordlist: '[w+s], p' // Composite primary key
+			wordlist: '[w+s], p, [s+l]' // Composite primary key
 		});
+		if(await db.wordlist.count()==0){
+			await reloadLocalDB();
+		}
 
 		let wordlistfilter = createWordListFilter(document.querySelector('#tblWordGroup'), document.querySelector('#optProgress'));           
-
-		document.querySelector('#btnFilter').addEventListener('click', e=>{
-			reloadWordlist(wordlistfilter.getValue());
+		document.querySelector('#btnFilter').addEventListener('click', async e=>{
+			await reloadWordlist(wordlistfilter.getValue());
 		});
 
-		reloadWordlist(wordlistfilter.getValue());
+		await reloadWordlist(wordlistfilter.getValue());
 
 
 		//--------------------------------------------------------------
@@ -285,28 +286,21 @@ https://jbachnp.github.io/AhNull/xxiv.html
 		
 		}
 
-		function updateWordList(){
-			let lvl = document.getElementById('optLvl').value;
-			let pos = document.getElementById('optPOS').value;
-			let pgr = document.getElementById('optProgress').value;
-			console.log(lvl, pos, pgr);
-			$(".word-entry").addClass("hide2");
-			if(lvl == "Z"){
-				$(".word-entry").removeClass("hide2");
-			}else{
-				$(`.word-entry[data-level='${lvl}']`).removeClass("hide2");
-			}
-		}
+		async function reloadWordlist(filterValue){
+			console.log('reloadWordlist()');
 
-		function reloadWordlist(filterValue){
 			$("#divWordList").empty();
 
-			let wordlist = getData();
+			let wordlist = await getData();
 			
-			wordlist.slice(0, 9999)
+			wordlist
 				.filter(w=>{
-					return filterValue.pos_lvl.some(e=>((e.pos != 'misc.' && e.pos == w.s) || (e.pos == 'misc.' && ['n.', 'v.', 'adj.'].every(t=> w.s != t) )) && e.lvl == w.l);
+					return filterValue.pos_lvl.some(e=>(
+						(e.pos != 'misc.' && e.pos == w.s) || (e.pos == 'misc.' && ['n.', 'v.', 'adj.'].every(t=> w.s != t) )) 
+						&& e.lvl == w.l
+					);
 				})
+				.filter(w=>((filterValue.progress === 'Z') || (filterValue.progress === (w.p||'p'))  ))
 				.forEach(oWord=>{
 					let joWord = $(tplWord(oWord));
 					joWord.find("a").click(()=>{
@@ -326,7 +320,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
 						let v = $(this).attr("name");
 						$(this).siblings().removeClass("active");
 						$(this).addClass("active");
-						await db.wordlist.put({ w: $(eLI).data('w'), s: $(eLI).data('s'), p: v });
+						await db.wordlist.put({ w: $(eLI).data('w'), s: $(eLI).data('s'), l: $(eLI).data('level'), p: v });
 					});
 
 				})
@@ -349,16 +343,16 @@ https://jbachnp.github.io/AhNull/xxiv.html
 		}
 
 		//--------------------------------------------------------------
-		function getData(){
-			return wordlist;
+		async function getData(){
+			return await db.wordlist.toArray();
 		}
 
-		async function getWordList(){
-			//todo: get from local storage
-			let wordList = await getWordListFromWeb();
-			return wordList;
+		async function reloadLocalDB(){
+			let wordlist = await getWordListFromWeb();
+			await db.wordlist.clear();
+			await db.wordlist.bulkAdd(wordlist);
 		}
-		
+	
 		async function getWordListFromWeb(){
 			const url = 'https://jbachnp.github.io/AhNull/xxiv.wordlist.json';
 			const headers = new Headers({
@@ -399,6 +393,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
 				document.body.style.cursor = '';
 			}
 		}
+	
 	}));
 	</script>
 
