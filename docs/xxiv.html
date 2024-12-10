@@ -39,8 +39,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
 </head>
 
 <body class="d-flex flex-column h-100">
-    <!--🟢 UI-->
-    
+    <!--🟢 main UI-->
 	<header>
 		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 			<div class="container-fluid">
@@ -84,6 +83,8 @@ https://jbachnp.github.io/AhNull/xxiv.html
 
 	<main class="flex-shrink-0">
 	<div class="container">
+		<p>-</p>
+		<p>-</p>
 		<ul class="list-group" id="divWordList"></ul>
 	</div>
 	</main>
@@ -94,7 +95,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
 		</div>
 	</footer>
 
-<!-- Filter dialogue -->
+	<!-- Filter dialogue -->
 	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -152,9 +153,9 @@ https://jbachnp.github.io/AhNull/xxiv.html
 
 					<select class="form-select" id="optProgress">
 						<option value="Z">(all)</option>
-						<option value="p">🔴</option>
-						<option value="q">🟡</option>
-						<option value="r">🟢</option>
+						<option value="p">⚪</option>
+						<option value="q">🔴</option>
+						<option value="r">🔵</option>
 					</select>
 				</div>
 				<div class="modal-footer">
@@ -166,16 +167,21 @@ https://jbachnp.github.io/AhNull/xxiv.html
 
     <!--🟢 app btnOpenFilter-->
     <script>
-	(async function(){
+	window.addEventListener("load",(async function(){
 		let wordlist = await getWordList();
+		const db = new Dexie("MyDatabase");
+		db.version(1).stores({
+			wordlist: '[w+s], p' // Composite primary key
+		});
 
-			let wordlistfilter = createWordListFilter(document.querySelector('#tblWordGroup'), document.querySelector('#optProgress'));           
+		let wordlistfilter = createWordListFilter(document.querySelector('#tblWordGroup'), document.querySelector('#optProgress'));           
 
-			document.querySelector('#btnFilter').addEventListener('click', e=>{
-				reloadWordlist(wordlistfilter.getValue());
-			});
-
+		document.querySelector('#btnFilter').addEventListener('click', e=>{
 			reloadWordlist(wordlistfilter.getValue());
+		});
+
+		reloadWordlist(wordlistfilter.getValue());
+
 
 		//--------------------------------------------------------------
 		function createWordListFilter(ePOSLvlTable, eSelProgress){
@@ -311,16 +317,30 @@ https://jbachnp.github.io/AhNull/xxiv.html
 					joWord.appendTo("#divWordList");
 				});
 
+				$("#divWordList").find("li").each(async(i, eLI)=>{
+					const wordX = await db.wordlist.get({ w: $(eLI).data('w'), s: $(eLI).data('s') });
+					let v = wordX ? wordX.p : "p";
+					$(eLI).find(`button[name='${v}']`).addClass("active");
+
+					$(eLI).find("button").click(async function(){
+						let v = $(this).attr("name");
+						$(this).siblings().removeClass("active");
+						$(this).addClass("active");
+						await db.wordlist.put({ w: $(eLI).data('w'), s: $(eLI).data('s'), p: v });
+					});
+
+				})
+
 			return;
 
 			function tplWord(oWord){
 				return `
-				<li class="list-group-item d-flex justify-content-between align-items-center word-entry" data-level="${oWord.l}">
+				<li class="list-group-item d-flex justify-content-between align-items-center p-0 word-entry" data-w="${oWord.w}" data-s="${oWord.s}" data-level="${oWord.l}">
 					<span class="flex-grow-0"><a>${oWord.w}</a> (<i>${oWord.s}</i>) <span class="badge bg-secondary">${oWord.l}</span></span>
-					<div class="btn-group" role="group">
-						<button type="button" class="btn btn-secondary">🔴</button>
-						<button type="button" class="btn btn-secondary">🟡</button>
-						<button type="button" class="btn btn-secondary">🟢</button>
+					<div class="btn-group btn-group-sm" role="group">
+						<button type="button" class="btn btn-secondary" name="p">⚪</button>
+						<button type="button" class="btn btn-secondary" name="q">🔴</button>
+						<button type="button" class="btn btn-secondary" name="r">🔵</button>
 					</div>
 				</li>
 				`;
@@ -379,11 +399,12 @@ https://jbachnp.github.io/AhNull/xxiv.html
 				document.body.style.cursor = '';
 			}
 		}
-	})();
+	}));
 	</script>
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/dexie/dist/dexie.js"></script>
 </body>
 </html>
