@@ -54,6 +54,12 @@ https://jbachnp.github.io/AhNull/xxiv.html
 						<li class="nav-item">
 							<a class="nav-link active" aria-current="page" href="#" id="btnOpenFilter"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Filter</a>
 						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">System😈</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item" href="#" id="btnReloadLocalDB">Action</a></li>
+							</ul>
+						</li>
 						<!--
 						<li class="nav-item">
 							<a class="nav-link active" aria-current="page" href="#">Home</a>
@@ -182,6 +188,11 @@ https://jbachnp.github.io/AhNull/xxiv.html
 		});
 
 		await reloadWordlist(wordlistfilter.getValue());
+
+		document.querySelector('#btnReloadLocalDB').addEventListener('click', async e=>{
+			await reloadLocalDB();
+			await reloadWordlist(wordlistfilter.getValue());
+		});
 
 
 		//--------------------------------------------------------------
