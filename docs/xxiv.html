@@ -46,10 +46,10 @@ https://jbachnp.github.io/AhNull/xxiv.html
 
 </head>
 
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column h-100" style="padding-top: 3rem">
     <!--🟢 main UI-->
 	<header>
-		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark py-0">
 			<div class="container-fluid">
 				<a class="navbar-brand" href="#">My Word List</a>
 	
@@ -60,10 +60,10 @@ https://jbachnp.github.io/AhNull/xxiv.html
 				<div class="collapse navbar-collapse" id="navbarCollapse">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link active" aria-current="page" href="#" id="btnOpenFilter"  data-bs-toggle="modal" data-bs-target="#dlgFilter">Filter</a>
+							<a class="nav-link active" href="#" data-bs-toggle="modal" data-bs-target="#dlgFilter">Filter</a>
 						</li>
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">System😈</a>
+							<a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">System😈</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<li><a class="dropdown-item" href="#" id="btnReloadLocalDB">recreate database</a></li>
 								<li><hr class="dropdown-divider"></li>
@@ -78,17 +78,16 @@ https://jbachnp.github.io/AhNull/xxiv.html
 		</nav>
 	</header>
 
+	<!--main class="flex-shrink-0"-->
 	<main class="flex-shrink-0">
 	<div class="container">
-		<p>-</p>
-		<p>-</p>
 		<ul class="list-group" id="divWordList"></ul>
 	</div>
 	</main>
 
-	<footer class="footer mt-auto py-3 bg-light">
+	<footer class="footer fixed-bottom mt-auto py-1 bg-light">
 		<div class="container">
-			<span class="text-muted">Hail FT.</span>
+			<span>Hail FT.</span>
 		</div>
 	</footer>
 
@@ -200,7 +199,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
 
 
 
-	<!--🟢 app btnOpenFilter-->
+	<!--🟢 app-->
     <script>
 	window.addEventListener("load",(async function(){
 		const db = new Dexie("MyDatabase");
