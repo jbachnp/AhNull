@@ -28,6 +28,14 @@ https://jbachnp.github.io/AhNull/xxiv.html
         .mixedCell{
             background-color:green !important;
         }
+
+		.odd {
+			background-color:beige; /* Light gray for odd items */
+		}
+		
+		.even {
+			background-color:burlywood; /* White for even items */
+		}		
 	</style>
 
     <!--🟢 templates -->
@@ -52,13 +60,15 @@ https://jbachnp.github.io/AhNull/xxiv.html
 				<div class="collapse navbar-collapse" id="navbarCollapse">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link active" aria-current="page" href="#" id="btnOpenFilter"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Filter</a>
+							<a class="nav-link active" aria-current="page" href="#" id="btnOpenFilter"  data-bs-toggle="modal" data-bs-target="#dlgFilter">Filter</a>
 						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">System😈</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<li><a class="dropdown-item" href="#" id="btnReloadLocalDB">recreate database</a></li>
 								<li><hr class="dropdown-divider"></li>
+								<li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#dlgSave">Save</a></li>
+								<li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#dlgLoad">Load</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -83,11 +93,11 @@ https://jbachnp.github.io/AhNull/xxiv.html
 	</footer>
 
 	<!-- Filter dialogue -->
-	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal fade" id="dlgFilter" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="dlgFilterLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="staticBackdropLabel">Filter Words</h5>
+					<h5 class="modal-title" id="dlgFilterLabel">Filter Words</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
@@ -152,7 +162,45 @@ https://jbachnp.github.io/AhNull/xxiv.html
 		</div>
 	</div>
 
-    <!--🟢 app btnOpenFilter-->
+	<!-- Save dialogue -->
+	<div class="modal fade" id="dlgSave" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="dlgSaveLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="dlgSaveLabel">Save</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<input type="text" class="form-control" name="txtFilename" placeholder="save as">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnSave">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Load dialogue -->
+	<div class="modal fade" id="dlgLoad" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="dlgLoadLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="dlgLoadLabel">Load</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<input type="text" class="form-control" name="txtFilename" placeholder="load from">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnLoad">Load</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<!--🟢 app btnOpenFilter-->
     <script>
 	window.addEventListener("load",(async function(){
 		const db = new Dexie("MyDatabase");
@@ -165,16 +213,48 @@ https://jbachnp.github.io/AhNull/xxiv.html
 
 		let wordlistfilter = createWordListFilter(document.querySelector('#tblWordGroup'), document.querySelector('#optProgress'));           
 		document.querySelector('#btnFilter').addEventListener('click', async e=>{
-			await reloadWordlist(wordlistfilter.getValue());
+			await renderWordlist(wordlistfilter.getValue());
 		});
 
-		await reloadWordlist(wordlistfilter.getValue());
+		await renderWordlist(wordlistfilter.getValue());
 
 		document.querySelector('#btnReloadLocalDB').addEventListener('click', async e=>{
 			await reloadLocalDB();
-			await reloadWordlist(wordlistfilter.getValue());
+			await renderWordlist(wordlistfilter.getValue());
 		});
 
+		document.querySelector('#btnSave').addEventListener('click', async e=>{
+			const filename = document.querySelector('#dlgSave input[name="txtFilename"]').value;
+			
+			const url = `https://getpantry.cloud/apiv1/pantry/4a94a23b-48e7-40fb-a0f9-9349c7e3eafb/basket/${filename}`;
+			const headers = {
+				'Content-Type': 'application/json',
+				'Accept': 'text/html'
+			};
+			const requestBody = {data: await getData()};
+			const response = await myFetch('POST', url, headers, requestBody);
+			//const data = await response.();
+			console.log(response.statusText);
+			alert("👌");
+		});
+
+		document.querySelector('#btnLoad').addEventListener('click', async e=>{
+			const filename = document.querySelector('#dlgLoad input[name="txtFilename"]').value;
+			
+			const url = `https://getpantry.cloud/apiv1/pantry/4a94a23b-48e7-40fb-a0f9-9349c7e3eafb/basket/${filename}`;
+			const headers = {
+				'Accept': 'application/json'
+			};
+			const response = await myFetch('GET', url, headers, null);
+			const wordlist = (await response.json()).data;
+
+			await db.wordlist.clear();
+			await db.wordlist.bulkAdd(wordlist);
+
+			await renderWordlist(wordlistfilter.getValue());
+
+			alert("👌");
+		});
 
 		//--------------------------------------------------------------
 		function createWordListFilter(ePOSLvlTable, eSelProgress){
@@ -278,8 +358,8 @@ https://jbachnp.github.io/AhNull/xxiv.html
 		
 		}
 
-		async function reloadWordlist(filterValue){
-			console.log('reloadWordlist()');
+		async function renderWordlist(filterValue){
+			console.log('renderWordlist()');
 
 			$("#divWordList").empty();
 
@@ -293,8 +373,8 @@ https://jbachnp.github.io/AhNull/xxiv.html
 					);
 				})
 				.filter(w=>((filterValue.progress === 'Z') || (filterValue.progress === (w.p||'p'))  ))
-				.forEach(oWord=>{
-					let joWord = $(tplWord(oWord));
+				.forEach((oWord, index)=>{
+					let joWord = $(tplWord(oWord, index));
 					joWord.find("a").click(()=>{
 						window.open(`https://dictionary.cambridge.org/dictionary/english-chinese-traditional/${oWord.w}`, "_Cambridge");
 						window.open(`https://www.oxfordlearnersdictionaries.com/definition/english/${oWord.w}`, "_Oxford");
@@ -319,9 +399,9 @@ https://jbachnp.github.io/AhNull/xxiv.html
 
 			return;
 
-			function tplWord(oWord){
+			function tplWord(oWord, index){
 				return `
-				<li class="list-group-item d-flex justify-content-between align-items-center p-0 word-entry" data-w="${oWord.w}" data-s="${oWord.s}" data-level="${oWord.l}">
+				<li class="list-group-item d-flex justify-content-between align-items-center p-0 word-entry ${index % 2 === 0 ? 'even' : 'odd'} " data-w="${oWord.w}" data-s="${oWord.s}" data-level="${oWord.l}">
 					<span class="flex-grow-0"><a>${oWord.w}</a> (<i>${oWord.s}</i>) <span class="badge bg-secondary">${oWord.l}</span></span>
 					<div class="btn-group btn-group-sm" role="group">
 						<button type="button" class="btn btn-secondary" name="p">⚪</button>
@@ -357,6 +437,8 @@ https://jbachnp.github.io/AhNull/xxiv.html
 			return data;
 		}
 
+
+
 		//--------------------------------------------------------------
 
 		async function myFetch(method, url, headers, oReqBody){
@@ -367,10 +449,13 @@ https://jbachnp.github.io/AhNull/xxiv.html
 				const requestOptions = {
 					method: method,
 					headers: {
-						'Content-Length': postData.length,
-					},
-					body: oReqBody
+					}
 				};
+
+				if(method === 'POST'){
+					requestOptions.headers['Content-Length'] = postData.length;
+					requestOptions.body = postData;
+				}
 
 				Object.entries(headers).forEach(([key, value]) => {
 					requestOptions.headers[key] = value;
