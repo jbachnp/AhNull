@@ -210,6 +210,13 @@ https://jbachnp.github.io/AhNull/xxiv.html
 			await reloadLocalDB();
 		}
 
+        const storedUsername = localStorage.getItem('username'); // Retrieve the username
+        if (storedUsername) {
+            document.querySelector('#dlgSave input[name="txtFilename"]').value = storedUsername;
+            document.querySelector('#dlgLoad input[name="txtFilename"]').value = storedUsername;
+        }
+
+
 		let wordlistfilter = createWordListFilter(document.querySelector('#tblWordGroup'), document.querySelector('#optProgress'));           
 		document.querySelector('#btnFilter').addEventListener('click', async e=>{
 			await renderWordlist(wordlistfilter.getValue());
@@ -233,8 +240,9 @@ https://jbachnp.github.io/AhNull/xxiv.html
 			const requestBody = {data: await getData()};
 			const response = await myFetch('POST', url, headers, requestBody);
 			//const data = await response.();
-			console.log(response.statusText);
+			
 			alert("👌");
+			localStorage.setItem('username', filename);
 		});
 
 		document.querySelector('#btnLoad').addEventListener('click', async e=>{
@@ -253,6 +261,8 @@ https://jbachnp.github.io/AhNull/xxiv.html
 			await renderWordlist(wordlistfilter.getValue());
 
 			alert("👌");
+			localStorage.setItem('username', filename);
+
 		});
 
 		//--------------------------------------------------------------
