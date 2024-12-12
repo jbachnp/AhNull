@@ -275,72 +275,85 @@ https://jbachnp.github.io/AhNull/xxiv.html
 			};
 
 			function init(){
-				$(ePOSLvlTable).find('td')
-					.data('selected', false)
-					.click(function(){
-						let selected = $(this).data('selected');
-						$(this).data('selected', !selected);
+				ePOSLvlTable.querySelectorAll('td').forEach(cell => {
+					cell.dataset.selected = 'false';
+					cell.addEventListener('click', function() {
+						this.dataset.selected = !(this.dataset.selected === 'true');
 						render();
 					});
+				});
 
-				$(ePOSLvlTable.rows[3].cells[4]).data('selected', true);
+				ePOSLvlTable.querySelectorAll('th').forEach(cell => {
+					cell.dataset.selected = 'false';
+				});
 
-				$(ePOSLvlTable.rows[0].cells).slice(1).click(function(){
-					let selected = $(this).data('selected');
-					$(this).data('selected', !selected);
-					let col = $(this).index();
-					Array.from(ePOSLvlTable.rows).slice(1).forEach(eRow=>$(eRow.cells[col]).data('selected', !selected));
+				ePOSLvlTable.rows[3].cells[4].dataset.selected = true;
+
+				Array.from(ePOSLvlTable.rows[0].cells).slice(1).forEach(cell=>{
+					cell.addEventListener('click', function() {
+					let selected = this.dataset.selected === 'true'; // Convert string to boolean
+
+					this.dataset.selected = !selected; // Update data-selected attribute
+
+					let col = Array.from(this.parentNode.cells).indexOf(this);
+
+					Array.from(ePOSLvlTable.rows).slice(1).forEach(eRow => {
+						eRow.cells[col].dataset.selected = !selected; // Update data-selected attribute
+					});
+
+					// Call the render function
 					render();
+					});
 				});
 
 				Array.from(ePOSLvlTable.rows).slice(1).forEach(eRow=>{
-					$(eRow.cells[0]).click(function(){
-						let selected = $(this).data('selected');
-						$(this).data('selected', !selected);
-						Array.from(eRow.cells).slice(1).forEach(eTD=>$(eTD).data('selected', !selected));
+					eRow.cells[0].addEventListener('click', function() {
+						let selected = (this.dataset.selected === 'true');
+						this.dataset.selected = !selected;
+						Array.from(eRow.cells).slice(1).forEach(eTD=>eTD.dataset.selected = !selected);
 						render();
 					});
 				});
 
-				$(ePOSLvlTable.rows[0].cells[0]).click(function(){
-					let selected = $(this).data('selected');
-					$(this).data('selected', !selected);
-					Array.from(ePOSLvlTable.rows).slice(1).forEach(eRow=>Array.from(eRow.cells).slice(1).forEach(eTD=>$(eTD).data('selected', !selected)));
+				ePOSLvlTable.rows[0].cells[0].addEventListener('click', function() {
+					let selected = (this.dataset.selected === 'true');
+					this.dataset.selected = !selected;
+					Array.from(ePOSLvlTable.rows).slice(1).forEach(eRow=>Array.from(eRow.cells).slice(1).forEach(eTD=>eTD.dataset.selected = !selected));
 					render();
 				});
 			}
 
 			function render(){
 				//render cells
-				$(ePOSLvlTable).find('td').each(function(){
-					$(this).removeClass('selectedCell');
-					let selected = $(this).data('selected');
+				ePOSLvlTable.querySelectorAll('td').forEach(cell => {
+					cell.classList.remove('selectedCell');
+					let selected = (cell.dataset.selected === 'true');
 					if(selected){
-						$(this).addClass('selectedCell');
+						cell.classList.add('selectedCell');
 					}
 				});
 
 				//render row header
 				Array.from(ePOSLvlTable.rows).slice(1).forEach(eRow=>{
-					renderCell(eRow.cells[0], Array.from(eRow.cells).slice(1).map(eTD=>$(eTD).data('selected')));
+					renderSummaryCell(eRow.cells[0], Array.from(eRow.cells).slice(1).map(eTD=>(eTD.dataset.selected === 'true')));
 				});
 
 				//render column header
 				Array.from(ePOSLvlTable.rows[0].cells).slice(1).forEach((eCell, i)=>{
-					renderCell(eCell, Array.from(ePOSLvlTable.rows).slice(1).map(eRow=>$(eRow.cells[i + 1]).data('selected')));
+					renderSummaryCell(eCell, Array.from(ePOSLvlTable.rows).slice(1).map(eRow=>(eRow.cells[i + 1].dataset.selected === 'true')));
 				});
 
 				//render the upper left corner
-				renderCell(ePOSLvlTable.rows[0].cells[0], 
-					Array.from(ePOSLvlTable.rows).slice(1).reduce((ret, row)=>{ ret.push(...Array.from(row.cells).slice(1).map(eTD=>$(eTD).data('selected'))); return ret}, []));
+				renderSummaryCell(ePOSLvlTable.rows[0].cells[0], 
+					Array.from(ePOSLvlTable.rows).slice(1).reduce((ret, row)=>{ ret.push(...Array.from(row.cells).slice(1).map(eTD=>(eTD.dataset.selected === 'true'))); return ret}, []));
 
 				return;
-				function renderCell(eCell, selected){
-					$(eCell).removeClass('selectedCell mixedCell');
+				function renderSummaryCell(eCell, selected){
+					eCell.classList.remove('selectedCell', 'mixedCell');
 					if(selected.every(e=>e)){
-						$(eCell).addClass('selectedCell');
+						eCell.classList.add('selectedCell');
 					}else if(selected.some(e=>e)){
-						$(eCell).addClass('mixedCell');
+						eCell.classList.add('mixedCell');
 					}
 				}
 			}
@@ -350,30 +363,30 @@ https://jbachnp.github.io/AhNull/xxiv.html
 					pos_lvl: [],
 					progress: eSelProgress.value
 				};
-				$(ePOSLvlTable).find('td').each(function(){
-					if($(this).data('selected')){
-						let cell = this;
-						var rowIndex = cell.parentNode.rowIndex;
-						var colIndex = cell.cellIndex;
 
-						ret.pos_lvl.push({
-							pos: ePOSLvlTable.rows[rowIndex].cells[0].dataset.option,
-							lvl: ePOSLvlTable.rows[0].cells[colIndex].dataset.option
-						});
+				ePOSLvlTable.querySelectorAll('td').forEach(cell => {
+					if(!(cell.dataset.selected === 'true')){
+						return;
 					}
+					var rowIndex = cell.parentNode.rowIndex;
+					var colIndex = cell.cellIndex;
+
+					ret.pos_lvl.push({
+						pos: ePOSLvlTable.rows[rowIndex].cells[0].dataset.option,
+						lvl: ePOSLvlTable.rows[0].cells[colIndex].dataset.option
+					});
+
 				});
 				return ret;
 			}
-		
 		}
 
 		async function renderWordlist(filterValue){
-			console.log('renderWordlist()');
-
-			$("#divWordList").empty();
+			document.getElementById('divWordList').innerHTML = '';
 
 			let wordlist = await getData();
-			
+			let divWordList = document.getElementById('divWordList');
+
 			wordlist
 				.filter(w=>{
 					return filterValue.pos_lvl.some(e=>(
@@ -383,39 +396,41 @@ https://jbachnp.github.io/AhNull/xxiv.html
 				})
 				.filter(w=>((filterValue.progress === 'Z') || (filterValue.progress === (w.p||'p'))  ))
 				.forEach((oWord, index)=>{
-					let joWord = $(tplWord(oWord, index));
-					joWord.find("a").click(()=>{
+					divWordList.insertAdjacentHTML('beforeend', tplWord(oWord, index));
+					let eLI = divWordList.lastElementChild;
+					eLI.querySelector("a").addEventListener('click', ()=>{
 						window.open(`https://dictionary.cambridge.org/dictionary/english-chinese-traditional/${oWord.w}`, "_Cambridge");
 						window.open(`https://www.oxfordlearnersdictionaries.com/definition/english/${oWord.w}`, "_Oxford");
 						window.focus();
 					});
-					joWord.appendTo("#divWordList");
+
 				});
 
-				$("#divWordList").find("li").each(async(i, eLI)=>{
-					const wordX = await db.wordlist.get({ w: $(eLI).data('w'), s: $(eLI).data('s') });
+				document.querySelectorAll('#divWordList li').forEach(async(eLI, i)=>{
+					const wordX = await db.wordlist.get({ w: eLI.dataset.w, s: eLI.dataset.s });
 					let v = wordX ? wordX.p : "p";
-					$(eLI).find(`button[name='${v}']`).addClass("active");
+					eLI.querySelector(`button[name='${v}']`)?.classList.add("active");
 
-					$(eLI).find("button").click(async function(){
-						let v = $(this).attr("name");
-						$(this).siblings().removeClass("active");
-						$(this).addClass("active");
-						await db.wordlist.put({ w: $(eLI).data('w'), s: $(eLI).data('s'), l: $(eLI).data('level'), p: v });
+					eLI.querySelectorAll("button").forEach(eBtn=>{
+						eBtn.addEventListener('click', async function(){
+							let v = this.getAttribute("name");
+							this.parentNode.querySelectorAll("button").forEach(e=>e.classList.remove("active"));
+							this.classList.add("active");
+							await db.wordlist.put({ w: eLI.dataset.w, s: eLI.dataset.s, l:eLI.dataset.level, p: v });
+						});
 					});
-
-				})
+				});
 
 			return;
 
 			function tplWord(oWord, index){
 				return `
-				<li class="list-group-item d-flex justify-content-between align-items-center p-0 word-entry ${index % 2 === 0 ? 'even' : 'odd'} " data-w="${oWord.w}" data-s="${oWord.s}" data-level="${oWord.l}">
+				<li class="list-group-item d-flex justify-content-between align-items-center p-1 word-entry ${index % 2 === 0 ? 'even' : 'odd'} " data-w="${oWord.w}" data-s="${oWord.s}" data-level="${oWord.l}">
 					<span class="flex-grow-0"><a>${oWord.w}</a> (<i>${oWord.s}</i>) <span class="badge bg-secondary">${oWord.l}</span></span>
 					<div class="btn-group btn-group-sm" role="group">
-						<button type="button" class="btn btn-secondary" name="p">⚪</button>
-						<button type="button" class="btn btn-secondary" name="q">🔴</button>
-						<button type="button" class="btn btn-secondary" name="r">🔵</button>
+						<button type="button" class="btn" name="p">⚪</button>
+						<button type="button" class="btn" name="q">🔴</button>
+						<button type="button" class="btn" name="r">🔵</button>
 					</div>
 				</li>
 				`;
@@ -483,7 +498,6 @@ https://jbachnp.github.io/AhNull/xxiv.html
 	}));
 	</script>
 
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	<script src="https://unpkg.com/dexie/dist/dexie.js"></script>
