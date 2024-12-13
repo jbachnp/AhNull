@@ -81,6 +81,33 @@ https://jbachnp.github.io/AhNull/xxiv.html
 	<!--main class="flex-shrink-0"-->
 	<main class="flex-shrink-0">
 	<div class="container">
+		<div id="divLoadingSpinner" class="hide2">
+			<div class="spinner-border text-primary" role="status">
+				<span class="sr-only">Loading...</span>
+			  </div>
+			  <div class="spinner-border text-secondary" role="status">
+				<span class="sr-only">Loading...</span>
+			  </div>
+			  <div class="spinner-border text-success" role="status">
+				<span class="sr-only">Loading...</span>
+			  </div>
+			  <div class="spinner-border text-danger" role="status">
+				<span class="sr-only">Loading...</span>
+			  </div>
+			  <div class="spinner-border text-warning" role="status">
+				<span class="sr-only">Loading...</span>
+			  </div>
+			  <div class="spinner-border text-info" role="status">
+				<span class="sr-only">Loading...</span>
+			  </div>
+			  <div class="spinner-border text-light" role="status">
+				<span class="sr-only">Loading...</span>
+			  </div>
+			  <div class="spinner-border text-dark" role="status">
+				<span class="sr-only">Loading...</span>
+			  </div>		
+		</div>
+	
 		<ul class="list-group" id="divWordList"></ul>
 	</div>
 	</main>
@@ -196,7 +223,6 @@ https://jbachnp.github.io/AhNull/xxiv.html
 			</div>
 		</div>
 	</div>
-
 
 
 	<!--🟢 app-->
@@ -467,7 +493,8 @@ https://jbachnp.github.io/AhNull/xxiv.html
 
 		async function myFetch(method, url, headers, oReqBody){
 			try{
-				document.body.style.cursor = 'wait';
+				//document.body.style.cursor = 'wait';
+				divLoadingSpinner.classList.remove('hide2');
 				let postData = JSON.stringify(oReqBody);
 
 				const requestOptions = {
@@ -491,7 +518,8 @@ https://jbachnp.github.io/AhNull/xxiv.html
 			}catch(e){
 					console.log(e);
 			}finally {
-				document.body.style.cursor = '';
+				//document.body.style.cursor = '';
+				divLoadingSpinner.classList.add('hide2');
 			}
 		}
 	
