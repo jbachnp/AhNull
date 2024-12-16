@@ -142,35 +142,35 @@ https://jbachnp.github.io/AhNull/xxiv.html
 						<tbody>
 							<tr>
 								<th scope="row" data-option='n.'>n.</th>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
+								<td class='p-1'>-</td>
+								<td class='p-1'>-</td>
+								<td class='p-1'>-</td>
+								<td class='p-1'>-</td>
+								<td class='p-1'>-</td>
 							</tr>
 							<tr>
 								<th scope="row" data-option='v.'>v.</th>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
+								<td class='p-1'>-</td>
+								<td class='p-1'>-</td>
+								<td class='p-1'>-</td>
+								<td class='p-1'>-</td>
+								<td class='p-1'>-</td>
 							</tr>
 							<tr>
 								<th scope="row" data-option='adj.'>adj.</th>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
+								<td class='p-1'>-</td>
+								<td class='p-1'>-</td>
+								<td class='p-1'>-</td>
+								<td class='p-1'>-</td>
+								<td class='p-1'>-</td>
 							</tr>
 							<tr>
 								<th scope="row" data-option='misc.'>misc.</th>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
+								<td class='p-1'>-</td>
+								<td class='p-1'>-</td>
+								<td class='p-1'>-</td>
+								<td class='p-1'>-</td>
+								<td class='p-1'>-</td>
 							</tr>
 						</tbody>
 					</table>
@@ -312,7 +312,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
 			let ePOSLvlTable = document.querySelectorAll('#tblWordGroup td').forEach(eTD=>{
 				let key = `${eTD.parentNode.cells[0].dataset.option}|${eTD.parentNode.parentNode.parentNode.tHead.rows[0].cells[eTD.cellIndex].dataset.option}`;
 				let info = stat[key];
-				eTD.innerHTML = `<span style='color:red'>${info.q || 0}</span>,<span style='color:blue'>${info.r || 0}</span>/<span>${info.n}</span>`
+				eTD.innerHTML = `<span style='color:red'>${info.q || 0}</span>,<span style='color:blue'>${info.r || 0}</span> /<span>${info.n}</span>`
 			});
 		});
 
