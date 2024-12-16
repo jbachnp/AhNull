@@ -60,7 +60,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
 				<div class="collapse navbar-collapse" id="navbarCollapse">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link active" href="#" data-bs-toggle="modal" data-bs-target="#dlgFilter">Filter</a>
+							<a class="nav-link active" href="#" data-bs-toggle="modal" id="btnOpenFilterdialog" data-bs-target="#dlgFilter">Filter</a>
 						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">System😈</a>
@@ -82,6 +82,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
 	<main class="flex-shrink-0">
 	<div class="container">
 		<div id="divLoadingSpinner" class="hide2">
+			<div>-</div><div>-</div><div>-</div><div>-</div><div>-</div><div>-</div><div>-</div>
 			<div class="spinner-border text-primary" role="status">
 				<span class="sr-only">Loading...</span>
 			  </div>
@@ -180,6 +181,13 @@ https://jbachnp.github.io/AhNull/xxiv.html
 						<option value="q">🔴</option>
 						<option value="r">🔵</option>
 					</select>
+
+					<select class="form-select" id="optSort">
+						<option value="AZ" selected>A to Z</option>
+						<option value="ZA">Z to A</option>
+						<option value="RAN">Random</option>
+					</select>
+
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnFilter">Apply</button>
@@ -243,7 +251,7 @@ https://jbachnp.github.io/AhNull/xxiv.html
         }
 
 
-		let wordlistfilter = createWordListFilter(document.querySelector('#tblWordGroup'), document.querySelector('#optProgress'));           
+		let wordlistfilter = createWordListFilter(document.querySelector('#tblWordGroup'), document.querySelector('#optProgress'), document.querySelector('#optSort'));           
 		document.querySelector('#btnFilter').addEventListener('click', async e=>{
 			await renderWordlist(wordlistfilter.getValue());
 		});
@@ -291,8 +299,25 @@ https://jbachnp.github.io/AhNull/xxiv.html
 
 		});
 
+		document.getElementById('btnOpenFilterdialog').addEventListener('click', async e=>{
+			let wordlist = await getData();
+			let stat = wordlist.reduce((ret, w)=>{ 
+				let key = `${['n.', 'v.', 'adj.'].indexOf(w.s) >= 0 ? w.s : 'misc.'}|${w.l}`;
+				ret[key] = ret[key] || {n:0};
+				ret[key][w.p || 'p'] = (ret[key][w.p || 'p'] || 0) + 1;
+				++ret[key].n;
+				return ret;
+			}, { });
+
+			let ePOSLvlTable = document.querySelectorAll('#tblWordGroup td').forEach(eTD=>{
+				let key = `${eTD.parentNode.cells[0].dataset.option}|${eTD.parentNode.parentNode.parentNode.tHead.rows[0].cells[eTD.cellIndex].dataset.option}`;
+				let info = stat[key];
+				eTD.innerHTML = `<span style='color:red'>${info.q || 0}</span>,<span style='color:blue'>${info.r || 0}</span>/<span>${info.n}</span>`
+			});
+		});
+
 		//--------------------------------------------------------------
-		function createWordListFilter(ePOSLvlTable, eSelProgress){
+		function createWordListFilter(ePOSLvlTable, eSelProgress, eSelSort){
 			init();
 			render();
 
@@ -387,7 +412,8 @@ https://jbachnp.github.io/AhNull/xxiv.html
 			function getValue(){
 				let ret = {
 					pos_lvl: [],
-					progress: eSelProgress.value
+					progress: eSelProgress.value,
+					sort: eSelSort.value
 				};
 
 				ePOSLvlTable.querySelectorAll('td').forEach(cell => {
@@ -413,6 +439,9 @@ https://jbachnp.github.io/AhNull/xxiv.html
 			let wordlist = await getData();
 			let divWordList = document.getElementById('divWordList');
 
+			let progress = filterValue.progress;
+			let sort = filterValue.sort == "AZ" ? (p, q)=>p.w.localeCompare(q.w) : (filterValue.sort == "ZA" ? (p, q)=>q.w.localeCompare(p.w) : ()=>Math.random() - 0.5);
+
 			wordlist
 				.filter(w=>{
 					return filterValue.pos_lvl.some(e=>(
@@ -420,7 +449,8 @@ https://jbachnp.github.io/AhNull/xxiv.html
 						&& e.lvl == w.l
 					);
 				})
-				.filter(w=>((filterValue.progress === 'Z') || (filterValue.progress === (w.p||'p'))  ))
+				.filter(w=>((progress === 'Z') || (progress === (w.p||'p'))  ))
+				.sort(sort)
 				.forEach((oWord, index)=>{
 					divWordList.insertAdjacentHTML('beforeend', tplWord(oWord, index));
 					let eLI = divWordList.lastElementChild;
@@ -432,20 +462,22 @@ https://jbachnp.github.io/AhNull/xxiv.html
 
 				});
 
-				document.querySelectorAll('#divWordList li').forEach(async(eLI, i)=>{
-					const wordX = await db.wordlist.get({ w: eLI.dataset.w, s: eLI.dataset.s });
-					let v = wordX ? wordX.p : "p";
-					eLI.querySelector(`button[name='${v}']`)?.classList.add("active");
 
-					eLI.querySelectorAll("button").forEach(eBtn=>{
-						eBtn.addEventListener('click', async function(){
-							let v = this.getAttribute("name");
-							this.parentNode.querySelectorAll("button").forEach(e=>e.classList.remove("active"));
-							this.classList.add("active");
-							await db.wordlist.put({ w: eLI.dataset.w, s: eLI.dataset.s, l:eLI.dataset.level, p: v });
-						});
+
+			document.querySelectorAll('#divWordList li').forEach(async(eLI, i)=>{
+				const wordX = await db.wordlist.get({ w: eLI.dataset.w, s: eLI.dataset.s });
+				let v = wordX ? wordX.p : "p";
+				eLI.querySelector(`button[name='${v}']`)?.classList.add("active");
+
+				eLI.querySelectorAll("button").forEach(eBtn=>{
+					eBtn.addEventListener('click', async function(){
+						let v = this.getAttribute("name");
+						this.parentNode.querySelectorAll("button").forEach(e=>e.classList.remove("active"));
+						this.classList.add("active");
+						await db.wordlist.put({ w: eLI.dataset.w, s: eLI.dataset.s, l:eLI.dataset.level, p: v });
 					});
 				});
+			});
 
 			return;
 
