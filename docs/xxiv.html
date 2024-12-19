@@ -123,11 +123,12 @@ https://jbachnp.github.io/AhNull/xxiv.html
 	<div class="modal fade" id="dlgFilter" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="dlgFilterLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-header p-2">
 					<h5 class="modal-title" id="dlgFilterLabel">Filter Words</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body p-2">
+					<span>To toggle the selection of word groups by parts of speech and Common European Framework of Reference (CEFR) levels, simply touch the boxes below.</span>
 					<table class="table table-bordered" id="tblWordGroup">
 						<thead>
 							<tr>
@@ -175,21 +176,31 @@ https://jbachnp.github.io/AhNull/xxiv.html
 						</tbody>
 					</table>
 
-					<select class="form-select" id="optProgress">
-						<option value="Z">(all)</option>
-						<option value="p">⚪</option>
-						<option value="q">🔴</option>
-						<option value="r">🔵</option>
-					</select>
+					<div class="mb-3 row">
+						<label for="optProgress" class="col-3 col-form-label">Marker</label>
+						<div class="col-9">
+							<select class="form-select form-select" id="optProgress">
+								<option value="Z">(all)</option>
+								<option value="p">⚪</option>
+								<option value="q">🔴</option>
+								<option value="r">🔵</option>
+							</select>
+						</div>
+					</div>
 
-					<select class="form-select" id="optSort">
-						<option value="AZ" selected>A to Z</option>
-						<option value="ZA">Z to A</option>
-						<option value="RAN">Random</option>
-					</select>
+					<div class="mb-3 row">
+						<label for="optSort" class="col-3 col-form-label">Sort by</label>
+						<div class="col-9">
+							<select class="form-select" id="optSort">
+								<option value="AZ" selected>A to Z</option>
+								<option value="ZA">Z to A</option>
+								<option value="RAN">Random</option>
+							</select>
+						</div>
+					</div>
 
 				</div>
-				<div class="modal-footer">
+				<div class="modal-footer p-2">
 					<button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnFilter">Apply</button>
 				</div>
 			</div>
