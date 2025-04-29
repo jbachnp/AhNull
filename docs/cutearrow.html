@@ -2,6 +2,7 @@
 
 <!--
 https://jbachnp.github.io/AhNull/cutearrow.html
+https://jbachnp.github.io/AhNull/cutearrow.html?m=Excepteur%20sint%20occaecat%20cupidatat%20non%20proident
 -->
 
 
@@ -92,11 +93,15 @@ https://jbachnp.github.io/AhNull/cutearrow.html
             });
 
 
+            const params = new URLSearchParams(window.location.search);
+            const mValue = params.get('m');
+            console.log(mValue);
+
             const qrCode = new QRCodeStyling({
                 width: 300,
                 height: 300,
                 type: "svg",
-                data: "https://www.facebook.com/",
+                data: mValue,
                 image: "https://jbachnp.github.io/AhNull/cutearrow.svg",
                 dotsOptions: {
                     color: "#4267b2",
