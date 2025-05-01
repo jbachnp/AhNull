@@ -2,7 +2,7 @@
 
 <!--
 https://jbachnp.github.io/AhNull/cutearrow.html
-https://jbachnp.github.io/AhNull/cutearrow.html?m=Excepteur%20sint%20occaecat%20cupidatat%20non%20proident
+https://jbachnp.github.io/AhNull/cutearrow.html?m=%0E%1F%22%06.%3F%7B%03y%5EyEyw%08W'%3F*%05~vzYu%5B%7D%05%22%0A%03%12.%06kB~%5Eu%00%7DZ%1C%0F2%01.%05%7D%5Czyig%04T%3DV.!**%5Ecy%5DO%5BnY%3A%0F'%02%2F%01%5CEVYPSR%5E%03%2F%03%02%2F%2FxX~gq%04%7DX2%0F%24()%01%7C%5Cy%02qX%7D%01%25%0C%0F%1C-%06k%07y%5DO%5BnY%08%0F'%02*%1B%7F_%7DCuvu%07%25%0F%22R
 -->
 
 
@@ -94,14 +94,15 @@ https://jbachnp.github.io/AhNull/cutearrow.html?m=Excepteur%20sint%20occaecat%20
 
 
             const params = new URLSearchParams(window.location.search);
-            const mValue = params.get('m');
-            console.log(mValue);
+            const s3 = params.get('m');
+            console.log(s3);
 
+/*
             const qrCode = new QRCodeStyling({
                 width: 300,
                 height: 300,
                 type: "svg",
-                data: mValue,
+                data: mValue,	//*************
                 image: "https://jbachnp.github.io/AhNull/cutearrow.svg",
                 dotsOptions: {
                     color: "#4267b2",
@@ -115,11 +116,42 @@ https://jbachnp.github.io/AhNull/cutearrow.html?m=Excepteur%20sint%20occaecat%20
                     margin: 20
                 }
             });
+*/
 
             qrCode.append(document.getElementById("divQR"));            
 
 
         })());
+		
+		function b64EncodeUnicode(str) {
+		  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+			function(match, p1) {
+			  return String.fromCharCode('0x' + p1);
+			}));
+		}
+
+		function b64DecodeUnicode(base64) {
+		  return decodeURIComponent(atob(base64).split('').map(function(c) {
+			return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+		  }).join(''));
+		}
+
+
+
+		function encrypt(text, password) {
+			let result = '';
+			for (let i = 0; i < text.length; i++) {
+				result += String.fromCharCode(text.charCodeAt(i) ^ password.charCodeAt(i % password.length));
+			}
+			return result;
+		}
+
+		function decrypt(text, password) {
+			return encrypt(text, password); // XOR encryption and decryption are symmetric
+		}
+				
+		
+		
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
