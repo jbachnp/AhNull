@@ -94,8 +94,12 @@ https://jbachnp.github.io/AhNull/cutearrow.html?m=%0E%1F%22%06.%3F%7B%03y%5EyEyw
 
 
             const params = new URLSearchParams(window.location.search);
-            const s3 = params.get('m');
-            console.log(s3);
+            const r2 = params.get('m');
+			var r1 = decrypt(r2, "kfhkcl25048243");
+			var r0 = b64DecodeUnicode(r1);
+			
+			
+            console.log(r0);
 
 /*
             const qrCode = new QRCodeStyling({
