@@ -39,15 +39,7 @@ file:///C:/Players/jbach/temp/kfc/cutearrow.html?g=%0E%1F%22%06.%3F%7B%03y%5EyEy
 				
 				<div class="collapse navbar-collapse" name="mainMenu">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-						<li name="mnu_1" class="nav-item"><a class="nav-link active" href="#" data-bs-toggle="modal" data-bs-target="#dlgFunc1">{Func 1}</a></li>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">{Func Group 2}</a>
-							<ul class="dropdown-menu">
-								<li name="mnu_2_1"><a class="dropdown-item" href="#">{Func 2-1}</a></li>
-								<li><hr class="dropdown-divider"></li>
-								<li name="mnu_2_2"><a class="dropdown-item" href="#">{Func 2-2}</a></li>
-							</ul>
-						</li>
+						<li name="mnu_1" class="nav-item"><a class="nav-link active" href="#" data-bs-toggle="modal" data-bs-target="#dlgFunc1">Set Magic Code</a></li>
 					</ul>
 				</div>
 	
@@ -73,14 +65,15 @@ file:///C:/Players/jbach/temp/kfc/cutearrow.html?g=%0E%1F%22%06.%3F%7B%03y%5EyEy
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header py-1">
-					<h5 class="modal-title">{dialog title}</h5>
+					<h5 class="modal-title">Set Magic Code</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 				</div>
 				<div class="modal-body">
-					<p>{dialog body}</p>
+					<input type="text" class="form-control" name="txtMagicCode" placeholder="Enter Magic Code" value="" required/>
+					<div class="form-text">Please enter the magic code.</div>
 				</div>
 				<div class="modal-footer py-1">
-					<button type="button" class="btn btn-primary" data-bs-dismiss="modal" name="btnDoSomething">{do somthing}</button>
+					<button type="button" class="btn btn-primary" data-bs-dismiss="modal" name="btnDoSomething">Save</button>
 				</div>
 			</div>
 		</div>
@@ -89,16 +82,11 @@ file:///C:/Players/jbach/temp/kfc/cutearrow.html?g=%0E%1F%22%06.%3F%7B%03y%5EyEy
 	<!-- ✅ custom script -->
     <script>
 	    window.addEventListener("load",(async function(){
-            document.querySelector("header div[name='mainMenu'] li[name='mnu_2_1'] a").addEventListener('click', async (e)=>{
-                alert(`${e.srcElement.parentElement.attributes['name'].value} clicked`);
-            });
-            document.querySelector("header div[name='mainMenu'] li[name='mnu_2_2'] a").addEventListener('click', async (e)=>{
-                alert(`${e.srcElement.parentElement.attributes['name'].value} clicked`);
-            });
             document.querySelector("#dlgFunc1 *[name='btnDoSomething']").addEventListener('click', async (e)=>{
-                alert(`btnDoSomething clicked`);
+				let magicCode = document.querySelector("#dlgFunc1 *[name='txtMagicCode']").value;
+                setCookie("magicCode", magicCode, 30);
             });
-
+			document.querySelector("#dlgFunc1 *[name='txtMagicCode']").value = getCookie("magicCode");
 			
             const params = new URLSearchParams(window.location.search);
 
@@ -175,7 +163,25 @@ file:///C:/Players/jbach/temp/kfc/cutearrow.html?g=%0E%1F%22%06.%3F%7B%03y%5EyEy
 			return encrypt(text, password); // XOR encryption and decryption are symmetric
 		}
 				
+		function setCookie(cname, cvalue, exdays) {
+			const d = new Date();
+			d.setTime(d.getTime() + (exdays*24*60*60*1000));
+			let expires = "expires=" + d.toUTCString();
+			document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+		}
 		
+		function getCookie(cname) {
+			let name = cname + "=";
+			let decodedCookie = decodeURIComponent(document.cookie);
+			let ca = decodedCookie.split(';');
+			for(let i = 0; i < ca.length; i++) {
+				let c = ca[i].trim();
+				if (c.indexOf(name) == 0) {
+					return c.substring(name.length, c.length);
+				}
+			}
+			return "";
+		}
 		
     </script>
 </body>
