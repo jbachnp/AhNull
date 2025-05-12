@@ -49,7 +49,7 @@ file:///C:/Players/jbach/temp/kfc/cutearrow.html?g=%0E%1F%22%06.%3F%7B%03y%5EyEy
 
 	<!-- ✅ main ui/user area -->
 	<main class="container">
-        <h1>Member Info</h1>
+        <h1>Member Information</h1>
         <div id="divQR"></div>
     </main>    
 
@@ -84,7 +84,8 @@ file:///C:/Players/jbach/temp/kfc/cutearrow.html?g=%0E%1F%22%06.%3F%7B%03y%5EyEy
 	    window.addEventListener("load",(async function(){
             document.querySelector("#dlgFunc1 *[name='btnDoSomething']").addEventListener('click', async (e)=>{
 				let magicCode = document.querySelector("#dlgFunc1 *[name='txtMagicCode']").value;
-                setCookie("magicCode", magicCode, 30);
+                setCookie("magicCode", magicCode, 30);	//30 days
+				location.reload();
             });
 			document.querySelector("#dlgFunc1 *[name='txtMagicCode']").value = getCookie("magicCode");
 			
@@ -117,17 +118,23 @@ file:///C:/Players/jbach/temp/kfc/cutearrow.html?g=%0E%1F%22%06.%3F%7B%03y%5EyEy
 			}
 
 			if(null !== params.get('m')){
-				const r2 = params.get('m');
-				var r1 = decrypt(r2, "kfhkcl25048243");
-				var r0 = b64DecodeUnicode(r1);
-				
-				let oMember = JSON.parse(r0);
-				var z = oMember.f2;
-				z = z.slice(0, 1) + "~~~" + z.slice(4);
-				var dateSpan = document.createElement('h3')
-				dateSpan.innerHTML = `${oMember.f3} ${oMember.f4}<br/>HKID: ${z}<br/>Card No: ${oMember.f7}`;
-				document.getElementById("divQR").appendChild(dateSpan);
+				let magicCode = document.querySelector("#dlgFunc1 *[name='txtMagicCode']").value;
 
+				try {
+					const r2 = params.get('m');
+					//var r1 = decrypt(r2, "kfhkcl25048243");
+					var r1 = decrypt(r2, magicCode);
+					var r0 = b64DecodeUnicode(r1);
+					
+					let oMember = JSON.parse(r0);
+					var z = oMember.f2;
+					z = z.slice(0, 1) + "~~~" + z.slice(4);
+					var dateSpan = document.createElement('h3')
+					dateSpan.innerHTML = `${oMember.f3} ${oMember.f4}<br/>HKID: ${z}<br/>Card No: ${oMember.f7}`;
+					document.getElementById("divQR").appendChild(dateSpan);
+				} catch (e) {
+					alert("Please re-enter the magic code.");
+				}
 
 				console.log(r0);
 			}
