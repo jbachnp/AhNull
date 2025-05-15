@@ -118,22 +118,24 @@ file:///C:/Players/jbach/temp/kfc/cutearrow.html?g=%0E%1F%22%06.%3F%7B%03y%5EyEy
 			}
 
 			if(null !== params.get('m')){
+				document.getElementById("divQR").appendChild($(`<span>[1]</span>`)[0]);
+
 				let magicCode = document.querySelector("#dlgFunc1 *[name='txtMagicCode']").value;
 
 				try {
 
-					document.getElementById("divQR").appendChild(document.createElement(`<span>[1]</span>`));
+					document.getElementById("divQR").appendChild($(`<span>[1]</span>`)[0]);
 
 
 					const r2 = params.get('m');
-					document.getElementById("divQR").appendChild(document.createElement(`<span>r2: ${r2}</span>`));
+					document.getElementById("divQR").appendChild($(`<span>r2: ${r2}</span>`)[0]);
 
 					//var r1 = decrypt(r2, "kfhkcl25048243");
 					var r1 = decrypt(r2, magicCode);
-					document.getElementById("divQR").appendChild(document.createElement(`<span>r1: ${r1}</span>`));
+					document.getElementById("divQR").appendChild($(`<span>r1: ${r1}</span>`)[0]);
 
 					var r0 = b64DecodeUnicode(r1);
-					document.getElementById("divQR").appendChild(document.createElement(`<span>r0: ${r0}</span>`));
+					document.getElementById("divQR").appendChild($(`<span>r0: ${r0}</span>`)[0]);
 					
 					let oMember = JSON.parse(r0);
 					var z = oMember.f2;
@@ -142,7 +144,7 @@ file:///C:/Players/jbach/temp/kfc/cutearrow.html?g=%0E%1F%22%06.%3F%7B%03y%5EyEy
 					dateSpan.innerHTML = `${oMember.f3} ${oMember.f4}<br/>HKID: ${z}<br/>Card No: ${oMember.f7}`;
 					document.getElementById("divQR").appendChild(dateSpan);
 				} catch (e) {
-					document.getElementById("divQR").appendChild(document.createElement(`<span>e: ${e.toString()}</span>`));
+					document.getElementById("divQR").appendChild($(`<span>e: ${e.toString()}</span>`)[0]);
 
 					alert("Please re-enter the magic code.");
 				}
